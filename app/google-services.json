@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "119509318044",
+    "firebase_url": "https://go-dentist-app.firebaseio.com",
+    "project_id": "go-dentist-app",
+    "storage_bucket": "go-dentist-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:119509318044:android:9a25bf2937f420f5",
+        "android_client_info": {
+          "package_name": "com.davidmiguel.godentist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "119509318044-di3qters0lv0p96irak1u9jf0eo1ceke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDglkGni-YGYzZyubXaBmXGoHh0bH2Hh-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "119509318044-di3qters0lv0p96irak1u9jf0eo1ceke.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
