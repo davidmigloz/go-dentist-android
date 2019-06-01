@@ -1,13 +1,19 @@
 buildscript {
-    ext.kotlin_version = '1.3.31'
+
+    ext.versions = [
+            'compileSdk': 28,
+            'minSdk'    : 23,
+            'targetSdk' : 28
+    ]
+
     repositories {
         google()
         jcenter()
-        
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0-beta03'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.31"
         classpath 'com.google.gms:google-services:4.2.0'
     }
 }
@@ -16,7 +22,41 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+    }
+}
+
+ext {
+
+    /**
+     * Version name: <major>.<minor>.<patch>[-<verClass>]
+     * For mock, dev, tst and acc <build> is attached at the end.
+     */
+    generateVersionName = { versionMajor, versionMinor, versionPatch, versionClassifier ->
+        String versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
+        if (versionClassifier != null) {
+            versionName += "-" + versionClassifier
+        }
+        println "Version name: " + versionName
+        return versionName
+    }
+
+    /**
+     * Version code: MMMmmppbbb
+     */
+    generateVersionCode = { versionMajor, versionMinor, versionPatch ->
+        Integer versionCode = versionMajor * 10000000 +
+                versionMinor * 100000 +
+                versionPatch * 1000 +
+                (gitCommitCount() % 1000)
+        println "Version code: " + versionCode
+        return versionCode
+    }
+
+    /**
+     * Returns the number of commits in the repo.
+     */
+    gitCommitCount = { ->
+        return Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
     }
 }
 

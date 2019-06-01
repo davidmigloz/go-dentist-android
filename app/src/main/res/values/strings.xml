@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">goDentist</string>
+    <string name="title_fea_login">Login</string>
+    <string name="title_fea_dashboard">Dashboard</string>
 </resources>
