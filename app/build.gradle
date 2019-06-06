@@ -41,7 +41,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    dynamicFeatures = [":fea_auth", ":fea_dashboard"]
+    dynamicFeatures = [":fea_auth", ":fea_dashboard", ":fea_onboarding"]
 
 
 }

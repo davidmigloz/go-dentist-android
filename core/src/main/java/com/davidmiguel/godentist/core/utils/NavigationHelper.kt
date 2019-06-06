@@ -23,11 +23,15 @@ interface AddressableActivity {
 
 object Activities {
 
-    object Dashboard : AddressableActivity {
-        override val className = "$PACKAGE_NAME.dashboard.DashboardActivity"
-    }
-
     object Auth : AddressableActivity {
         override val className = "$PACKAGE_NAME.auth.AuthActivity"
+    }
+
+    object Onboarding : AddressableActivity {
+        override val className = "$PACKAGE_NAME.onboarding.OnboardingActivity"
+    }
+
+    object Dashboard : AddressableActivity {
+        override val className = "$PACKAGE_NAME.dashboard.DashboardActivity"
     }
 }
