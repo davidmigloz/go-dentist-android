@@ -29,6 +29,7 @@ class OnboardingActivity : BaseActivity() {
             val user = User().apply {
                 uid = authUser.uid
                 name = binding.name.text.toString()
+                email = authUser.email
             }
             UserRepository().update(user)
                 .addOnSuccessListener {

@@ -1,2 +1,2 @@
-include ':app', ':core', ':fea_auth', ':fea_dashboard', ':fea_onboarding'
+include ':app', ':core', ':fea_auth', ':fea_dashboard', ':fea_onboarding', ':fea_manage_clinics'
 rootProject.name='goDentist'

@@ -34,4 +34,8 @@ object Activities {
     object Dashboard : AddressableActivity {
         override val className = "$PACKAGE_NAME.dashboard.DashboardActivity"
     }
+
+    object ManageClinics : AddressableActivity {
+        override val className = "$PACKAGE_NAME.manageclinics.ManageClinicsActivity"
+    }
 }
