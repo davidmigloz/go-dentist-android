@@ -1,12 +1,23 @@
 package com.davidmiguel.godentist.auth
 
+
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import com.davidmiguel.godentist.core.base.BaseActivity
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import com.davidmiguel.godentist.core.base.BaseFragment
 import com.davidmiguel.godentist.core.data.user.UserRepository
-import com.davidmiguel.godentist.core.utils.*
+import com.davidmiguel.godentist.core.utils.Activities
+import com.davidmiguel.godentist.core.utils.AddressableActivity
+import com.davidmiguel.godentist.core.utils.showSnackbar
+import com.davidmiguel.godentist.core.utils.startActivity
+
 import com.davidmiguel.godentist.login.R
+import com.davidmiguel.godentist.login.databinding.FragmentAuthBinding
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
@@ -15,20 +26,22 @@ import com.google.firebase.auth.FirebaseUser
 
 private const val RC_SIGN_IN = 1
 
-class AuthActivity : BaseActivity() {
+class AuthFragment : BaseFragment() {
 
-    private val providers = listOf(
-        AuthUI.IdpConfig.EmailBuilder().setRequireName(false).build()
-    )
+    private lateinit var binding: FragmentAuthBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_auth)
+    private val providers by lazy {
+        listOf(AuthUI.IdpConfig.EmailBuilder().setRequireName(false).build())
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_auth, container, false)
         if (FirebaseAuth.getInstance().currentUser == null) {
             startSignIn()
         } else {
             launchActivity(Activities.Dashboard)
         }
+        return binding.root
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -79,16 +92,17 @@ class AuthActivity : BaseActivity() {
 
     private fun checkUserState(user: FirebaseUser) {
         UserRepository().exists(user.uid)
-            .addOnSuccessListener(this) { userExists ->
+            .addOnSuccessListener(requireActivity()) { userExists ->
                 launchActivity(if (userExists) Activities.Dashboard else Activities.Onboarding)
             }
-            .addOnFailureListener(this) {
+            .addOnFailureListener(requireActivity()) {
                 showSnackbar("Unknown error")
             }
     }
 
     private fun launchActivity(activity: AddressableActivity) {
-        startActivity(activity, clearTask = true)
-        finish()
+        showSnackbar(activity.className)
+//        startActivity(activity, clearTask = true)
+//        finish()
     }
 }

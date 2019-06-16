@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/go_dentist_nav_graph"
+    app:startDestination="@+id/dashboard_fragment">
+
+    <dialog
+        android:id="@+id/navigationMenu"
+        android:name="com.davidmiguel.godentist.NavigationMenuFragment">
+        <argument
+            android:name="currentItem"
+            android:defaultValue="-1"
+            app:argType="integer" />
+
+    </dialog>
+
+    <action
+        android:id="@+id/actionOpenNavigationMenu"
+        app:destination="@+id/navigationMenu"/>
+
+    <fragment
+        android:id="@+id/dashboard_fragment"
+        android:name="com.davidmiguel.godentist.dashboard.DashboardFragment"
+        android:label="Dashboard" />
+
+    <fragment
+        android:id="@+id/clinics_fragment"
+        android:name="com.davidmiguel.godentist.manageclinics.clinics.ClinicsFragment"
+        android:label="Clinics">
+        <action
+            android:id="@+id/action_clinics_fragment_to_add_clinic_fragment"
+            app:destination="@+id/add_clinic_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_clinic_fragment"
+        android:name="com.davidmiguel.godentist.manageclinics.add.AddClinicFragment"
+        android:label="Add Clinic" />
+
+    <fragment
+        android:id="@+id/auth_fragment"
+        android:name="com.davidmiguel.godentist.auth.AuthFragment"
+        android:label="Auth" />
+
+</navigation>

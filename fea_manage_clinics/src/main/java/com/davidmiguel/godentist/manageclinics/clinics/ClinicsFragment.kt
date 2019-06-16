@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davidmiguel.godentist.core.base.BaseFragment
@@ -15,6 +17,8 @@ import com.davidmiguel.godentist.manageclinics.R
 import com.davidmiguel.godentist.manageclinics.ViewModelFactory
 import com.davidmiguel.godentist.manageclinics.add.AddClinicViewModel
 import com.davidmiguel.godentist.manageclinics.databinding.FragmentClinicsBinding
+import com.davidmiguel.godentist.requireMainActivity
+import com.google.android.material.bottomappbar.BottomAppBar
 
 class ClinicsFragment : BaseFragment() {
 
@@ -41,6 +45,9 @@ class ClinicsFragment : BaseFragment() {
         val vm = ViewModelProviders.of(this, ViewModelFactory.getInstance()).get(ClinicsViewModel::class.java)
         binding.vm = vm
         vm.start()
+        requireMainActivity().showFAB(com.davidmiguel.godentist.core.R.drawable.ic_add_black_24dp, BottomAppBar.FAB_ALIGNMENT_MODE_END) {
+            findNavController().navigate(com.davidmiguel.godentist.R.id.add_clinic_fragment)
+        }
     }
 
     companion object {

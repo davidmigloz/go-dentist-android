@@ -7,6 +7,7 @@ import android.view.View
 import com.davidmiguel.godentist.core.base.BaseActivity
 import com.google.android.material.snackbar.Snackbar
 import android.view.ViewGroup
+import com.davidmiguel.godentist.core.base.BaseFragment
 
 fun BaseActivity.startActivity(
     act: AddressableActivity,
