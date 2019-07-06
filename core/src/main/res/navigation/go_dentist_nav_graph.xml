@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+Ref:
+- https://developer.android.com/guide/navigation
+- https://github.com/googlecodelabs/android-navigation
+- https://github.com/googlesamples/android-architecture-components/tree/master/NavigationBasicSample
+-->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/go_dentist_nav_graph"

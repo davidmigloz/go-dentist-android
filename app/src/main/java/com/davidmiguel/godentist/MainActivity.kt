@@ -17,7 +17,7 @@ import com.davidmiguel.godentist.core.base.BaseFragment
 import com.davidmiguel.godentist.core.R as RC
 import com.davidmiguel.godentist.databinding.ActivityMainBinding
 import com.google.android.material.bottomappbar.BottomAppBar
-
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : BaseActivity() {
 
@@ -82,7 +82,7 @@ class MainActivity : BaseActivity() {
         return itemId == android.R.id.home && rootFragments.contains(navController.currentDestination?.id)
     }
 
-    public fun showFAB(
+    fun showFAB(
         @DrawableRes icon: Int,
         @BottomAppBar.FabAlignmentMode alignmentMode: Int = BottomAppBar.FAB_ALIGNMENT_MODE_END,
         onClickListener: (v: View) -> Unit
@@ -97,12 +97,9 @@ class MainActivity : BaseActivity() {
         binding.bottomAppBar.fabAnimationMode = BottomAppBar.FAB_ANIMATION_MODE_SCALE
         binding.fab.setOnClickListener(onClickListener)
         binding.fab.show()
-        binding.fab.setOnClickListener {
-            navController.navigate(R.id.add_clinic_fragment)
-        }
     }
 
-    public fun hideFAB() {
+    fun hideFAB() {
         if (binding.fab.visibility != View.GONE) {
             binding.fab.hide()
             binding.fab.setOnClickListener(null)
@@ -112,7 +109,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    public fun showExtendedFAB(
+    fun showExtendedFAB(
         @DrawableRes icon: Int,
         text: String,
         onClickListener: (v: View) -> Unit
@@ -127,7 +124,7 @@ class MainActivity : BaseActivity() {
         binding.extendedFab.show()
     }
 
-    public fun hideExtendedFAB() {
+    fun hideExtendedFAB() {
         if (binding.extendedFab.visibility != View.GONE) {
             binding.extendedFab.hide()
             binding.extendedFab.setOnClickListener(null)
@@ -135,6 +132,16 @@ class MainActivity : BaseActivity() {
                 anchorId = View.NO_ID
             }
         }
+    }
+
+    fun showSnackbar(msg: Int, duration: Int = Snackbar.LENGTH_SHORT) {
+        showSnackbar(getString(msg), duration)
+    }
+
+    fun showSnackbar(msg: String, duration: Int = Snackbar.LENGTH_SHORT) {
+        Snackbar.make(binding.coordinator, msg, duration)
+            .setAnchorView(R.id.bottomAppBar)
+            .show()
     }
 }
 

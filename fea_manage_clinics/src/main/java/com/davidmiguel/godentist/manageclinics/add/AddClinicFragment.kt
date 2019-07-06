@@ -1,58 +1,70 @@
 package com.davidmiguel.godentist.manageclinics.add
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.davidmiguel.godentist.manageclinics.R
+import android.view.inputmethod.EditorInfo
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
+import com.davidmiguel.godentist.core.base.AuthenticatedFragment
+import com.davidmiguel.godentist.manageclinics.R
+import com.davidmiguel.godentist.core.R as RC
 import com.davidmiguel.godentist.manageclinics.ViewModelFactory
-import com.davidmiguel.godentist.manageclinics.clinics.ClinicsViewModel
 import com.davidmiguel.godentist.manageclinics.databinding.FragmentAddClinicBinding
+import com.davidmiguel.godentist.requireMainActivity
+import com.google.android.material.bottomappbar.BottomAppBar
 
-
-class AddClinicFragment : Fragment() {
+class AddClinicFragment : AuthenticatedFragment() {
 
     private lateinit var binding: FragmentAddClinicBinding
-
+    private val addClinicViewModel: AddClinicViewModel by viewModels { ViewModelFactory.getInstance() }
     private var clinicId: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            clinicId = it.getString(ARG_CLINIC_ID)
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_clinic, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
+        DataBindingUtil.inflate<FragmentAddClinicBinding>(
+            inflater, R.layout.fragment_add_clinic, container, false
+        ).apply {
+            binding = this
+            lifecycleOwner = viewLifecycleOwner
+            vm = addClinicViewModel
+            return root
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val vm = ViewModelProviders.of(this, ViewModelFactory.getInstance()).get(AddClinicViewModel::class.java)
-        binding.vm = vm
-        vm.start(clinicId)
-        vm.clinicUpdatedEvent.observe(viewLifecycleOwner, Observer {
+        setupViewModelListeners()
+    }
 
+    private fun setupViewModelListeners() {
+        requireMainActivity().showFAB(RC.drawable.ic_done_black_24dp, BottomAppBar.FAB_ALIGNMENT_MODE_END) {
+            addClinicViewModel.saveClinic()
+        }
+        binding.percentage.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                addClinicViewModel.saveClinic()
+            }
+            false
+        }
+        addClinicViewModel.nameError.observe(viewLifecycleOwner, Observer { error ->
+            binding.nameContainer.error = if (error) "Invalid name!" else null
+        })
+        addClinicViewModel.percentageError.observe(viewLifecycleOwner, Observer { error ->
+            binding.percentageContainer.error = if (error) "Invalid percentage!" else null
+        })
+        addClinicViewModel.clinicUpdatedEvent.observe(viewLifecycleOwner, Observer {
+            findNavController().popBackStack()
+        })
+        addClinicViewModel.snackbarEvent.observe(viewLifecycleOwner, Observer { event ->
+            event.getContentIfNotHandled()?.run { requireMainActivity().showSnackbar(this) }
         })
     }
 
-    companion object {
-
-        private const val ARG_CLINIC_ID = "com.davidmiguel.godentist.manageclinics.add.ARG_CLINIC_ID"
-
-        fun newInstance(clinicId: String? = null) =
-            AddClinicFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_CLINIC_ID, clinicId)
-                }
-            }
+    override fun onResumeAuthenticated() {
+        addClinicViewModel.start(clinicId)
     }
 }

@@ -11,6 +11,9 @@ import androidx.navigation.ui.onNavDestinationSelected
 import com.davidmiguel.godentist.databinding.FragmentNavigationMenuBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
+/**
+ * Ref: https://medium.com/material-design-in-action/implementing-bottomappbar-behavior-fbfbc3a30568
+ */
 class NavigationMenuFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentNavigationMenuBinding
