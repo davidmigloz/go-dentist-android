@@ -1,7 +1,6 @@
 package com.davidmiguel.godentist.manageclinics.add
 
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +10,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
+import com.davidmiguel.godentist.core.utils.observeEvent
 import com.davidmiguel.godentist.manageclinics.R
-import com.davidmiguel.godentist.core.R as RC
 import com.davidmiguel.godentist.manageclinics.ViewModelFactory
 import com.davidmiguel.godentist.manageclinics.databinding.FragmentAddClinicBinding
 import com.davidmiguel.godentist.requireMainActivity
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.davidmiguel.godentist.core.R as RC
 
 class AddClinicFragment : AuthenticatedFragment() {
 
@@ -56,12 +56,12 @@ class AddClinicFragment : AuthenticatedFragment() {
         addClinicViewModel.percentageError.observe(viewLifecycleOwner, Observer { error ->
             binding.percentageContainer.error = if (error) "Invalid percentage!" else null
         })
-        addClinicViewModel.clinicUpdatedEvent.observe(viewLifecycleOwner, Observer {
+        addClinicViewModel.clinicUpdatedEvent.observeEvent(viewLifecycleOwner) {
             findNavController().popBackStack()
-        })
-        addClinicViewModel.snackbarEvent.observe(viewLifecycleOwner, Observer { event ->
-            event.getContentIfNotHandled()?.run { requireMainActivity().showSnackbar(this) }
-        })
+        }
+        addClinicViewModel.snackbarEvent.observeEvent(viewLifecycleOwner) { msg ->
+            requireMainActivity().showSnackbar(msg)
+        }
     }
 
     override fun onResumeAuthenticated() {

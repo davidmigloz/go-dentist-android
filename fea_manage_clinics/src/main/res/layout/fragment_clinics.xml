@@ -5,6 +5,10 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="com.davidmiguel.godentist.core.utils.ScreenState" />
+
         <variable
             name="vm"
             type="com.davidmiguel.godentist.manageclinics.clinics.ClinicsViewModel" />
@@ -14,11 +18,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Clinics"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
+            app:layout_constraintBottom_toTopOf="@+id/clinicsList"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/loading"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/clinicsList"
+            app:layout_constraintEnd_toEndOf="@+id/clinicsList"
+            app:layout_constraintStart_toStartOf="@+id/clinicsList"
+            app:layout_constraintTop_toTopOf="@+id/clinicsList" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/clinicsList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:items="@{vm.clinics}" />
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:items="@{vm.clinics}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            tools:listitem="@layout/item_clinic" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

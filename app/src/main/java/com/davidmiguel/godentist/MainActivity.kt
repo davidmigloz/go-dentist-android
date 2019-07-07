@@ -1,7 +1,6 @@
 package com.davidmiguel.godentist
 
 import android.os.Bundle
-import com.davidmiguel.godentist.core.base.BaseActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -11,13 +10,19 @@ import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.*
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.davidmiguel.godentist.core.GoDentistNavGraphDirections
+import com.davidmiguel.godentist.core.base.BaseActivity
 import com.davidmiguel.godentist.core.base.BaseFragment
-import com.davidmiguel.godentist.core.R as RC
 import com.davidmiguel.godentist.databinding.ActivityMainBinding
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.davidmiguel.godentist.core.R as RC
 
 class MainActivity : BaseActivity() {
 
@@ -61,7 +66,6 @@ class MainActivity : BaseActivity() {
             if (rootFragments.contains(destination.id)) {
                 showMenuIcon()
             }
-            hideFAB()
         }
     }
 
@@ -87,25 +91,31 @@ class MainActivity : BaseActivity() {
         @BottomAppBar.FabAlignmentMode alignmentMode: Int = BottomAppBar.FAB_ALIGNMENT_MODE_END,
         onClickListener: (v: View) -> Unit
     ) {
-
-        hideExtendedFAB()
-        binding.fab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-            anchorId = binding.bottomAppBar.id
+        hideExtendedFAB {
+            binding.fab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                anchorId = binding.bottomAppBar.id
+            }
+            binding.fab.setImageResource(icon)
+            binding.bottomAppBar.fabAlignmentMode = alignmentMode
+            binding.bottomAppBar.fabAnimationMode = BottomAppBar.FAB_ANIMATION_MODE_SCALE
+            binding.fab.setOnClickListener(onClickListener)
+            binding.fab.show()
         }
-        binding.fab.setImageResource(icon)
-        binding.bottomAppBar.fabAlignmentMode = alignmentMode
-        binding.bottomAppBar.fabAnimationMode = BottomAppBar.FAB_ANIMATION_MODE_SCALE
-        binding.fab.setOnClickListener(onClickListener)
-        binding.fab.show()
     }
 
-    fun hideFAB() {
+    private fun hideFAB(onHidden: () -> Any) {
         if (binding.fab.visibility != View.GONE) {
-            binding.fab.hide()
-            binding.fab.setOnClickListener(null)
-            binding.fab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-                anchorId = View.NO_ID
-            }
+            binding.fab.hide(object : FloatingActionButton.OnVisibilityChangedListener() {
+                override fun onHidden(fab: FloatingActionButton?) {
+                    binding.fab.setOnClickListener(null)
+                    binding.fab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                        anchorId = View.NO_ID
+                    }
+                    onHidden()
+                }
+            })
+        } else {
+            onHidden()
         }
     }
 
@@ -114,23 +124,30 @@ class MainActivity : BaseActivity() {
         text: String,
         onClickListener: (v: View) -> Unit
     ) {
-        hideFAB()
-        binding.extendedFab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-            anchorId = binding.bottomAppBar.id
+        hideFAB {
+            binding.extendedFab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                anchorId = binding.bottomAppBar.id
+            }
+            binding.extendedFab.setIconResource(icon)
+            binding.extendedFab.text = text
+            binding.extendedFab.setOnClickListener(onClickListener)
+            binding.extendedFab.show()
         }
-        binding.extendedFab.setIconResource(icon)
-        binding.extendedFab.text = text
-        binding.extendedFab.setOnClickListener(onClickListener)
-        binding.extendedFab.show()
     }
 
-    fun hideExtendedFAB() {
+    private fun hideExtendedFAB(onHidden: () -> Any) {
         if (binding.extendedFab.visibility != View.GONE) {
-            binding.extendedFab.hide()
-            binding.extendedFab.setOnClickListener(null)
-            binding.extendedFab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-                anchorId = View.NO_ID
-            }
+            binding.extendedFab.hide(object : ExtendedFloatingActionButton.OnChangedListener() {
+                override fun onHidden(extendedFab: ExtendedFloatingActionButton?) {
+                    binding.extendedFab.setOnClickListener(null)
+                    binding.extendedFab.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                        anchorId = View.NO_ID
+                    }
+                    onHidden()
+                }
+            })
+        } else {
+            onHidden()
         }
     }
 
