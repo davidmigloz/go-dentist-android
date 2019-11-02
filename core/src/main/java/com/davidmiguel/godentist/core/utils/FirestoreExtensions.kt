@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "EXPERIMENTAL_API_USAGE")
 
 package com.davidmiguel.godentist.core.utils
 
@@ -7,6 +7,13 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// LiveData
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 fun <T> CollectionReference.liveData(clazz: Class<T>): LiveData<Resource<List<T>>> {
     return CollectionLiveData(this, clazz)
@@ -101,5 +108,57 @@ private class QueryLiveData<T>(
         super.onInactive()
         listener?.remove()
         listener = null
+    }
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// Coroutines Flow
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+fun <T> CollectionReference.flow(clazz: Class<T>): Flow<Resource<List<T>>> {
+    return callbackFlow {
+        val listener = addSnapshotListener { querySnapshot, exception ->
+            if (exception == null) {
+                val value = querySnapshot?.toObjects(clazz)?.run {
+                    Resource.forSuccess(this)
+                } ?: Resource.forLoading()
+                offer(value)
+            } else {
+                close(exception)
+            }
+        }
+        awaitClose { listener.remove() }
+    }
+}
+
+fun <T> DocumentReference.flow(clazz: Class<T>): Flow<Resource<T>> {
+    return callbackFlow {
+        val listener = addSnapshotListener { documentSnapshot, exception ->
+            if (exception == null) {
+                val value = documentSnapshot?.toObject(clazz)?.run {
+                    Resource.forSuccess(this)
+                } ?: Resource.forLoading()
+                offer(value)
+            } else {
+                close(exception)
+            }
+        }
+        awaitClose { listener.remove() }
+    }
+}
+
+fun <T> Query.flow(clazz: Class<T>): Flow<Resource<List<T>>> {
+    return callbackFlow {
+        val listener = addSnapshotListener { querySnapshot, exception ->
+            if (exception == null) {
+                val value = querySnapshot?.toObjects(clazz)?.run {
+                    Resource.forSuccess(this)
+                } ?: Resource.forLoading()
+                offer(value)
+            } else {
+                close(exception)
+            }
+        }
+        awaitClose { listener.remove() }
     }
 }

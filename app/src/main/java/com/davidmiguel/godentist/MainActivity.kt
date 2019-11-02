@@ -137,7 +137,7 @@ class MainActivity : BaseActivity() {
 
     private fun hideExtendedFAB(onHidden: () -> Any) {
         if (binding.extendedFab.visibility != View.GONE) {
-            binding.extendedFab.hide(object : ExtendedFloatingActionButton.OnChangedListener() {
+            binding.extendedFab.hide(object : ExtendedFloatingActionButton.OnChangedCallback() {
                 override fun onHidden(extendedFab: ExtendedFloatingActionButton?) {
                     binding.extendedFab.setOnClickListener(null)
                     binding.extendedFab.updateLayoutParams<CoordinatorLayout.LayoutParams> {

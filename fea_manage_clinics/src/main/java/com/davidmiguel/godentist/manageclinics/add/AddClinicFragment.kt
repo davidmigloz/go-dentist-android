@@ -5,13 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.observeEvent
-import com.davidmiguel.godentist.manageclinics.R
 import com.davidmiguel.godentist.manageclinics.ViewModelFactory
 import com.davidmiguel.godentist.manageclinics.databinding.FragmentAddClinicBinding
 import com.davidmiguel.godentist.requireMainActivity
@@ -21,13 +19,16 @@ import com.davidmiguel.godentist.core.R as RC
 class AddClinicFragment : AuthenticatedFragment() {
 
     private lateinit var binding: FragmentAddClinicBinding
-    private val addClinicViewModel: AddClinicViewModel by viewModels { ViewModelFactory.getInstance() }
+    private val addClinicViewModel: AddClinicViewModel
+            by viewModels<AddClinicViewModelImpl> { ViewModelFactory.getInstance() }
     private var clinicId: String? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        DataBindingUtil.inflate<FragmentAddClinicBinding>(
-            inflater, R.layout.fragment_add_clinic, container, false
-        ).apply {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        FragmentAddClinicBinding.inflate(inflater, container, false).apply {
             binding = this
             lifecycleOwner = viewLifecycleOwner
             vm = addClinicViewModel
@@ -41,7 +42,10 @@ class AddClinicFragment : AuthenticatedFragment() {
     }
 
     private fun setupViewModelListeners() {
-        requireMainActivity().showFAB(RC.drawable.ic_done_black_24dp, BottomAppBar.FAB_ALIGNMENT_MODE_END) {
+        requireMainActivity().showFAB(
+            RC.drawable.ic_done_black_24dp,
+            BottomAppBar.FAB_ALIGNMENT_MODE_END
+        ) {
             addClinicViewModel.saveClinic()
         }
         binding.percentage.setOnEditorActionListener { _, actionId, _ ->

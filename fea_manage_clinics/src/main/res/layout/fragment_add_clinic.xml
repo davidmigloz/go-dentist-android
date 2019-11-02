@@ -71,11 +71,10 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
                 android:inputType="number"
-                android:maxLength="80"
+                android:maxLength="3"
                 android:maxLines="1"
                 android:text="@={vm.percentage}" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

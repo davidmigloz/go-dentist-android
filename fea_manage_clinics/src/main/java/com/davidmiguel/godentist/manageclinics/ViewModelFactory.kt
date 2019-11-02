@@ -4,7 +4,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.davidmiguel.godentist.core.data.clinics.ClinicsRepository
-import com.davidmiguel.godentist.manageclinics.add.AddClinicViewModel
+import com.davidmiguel.godentist.manageclinics.add.AddClinicViewModelImpl
 import com.davidmiguel.godentist.manageclinics.clinics.ClinicsViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -19,8 +19,8 @@ class ViewModelFactory private constructor(
             when {
                 isAssignableFrom(ClinicsViewModel::class.java) ->
                     ClinicsViewModel(firebaseAuth, clinicsRepository)
-                isAssignableFrom(AddClinicViewModel::class.java) ->
-                    AddClinicViewModel(firebaseAuth, clinicsRepository)
+                isAssignableFrom(AddClinicViewModelImpl::class.java) ->
+                    AddClinicViewModelImpl(firebaseAuth, clinicsRepository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }
