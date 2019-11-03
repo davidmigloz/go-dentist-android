@@ -3,8 +3,8 @@ package com.davidmiguel.godentist.core.data.clinics
 import com.davidmiguel.godentist.core.data.COLLECTION_CLINICS
 import com.davidmiguel.godentist.core.data.COLLECTION_USERS
 import com.davidmiguel.godentist.core.model.Clinic
-import com.davidmiguel.godentist.core.utils.Resource
-import com.davidmiguel.godentist.core.utils.flow
+import com.davidmiguel.godentist.core.utils.Result
+import com.davidmiguel.godentist.core.utils.asFlow
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
@@ -31,8 +31,8 @@ class ClinicsRepository {
         }
     }
 
-    public fun getAll(uid: String): Flow<Resource<List<Clinic>>> {
-        return getClinicsCollectionRef(uid).flow(Clinic::class.java)
+    public fun getAll(uid: String): Flow<Result<List<Clinic>>> {
+        return getClinicsCollectionRef(uid).asFlow(Clinic::class.java)
     }
 
     /**

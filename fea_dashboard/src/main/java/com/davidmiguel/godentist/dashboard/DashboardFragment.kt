@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.dashboard.databinding.DashboardFragmentBinding
 import com.davidmiguel.godentist.requireMainActivity
@@ -24,7 +24,7 @@ class DashboardFragment : AuthenticatedFragment() {
 
     override fun onResumeAuthenticated() {
         requireMainActivity().showExtendedFAB(RC.drawable.ic_add_black_24dp, "Add workday") {
-            Toast.makeText(context, "Clicked FAB", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(RC.id.add_work_day_fragment)
         }
     }
 }

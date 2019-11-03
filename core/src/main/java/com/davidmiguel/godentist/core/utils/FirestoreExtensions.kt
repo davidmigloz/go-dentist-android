@@ -15,15 +15,15 @@ import kotlinx.coroutines.flow.callbackFlow
 // LiveData
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-fun <T> CollectionReference.liveData(clazz: Class<T>): LiveData<Resource<List<T>>> {
+fun <T> CollectionReference.liveData(clazz: Class<T>): LiveData<Result<List<T>>> {
     return CollectionLiveData(this, clazz)
 }
 
-fun <T> DocumentReference.liveData(clazz: Class<T>): LiveData<Resource<T>> {
+fun <T> DocumentReference.liveData(clazz: Class<T>): LiveData<Result<T>> {
     return DocumentLiveData(this, clazz)
 }
 
-fun <T> Query.liveData(clazz: Class<T>): LiveData<Resource<List<T>>> {
+fun <T> Query.liveData(clazz: Class<T>): LiveData<Result<List<T>>> {
     return QueryLiveData(this, clazz)
 }
 
@@ -31,7 +31,7 @@ fun <T> Query.liveData(clazz: Class<T>): LiveData<Resource<List<T>>> {
 private class CollectionLiveData<T>(
     private val collectionReference: CollectionReference,
     private val clazz: Class<T>
-) : LiveData<Resource<List<T>>>(Resource.forLoading()) {
+) : LiveData<Result<List<T>>>() {
 
     private var listener: ListenerRegistration? = null
 
@@ -40,10 +40,10 @@ private class CollectionLiveData<T>(
         listener = collectionReference.addSnapshotListener { querySnapshot, exception ->
             value = if (exception == null) {
                 querySnapshot?.toObjects(clazz)?.run {
-                    Resource.forSuccess(this)
-                } ?: Resource.forLoading()
+                    Result.forSuccess(this)
+                } ?: Result.forFailureNotFound()
             } else {
-                Resource.forFailure(exception)
+                Result.forFailure(exception)
             }
         }
     }
@@ -59,7 +59,7 @@ private class CollectionLiveData<T>(
 private class DocumentLiveData<T>(
     private val documentReference: DocumentReference,
     private val clazz: Class<T>
-) : LiveData<Resource<T>>(Resource.forLoading()) {
+) : LiveData<Result<T>>() {
 
     private var listener: ListenerRegistration? = null
 
@@ -68,10 +68,10 @@ private class DocumentLiveData<T>(
         listener = documentReference.addSnapshotListener { documentSnapshot, exception ->
             value = if (exception == null) {
                 documentSnapshot?.toObject(clazz)?.run {
-                    Resource.forSuccess(this)
-                } ?: Resource.forLoading()
+                    Result.forSuccess(this)
+                } ?: Result.forFailureNotFound()
             } else {
-                Resource.forFailure(exception)
+                Result.forFailure(exception)
             }
         }
     }
@@ -87,7 +87,7 @@ private class DocumentLiveData<T>(
 private class QueryLiveData<T>(
     private val query: Query,
     private val clazz: Class<T>
-) : LiveData<Resource<List<T>>>(Resource.forLoading()) {
+) : LiveData<Result<List<T>>>() {
 
     private var listener: ListenerRegistration? = null
 
@@ -96,10 +96,10 @@ private class QueryLiveData<T>(
         listener = query.addSnapshotListener { querySnapshot, exception ->
             value = if (exception == null) {
                 querySnapshot?.toObjects(clazz)?.run {
-                    Resource.forSuccess(this)
-                } ?: Resource.forLoading()
+                    Result.forSuccess(this)
+                } ?: Result.forFailureNotFound()
             } else {
-                Resource.forFailure(exception)
+                Result.forFailure(exception)
             }
         }
     }
@@ -115,48 +115,51 @@ private class QueryLiveData<T>(
 // Coroutines Flow
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-fun <T> CollectionReference.flow(clazz: Class<T>): Flow<Resource<List<T>>> {
+fun <T> CollectionReference.asFlow(clazz: Class<T>): Flow<Result<List<T>>> {
     return callbackFlow {
         val listener = addSnapshotListener { querySnapshot, exception ->
             if (exception == null) {
                 val value = querySnapshot?.toObjects(clazz)?.run {
-                    Resource.forSuccess(this)
-                } ?: Resource.forLoading()
+                    Result.forSuccess(this)
+                } ?: Result.forFailureNotFound()
                 offer(value)
             } else {
-                close(exception)
+                offer(Result.forFailure(exception))
+                close()
             }
         }
         awaitClose { listener.remove() }
     }
 }
 
-fun <T> DocumentReference.flow(clazz: Class<T>): Flow<Resource<T>> {
+fun <T> DocumentReference.asFlow(clazz: Class<T>): Flow<Result<T>> {
     return callbackFlow {
         val listener = addSnapshotListener { documentSnapshot, exception ->
             if (exception == null) {
                 val value = documentSnapshot?.toObject(clazz)?.run {
-                    Resource.forSuccess(this)
-                } ?: Resource.forLoading()
+                    Result.forSuccess(this)
+                } ?: Result.forFailureNotFound()
                 offer(value)
             } else {
-                close(exception)
+                offer(Result.forFailure(exception))
+                close()
             }
         }
         awaitClose { listener.remove() }
     }
 }
 
-fun <T> Query.flow(clazz: Class<T>): Flow<Resource<List<T>>> {
+fun <T> Query.asFlow(clazz: Class<T>): Flow<Result<List<T>>> {
     return callbackFlow {
         val listener = addSnapshotListener { querySnapshot, exception ->
             if (exception == null) {
                 val value = querySnapshot?.toObjects(clazz)?.run {
-                    Resource.forSuccess(this)
-                } ?: Resource.forLoading()
+                    Result.forSuccess(this)
+                } ?: Result.forFailureNotFound()
                 offer(value)
             } else {
-                close(exception)
+                offer(Result.forFailure(exception))
+                close()
             }
         }
         awaitClose { listener.remove() }

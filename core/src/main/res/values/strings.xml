@@ -33,6 +33,10 @@
 
     <string name="title_fea_manage_clinics">Manage Clinics</string>
 
+    <!-- =========================================================================================================== -->
+    <!-- Manage workdays                                                                                              -->
+    <!-- =========================================================================================================== -->
 
+    <string name="title_fea_manage_workdays">Manage workdays</string>
 
 </resources>

@@ -27,7 +27,16 @@ Ref:
     <fragment
         android:id="@+id/dashboard_fragment"
         android:name="com.davidmiguel.godentist.dashboard.DashboardFragment"
-        android:label="Dashboard" />
+        android:label="Dashboard" >
+        <action
+            android:id="@+id/action_dashboard_fragment_to_add_work_day_fragment"
+            app:destination="@+id/add_work_day_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_work_day_fragment"
+        android:name="com.davidmiguel.godentist.manageworkdays.add.AddWorkDayFragment"
+        android:label="Add Work Day" />
 
     <fragment
         android:id="@+id/clinics_fragment"
