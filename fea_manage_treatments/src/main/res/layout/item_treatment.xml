@@ -8,10 +8,6 @@
         <variable
             name="name"
             type="String" />
-
-        <variable
-            name="percentage"
-            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,19 +18,10 @@
             android:id="@+id/nameTV"
             style="@style/ListItem"
             android:text="@{name}"
-            app:layout_constraintEnd_toStartOf="@id/percentageTV"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Item 1" />
-
-        <TextView
-            android:id="@+id/percentageTV"
-            style="@style/ListItem"
-            android:layout_width="wrap_content"
-            android:text="@{percentage}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="30%" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

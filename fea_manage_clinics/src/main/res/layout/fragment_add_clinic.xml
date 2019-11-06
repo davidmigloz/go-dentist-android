@@ -16,14 +16,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:padding="@dimen/layout_default_padding">
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/Headline1"
             android:text="Add clinic"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
             app:layout_constraintBottom_toTopOf="@+id/nameContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,12 +29,9 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/nameContainer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            style="@style/TextInputLayoutFilledBox"
             android:hint="Name"
             android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
-            app:errorEnabled="true"
             app:layout_constraintBottom_toTopOf="@+id/percentageContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,8 +39,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/TextInputEditTextFilledBox"
                 android:inputType="textCapWords"
                 android:maxLength="80"
                 android:maxLines="1"
@@ -55,20 +49,16 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/percentageContainer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            style="@style/TextInputLayoutFilledBox"
             android:hint="Percentage (0-100%)"
             android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
-            app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nameContainer">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/percentage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/TextInputEditTextFilledBox"
                 android:imeOptions="actionDone"
                 android:inputType="number"
                 android:maxLength="3"

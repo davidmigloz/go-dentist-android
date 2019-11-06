@@ -16,14 +16,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:padding="@dimen/layout_default_padding">
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/Headline1"
             android:text="Add work day"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
             app:layout_constraintBottom_toTopOf="@+id/durationContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,20 +29,16 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/durationContainer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            style="@style/TextInputLayoutFilledBox"
             android:hint="Duration (in hours)"
             android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
-            app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/duration"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/TextInputEditTextFilledBox"
                 android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
                 android:maxLength="4"

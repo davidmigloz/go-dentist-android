@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="none">
         <item
             android:id="@+id/dashboard_fragment"
@@ -10,5 +9,9 @@
             android:id="@+id/clinics_fragment"
             android:checkable="true"
             android:title="Clinics" />
+        <item
+            android:id="@+id/treatments_fragment"
+            android:checkable="true"
+            android:title="Treatments" />
     </group>
 </menu>

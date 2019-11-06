@@ -30,7 +30,11 @@ class MainActivity : BaseActivity() {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    private val rootFragments: Set<Int> = setOf(R.id.dashboard_fragment, R.id.clinics_fragment)
+    private val rootFragments: Set<Int> = setOf(
+        R.id.dashboard_fragment,
+        R.id.clinics_fragment,
+        R.id.treatments_fragment
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

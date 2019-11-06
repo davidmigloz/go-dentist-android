@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".OnboardingActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.davidmiguel.godentist.core.utils.ScreenState" />
+
+        <variable
+            name="vm"
+            type="com.davidmiguel.godentist.managetreatments.add.AddTreatmentViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -12,7 +21,7 @@
         <TextView
             android:id="@+id/title"
             style="@style/Headline1"
-            android:text="Registration"
+            android:text="Add treatment"
             app:layout_constraintBottom_toTopOf="@+id/nameContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -22,25 +31,20 @@
             android:id="@+id/nameContainer"
             style="@style/TextInputLayoutFilledBox"
             android:hint="Name"
+            android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title">
+            app:layout_constraintTop_toBottomOf="@+id/title">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/name"
                 style="@style/TextInputEditTextFilledBox"
+                android:imeOptions="actionDone"
                 android:inputType="textCapWords"
-                android:maxLength="80"
-                android:maxLines="1" />
+                android:maxLength="200"
+                android:maxLines="1"
+                android:text="@={vm.name}" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_next"
-            style="@style/ButtonFilledElevated"
-            android:text="Next"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

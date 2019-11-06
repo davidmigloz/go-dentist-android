@@ -10,6 +10,11 @@ Ref:
     android:id="@+id/go_dentist_nav_graph"
     app:startDestination="@+id/dashboard_fragment">
 
+    <fragment
+        android:id="@+id/auth_fragment"
+        android:name="com.davidmiguel.godentist.auth.AuthFragment"
+        android:label="Auth" />
+
     <dialog
         android:id="@+id/navigationMenu"
         android:name="com.davidmiguel.godentist.NavigationMenuFragment">
@@ -53,8 +58,17 @@ Ref:
         android:label="Add Clinic" />
 
     <fragment
-        android:id="@+id/auth_fragment"
-        android:name="com.davidmiguel.godentist.auth.AuthFragment"
-        android:label="Auth" />
+        android:id="@+id/treatments_fragment"
+        android:name="com.davidmiguel.godentist.managetreatments.treatments.TreatmentsFragment"
+        android:label="Clinics">
+        <action
+            android:id="@+id/action_treatments_fragment_to_add_treatment_fragment"
+            app:destination="@+id/add_treatment_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_treatment_fragment"
+        android:name="com.davidmiguel.godentist.managetreatments.add.AddTreatmentFragment"
+        android:label="Add Treatment" />
 
 </navigation>

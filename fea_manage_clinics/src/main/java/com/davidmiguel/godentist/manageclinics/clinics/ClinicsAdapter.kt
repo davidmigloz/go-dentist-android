@@ -48,13 +48,14 @@ class ClinicsAdapter : ListAdapter<Clinic, ClinicsAdapter.ClinicViewHolder>(Clin
         }
     }
 
+    @Suppress("unused")
     companion object {
         @JvmStatic
         @BindingAdapter("items")
         fun RecyclerView.bindItems(clinics: List<Clinic>?) {
             clinics?.run {
                 val adapter = adapter as ClinicsAdapter
-                adapter.submitList(clinics)
+                adapter.submitList(this)
             }
         }
     }

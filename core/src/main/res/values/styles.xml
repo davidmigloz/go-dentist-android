@@ -6,7 +6,55 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+    </style>
+
+    <!-- Headlines -->
+
+    <style name="Headline1">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline2
+        </item>
+    </style>
+
+    <!-- Buttons -->
+
+    <style name="ButtonFilledElevated" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- Forms -->
+
+    <style name="TextInputLayoutFilledBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="errorEnabled">true</item>
+        <item name="hintEnabled">true</item>
+        <item name="helperTextEnabled">true</item>
+    </style>
+
+    <style name="TextInputEditTextFilledBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- Lists -->
+
+    <style name="ListItem">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- Loading indicators -->
+
+    <style name="LoadingProgressBar" parent="android:Widget.Material.ProgressBar">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
     </style>
 
 </resources>
