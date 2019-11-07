@@ -4,4 +4,8 @@ data class Clinic(
     var id: String = "",
     var name: String? = null,
     var percentage: Int? = null
-)
+) {
+    override fun toString(): String {
+        return name ?: ""
+    }
+}

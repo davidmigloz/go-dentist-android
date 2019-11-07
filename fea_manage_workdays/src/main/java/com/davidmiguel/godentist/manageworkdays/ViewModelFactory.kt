@@ -3,13 +3,15 @@ package com.davidmiguel.godentist.manageworkdays
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.davidmiguel.godentist.core.data.clinics.ClinicsRepository
 import com.davidmiguel.godentist.core.data.workdays.WorkDaysRepository
 import com.davidmiguel.godentist.manageworkdays.add.AddWorkDayViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class ViewModelFactory private constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val workDaysRepository: WorkDaysRepository
+    private val workDaysRepository: WorkDaysRepository,
+    private val clinicsRepository: ClinicsRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -17,7 +19,7 @@ class ViewModelFactory private constructor(
         with(modelClass) {
             when {
                 isAssignableFrom(AddWorkDayViewModel::class.java) ->
-                    AddWorkDayViewModel(firebaseAuth, workDaysRepository)
+                    AddWorkDayViewModel(firebaseAuth, workDaysRepository, clinicsRepository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }
@@ -30,7 +32,11 @@ class ViewModelFactory private constructor(
 
         fun getInstance() =
             INSTANCE ?: synchronized(ViewModelFactory::class.java) {
-                INSTANCE ?: ViewModelFactory(FirebaseAuth.getInstance(), WorkDaysRepository())
+                INSTANCE ?: ViewModelFactory(
+                    FirebaseAuth.getInstance(),
+                    WorkDaysRepository(),
+                    ClinicsRepository()
+                )
                     .also { INSTANCE = it }
             }
 

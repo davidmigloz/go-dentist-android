@@ -39,7 +39,6 @@ class ClinicsViewModel(
 
     private fun loadClinics() {
         _screenState.value = ScreenState.LOADING_DATA
-        _clinics.value = listOf()
         clinicsRepository.getAll(firebaseAuth.uid!!)
             .onEach { res ->
                 when (res) {

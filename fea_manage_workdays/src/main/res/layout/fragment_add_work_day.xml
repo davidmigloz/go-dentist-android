@@ -21,20 +21,38 @@
         <TextView
             android:id="@+id/title"
             style="@style/Headline1"
-            android:text="Add work day"
-            app:layout_constraintBottom_toTopOf="@+id/durationContainer"
+            android:text="@string/addWorkDay_title"
+            app:layout_constraintBottom_toTopOf="@+id/clinicContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/durationContainer"
-            style="@style/TextInputLayoutFilledBox"
-            android:hint="Duration (in hours)"
-            android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
+            android:id="@+id/clinicContainer"
+            style="@style/TextInputLayoutFilledBoxExposedDropdownMenu"
+            android:hint="@string/addWorkDay_labelClinic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title">
+
+            <AutoCompleteTextView
+                android:id="@+id/clinic"
+                android:cursorVisible="false"
+                android:text="@={vm.clinic}"
+                android:focusable="false"
+                style="@style/AutoCompleteTextView" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/durationContainer"
+            style="@style/TextInputLayoutFilledBox"
+            android:hint="@string/addWorkDay_labelDuration"
+            android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
+            app:helperText="@string/addWorkDay_helperDuration"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clinicContainer">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/duration"
