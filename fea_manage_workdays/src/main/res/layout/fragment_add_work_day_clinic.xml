@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nameTV"
-    style="@style/ExposedDropdownMenuItem"
-    tools:text="Clinic 1" />
+    <data>
+
+        <variable
+            name="clinic"
+            type="com.davidmiguel.godentist.core.model.Clinic" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/ExposedDropdownMenuItem"
+            android:text="@{clinic.name}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Clinic 1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

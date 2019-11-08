@@ -89,7 +89,7 @@ class AddWorkDayViewModel(
                     is Success -> {
                         _screenState.value = ScreenState.DATA_LOADED
                         _clinics.value = res.value
-                        if(res.value.isNotEmpty() && clinic.value.isNullOrBlank()) {
+                        if (res.value.isNotEmpty() && clinic.value.isNullOrBlank()) {
                             clinic.value = res.value.first().name
                         }
                     }
