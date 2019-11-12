@@ -43,6 +43,7 @@
     <string name="addWorkDay_labelDuration">Duration</string>
     <string name="addWorkDay_helperDuration">in hours</string>
     <string name="addWorkDay_labelClinic">Clinic</string>
+    <string name="addWorkDay_labelDate">Date</string>
 
     <!-- =========================================================================================================== -->
     <!-- Manage treatments                                                                                           -->

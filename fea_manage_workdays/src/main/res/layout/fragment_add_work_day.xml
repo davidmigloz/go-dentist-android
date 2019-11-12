@@ -5,6 +5,7 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="com.davidmiguel.godentist.core.utils.DateTimeUtilsKt" />
 
         <import type="com.davidmiguel.godentist.core.utils.ScreenState" />
 
@@ -22,25 +23,47 @@
             android:id="@+id/title"
             style="@style/Headline1"
             android:text="@string/addWorkDay_title"
-            app:layout_constraintBottom_toTopOf="@+id/clinicContainer"
+            app:layout_constraintBottom_toTopOf="@+id/dateContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/dateContainer"
+            style="@style/TextInputLayoutFilledBox"
+            android:hint="@string/addWorkDay_labelDate"
+            android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toTopOf="@id/clinicContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/date"
+                style="@style/TextInputEditTextFilledBox"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:inputType="date"
+                android:text="@{DateTimeUtilsKt.formatDMY(vm.date)}"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/clinicContainer"
             style="@style/TextInputLayoutFilledBoxExposedDropdownMenu"
             android:hint="@string/addWorkDay_labelClinic"
+            app:layout_constraintBottom_toTopOf="@id/durationContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title">
+            app:layout_constraintTop_toBottomOf="@+id/dateContainer">
 
             <AutoCompleteTextView
                 android:id="@+id/clinic"
+                style="@style/AutoCompleteTextView"
                 android:cursorVisible="false"
-                android:text="@={vm.clinic}"
                 android:focusable="false"
-                style="@style/AutoCompleteTextView" />
+                android:text="@{vm.clinic.name}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

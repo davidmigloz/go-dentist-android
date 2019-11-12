@@ -9,15 +9,14 @@ import com.davidmiguel.godentist.core.data.clinics.ClinicsRepository
 import com.davidmiguel.godentist.core.data.workdays.WorkDaysRepository
 import com.davidmiguel.godentist.core.model.Clinic
 import com.davidmiguel.godentist.core.model.WorkDay
-import com.davidmiguel.godentist.core.utils.Event
-import com.davidmiguel.godentist.core.utils.Failure
-import com.davidmiguel.godentist.core.utils.ScreenState
-import com.davidmiguel.godentist.core.utils.Success
+import com.davidmiguel.godentist.core.utils.*
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.*
 
 class AddWorkDayViewModel(
     private val firebaseAuth: FirebaseAuth,
@@ -43,11 +42,17 @@ class AddWorkDayViewModel(
 
     private var workDayId: String? = null
 
-    val clinic = MutableLiveData<String>("")
+    // Date
+    val date = MutableLiveData<Long>(nowToEpochMilliUtc())
+    private val _dateError = MutableLiveData(false)
+    val dateError: LiveData<Boolean>
+        get() = _dateError
+    // Clinic
+    val clinic = MutableLiveData<Clinic>()
     private val _clinicError = MutableLiveData(false)
     val clinicError: LiveData<Boolean>
         get() = _clinicError
-
+    // Duration
     val duration = MutableLiveData<String>()
     private val _durationError = MutableLiveData(false)
     val durationError: LiveData<Boolean>
@@ -89,8 +94,8 @@ class AddWorkDayViewModel(
                     is Success -> {
                         _screenState.value = ScreenState.DATA_LOADED
                         _clinics.value = res.value
-                        if (res.value.isNotEmpty() && clinic.value.isNullOrBlank()) {
-                            clinic.value = res.value.first().name
+                        if (res.value.isNotEmpty() && clinic.value == null) {
+                            clinic.value = res.value.first()
                         }
                     }
                     is Failure -> {
@@ -112,7 +117,19 @@ class AddWorkDayViewModel(
         _durationError.value = false
 
         val currentId = workDayId ?: ""
-
+        // Date
+        val currentDate = date.value?.run { Timestamp(Date(this)) }
+        if(currentDate == null) {
+            _dateError.value = true
+            return
+        }
+        // Clinic
+        val currentClinic = clinic.value
+        if(currentClinic == null) {
+            _clinicError.value = true
+            return
+        }
+        // Duration
         val currentDuration = duration.value?.toFloatOrNull()?.run { (this * 60).toInt() }
         if (currentDuration == null) {
             _durationError.value = true
@@ -124,6 +141,8 @@ class AddWorkDayViewModel(
                 firebaseAuth.uid!!,
                 WorkDay(
                     currentId,
+                    date = currentDate,
+                    clinic = currentClinic,
                     duration = currentDuration
                 )
             ).let { res ->

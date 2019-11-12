@@ -9,12 +9,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
-import com.davidmiguel.godentist.core.model.Clinic
 import com.davidmiguel.godentist.core.utils.observeEvent
 import com.davidmiguel.godentist.manageworkdays.ViewModelFactory
 import com.davidmiguel.godentist.manageworkdays.databinding.FragmentAddWorkDayBinding
 import com.davidmiguel.godentist.requireMainActivity
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.davidmiguel.godentist.core.R as RC
 
 class AddWorkDayFragment : AuthenticatedFragment() {
@@ -24,6 +24,7 @@ class AddWorkDayFragment : AuthenticatedFragment() {
             by viewModels { ViewModelFactory.getInstance() }
     private val clinicsAdapter
             by lazy { AddWorkDayClinicsAdapter(requireContext()) }
+    private lateinit var datePicker: MaterialDatePicker<Long>
 
     private var workDayId: String? = null
 
@@ -43,19 +44,45 @@ class AddWorkDayFragment : AuthenticatedFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setupDatePicker()
         setupViewModelListeners()
     }
 
+    private fun setupDatePicker() {
+        datePicker = MaterialDatePicker.Builder.datePicker()
+            .setSelection(addWorkDayViewModel.date.value)
+            .build()
+        datePicker.addOnPositiveButtonClickListener { selectedDate ->
+            addWorkDayViewModel.date.value = selectedDate
+        }
+    }
+
     private fun setupViewModelListeners() {
+        // Footer btn
         requireMainActivity().showFAB(
             RC.drawable.ic_done_black_24dp,
             BottomAppBar.FAB_ALIGNMENT_MODE_END
         ) {
             addWorkDayViewModel.saveWorkDay()
         }
-        addWorkDayViewModel.clinics.observe(viewLifecycleOwner, Observer { clinics ->
-            setupClinicsSpinner(clinics)
+        // Date
+        binding.date.setOnClickListener {
+            datePicker.show(childFragmentManager, datePicker.toString())
+        }
+        addWorkDayViewModel.dateError.observe(viewLifecycleOwner, Observer { error ->
+            binding.dateContainer.error = if (error) "Invalid date!" else null
         })
+        // Clinic
+        addWorkDayViewModel.clinics.observe(viewLifecycleOwner, Observer { clinics ->
+            clinicsAdapter.setClinics(clinics)
+        })
+        binding.clinic.setOnItemClickListener { _, _, position, _ ->
+            addWorkDayViewModel.clinic.value = clinicsAdapter.getItem(position)
+        }
+        addWorkDayViewModel.clinicError.observe(viewLifecycleOwner, Observer { error ->
+            binding.clinicContainer?.error = if (error) "Invalid clinic!" else null
+        })
+        // Duration
         binding.duration.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 addWorkDayViewModel.saveWorkDay()
@@ -63,18 +90,16 @@ class AddWorkDayFragment : AuthenticatedFragment() {
             false
         }
         addWorkDayViewModel.durationError.observe(viewLifecycleOwner, Observer { error ->
-            binding.durationContainer.error = if (error) "Invalid name!" else null
+            binding.durationContainer.error = if (error) "Invalid duration!" else null
         })
+        // Updated event
         addWorkDayViewModel.workDayUpdatedEvent.observeEvent(viewLifecycleOwner) {
             findNavController().popBackStack()
         }
+        // Snackbar
         addWorkDayViewModel.snackbarEvent.observeEvent(viewLifecycleOwner) { msg ->
             requireMainActivity().showSnackbar(msg)
         }
-    }
-
-    private fun setupClinicsSpinner(clinics: List<Clinic>) {
-        clinicsAdapter.setClinics(clinics)
     }
 
     override fun onResumeAuthenticated() {
