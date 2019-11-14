@@ -1,4 +1,4 @@
-package com.davidmiguel.godentist.manageworkdays.add
+package com.davidmiguel.godentist.manageworkdays.addworkday
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.Filter
 import android.widget.Filterable
 import com.davidmiguel.godentist.core.model.Clinic
-import com.davidmiguel.godentist.manageworkdays.databinding.FragmentAddWorkDayClinicBinding
+import com.davidmiguel.godentist.manageworkdays.databinding.FragmentAddWorkDayItemClinicBinding
 
 class AddWorkDayClinicsAdapter(
     private val context: Context
@@ -20,7 +20,7 @@ class AddWorkDayClinicsAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val viewHolder = if (convertView == null) {
             ClinicViewHolder(
-                FragmentAddWorkDayClinicBinding.inflate(
+                FragmentAddWorkDayItemClinicBinding.inflate(
                     LayoutInflater.from(context), parent, false
                 )
             ).apply { getRoot().tag = this }
@@ -48,7 +48,7 @@ class AddWorkDayClinicsAdapter(
     }
 
     private inner class ClinicViewHolder(
-        private val binding: FragmentAddWorkDayClinicBinding
+        private val binding: FragmentAddWorkDayItemClinicBinding
     ) {
 
         fun bind(clinic: Clinic) {

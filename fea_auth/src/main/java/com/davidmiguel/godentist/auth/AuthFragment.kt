@@ -46,7 +46,7 @@ class AuthFragment : BaseFragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             authViewModel.refuseAuthentication()
             // TODO in the future move to intro screen
-            findNavController().popBackStack(RC.id.dashboard_fragment, false)
+            findNavController().popBackStack(RC.id.work_days_fragment, false)
         }
 
         authViewModel.authState.observe(viewLifecycleOwner, Observer { authenticationState ->

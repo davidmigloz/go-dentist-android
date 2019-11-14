@@ -8,7 +8,6 @@ import com.davidmiguel.godentist.core.utils.asFlow
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
@@ -28,16 +27,8 @@ class WorkDaysRepository {
         }
     }
 
-    public suspend fun get(uid: String, workDayId: String): Result<WorkDay> {
-        return try {
-            getWorkDayDocumentRef(uid, workDayId).get().continueWith {
-                it.result?.toObject<WorkDay>()
-            }.await()?.run {
-                Result.forSuccess(this)
-            } ?: Result.forFailureNotFound()
-        } catch (e: Exception) {
-            Result.forFailure(e)
-        }
+    public fun get(uid: String, workDayId: String): Flow<Result<WorkDay>> {
+        return getWorkDayDocumentRef(uid, workDayId).asFlow(WorkDay::class.java)
     }
 
     public fun getAll(uid: String): Flow<Result<List<WorkDay>>> {

@@ -1,4 +1,4 @@
-package com.davidmiguel.godentist.manageworkdays.add
+package com.davidmiguel.godentist.manageworkdays.addworkday
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.observeEvent
 import com.davidmiguel.godentist.manageworkdays.ViewModelFactory
@@ -37,8 +38,16 @@ class AddWorkDayFragment : AuthenticatedFragment() {
             binding = this
             lifecycleOwner = viewLifecycleOwner
             vm = addWorkDayViewModel
-            clinic.setAdapter(clinicsAdapter)
+            initContent()
             return root
+        }
+    }
+
+    private fun initContent() {
+        binding.clinic.setAdapter(clinicsAdapter)
+        binding.treatmentsList.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = AddWorkDayTreatmentsAdapter()
         }
     }
 
@@ -92,6 +101,10 @@ class AddWorkDayFragment : AuthenticatedFragment() {
         addWorkDayViewModel.durationError.observe(viewLifecycleOwner, Observer { error ->
             binding.durationContainer.error = if (error) "Invalid duration!" else null
         })
+        // Treatments
+        binding.btnAddTreatment.setOnClickListener {
+
+        }
         // Updated event
         addWorkDayViewModel.workDayUpdatedEvent.observeEvent(viewLifecycleOwner) {
             findNavController().popBackStack()

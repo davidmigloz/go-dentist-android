@@ -11,7 +11,7 @@
 
         <variable
             name="vm"
-            type="com.davidmiguel.godentist.manageclinics.clinics.ClinicsViewModel" />
+            type="com.davidmiguel.godentist.manageworkdays.workdays.WorkDaysViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,8 +22,8 @@
         <TextView
             android:id="@+id/title"
             style="@style/Headline1"
-            android:text="Clinics"
-            app:layout_constraintBottom_toTopOf="@+id/clinicsList"
+            android:text="@string/workDays_title"
+            app:layout_constraintBottom_toTopOf="@+id/workDaysList"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,21 +32,21 @@
             android:id="@+id/loading"
             style="@style/LoadingProgressBar"
             android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="@+id/clinicsList"
-            app:layout_constraintEnd_toEndOf="@+id/clinicsList"
-            app:layout_constraintStart_toStartOf="@+id/clinicsList"
-            app:layout_constraintTop_toTopOf="@+id/clinicsList" />
+            app:layout_constraintBottom_toBottomOf="@+id/workDaysList"
+            app:layout_constraintEnd_toEndOf="@+id/workDaysList"
+            app:layout_constraintStart_toStartOf="@+id/workDaysList"
+            app:layout_constraintTop_toTopOf="@+id/workDaysList" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/clinicsList"
+            android:id="@+id/workDaysList"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:items="@{vm.clinics}"
+            app:items="@{vm.workDays}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title"
-            tools:listitem="@layout/fragment_clinics_item" />
+            tools:listitem="@layout/fragment_work_days_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

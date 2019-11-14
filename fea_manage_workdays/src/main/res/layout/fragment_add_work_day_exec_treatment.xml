@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.davidmiguel.godentist.core.utils.ScreenState" />
+
+        <variable
+            name="vm"
+            type="com.davidmiguel.godentist.manageworkdays.addworkdayexectreatment.AddWorkDayExecTreatmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/layout_default_padding">
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/Headline1"
+            android:text="Add treatment"
+            app:layout_constraintBottom_toTopOf="@id/treatmentsContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/treatmentsContainer"
+            style="@style/TextInputLayoutFilledBoxExposedDropdownMenu"
+            android:hint="Treatment"
+            app:layout_constraintBottom_toTopOf="@+id/priceContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title">
+
+            <AutoCompleteTextView
+                android:id="@+id/treatment"
+                style="@style/AutoCompleteTextView"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:text="@{vm.treatment.name}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/priceContainer"
+            style="@style/TextInputLayoutFilledBox"
+            android:hint="Price"
+            android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/treatmentsContainer">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/price"
+                style="@style/TextInputEditTextFilledBox"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:text="@={vm.price}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.davidmiguel.godentist.core.data.clinics.ClinicsRepository
 import com.davidmiguel.godentist.core.data.workdays.WorkDaysRepository
-import com.davidmiguel.godentist.manageworkdays.add.AddWorkDayViewModel
+import com.davidmiguel.godentist.manageworkdays.addworkday.AddWorkDayViewModel
+import com.davidmiguel.godentist.manageworkdays.workdays.WorkDaysViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class ViewModelFactory private constructor(
@@ -18,6 +19,8 @@ class ViewModelFactory private constructor(
     override fun <T : ViewModel> create(modelClass: Class<T>) =
         with(modelClass) {
             when {
+                isAssignableFrom(WorkDaysViewModel::class.java) ->
+                    WorkDaysViewModel(firebaseAuth, workDaysRepository)
                 isAssignableFrom(AddWorkDayViewModel::class.java) ->
                     AddWorkDayViewModel(firebaseAuth, workDaysRepository, clinicsRepository)
                 else ->

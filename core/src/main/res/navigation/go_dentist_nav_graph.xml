@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 Ref:
 - https://developer.android.com/guide/navigation
 - https://github.com/googlecodelabs/android-navigation
@@ -8,7 +7,7 @@ Ref:
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/go_dentist_nav_graph"
-    app:startDestination="@+id/dashboard_fragment">
+    app:startDestination="@+id/work_days_fragment">
 
     <fragment
         android:id="@+id/auth_fragment"
@@ -27,21 +26,33 @@ Ref:
 
     <action
         android:id="@+id/actionOpenNavigationMenu"
-        app:destination="@+id/navigationMenu"/>
+        app:destination="@+id/navigationMenu" />
 
     <fragment
-        android:id="@+id/dashboard_fragment"
-        android:name="com.davidmiguel.godentist.dashboard.DashboardFragment"
-        android:label="Dashboard" >
+        android:id="@+id/work_days_fragment"
+        android:name="com.davidmiguel.godentist.manageworkdays.workdays.WorkDaysFragment"
+        android:label="Work Days">
         <action
-            android:id="@+id/action_dashboard_fragment_to_add_work_day_fragment"
+            android:id="@+id/action_work_days_fragment_to_add_work_day_fragment"
             app:destination="@+id/add_work_day_fragment" />
     </fragment>
 
     <fragment
         android:id="@+id/add_work_day_fragment"
-        android:name="com.davidmiguel.godentist.manageworkdays.add.AddWorkDayFragment"
+        android:name="com.davidmiguel.godentist.manageworkdays.addworkday.AddWorkDayFragment"
         android:label="Add Work Day" />
+
+    <fragment
+        android:id="@+id/add_work_day_exec_treatment_fragment"
+        android:name="com.davidmiguel.godentist.manageworkdays.addworkdayexectreatment.AddWorkDayExecTreatmentFragment"
+        android:label="Add Work Day Executed Treatment">
+        <argument
+            android:name="workDayId"
+            app:argType="string" />
+        <argument
+            android:name="executedTreatmentId"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/clinics_fragment"

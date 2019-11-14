@@ -31,7 +31,7 @@ class MainActivity : BaseActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     private val rootFragments: Set<Int> = setOf(
-        R.id.dashboard_fragment,
+        R.id.work_days_fragment,
         R.id.clinics_fragment,
         R.id.treatments_fragment
     )

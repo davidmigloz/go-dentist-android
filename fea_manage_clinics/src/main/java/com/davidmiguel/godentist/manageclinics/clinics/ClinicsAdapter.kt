@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.davidmiguel.godentist.core.model.Clinic
 import com.davidmiguel.godentist.manageclinics.R
-import com.davidmiguel.godentist.manageclinics.databinding.ItemClinicBinding
+import com.davidmiguel.godentist.manageclinics.databinding.FragmentClinicsItemBinding
 
 class ClinicsAdapter : ListAdapter<Clinic, ClinicsAdapter.ClinicViewHolder>(ClinicsDiffCallback()) {
 
@@ -23,9 +23,9 @@ class ClinicsAdapter : ListAdapter<Clinic, ClinicsAdapter.ClinicViewHolder>(Clin
 
     class ClinicViewHolder(
         private val parent: ViewGroup,
-        private val binding: ItemClinicBinding = DataBindingUtil.inflate(
+        private val binding: FragmentClinicsItemBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.item_clinic,
+            R.layout.fragment_clinics_item,
             parent,
             false
         )
