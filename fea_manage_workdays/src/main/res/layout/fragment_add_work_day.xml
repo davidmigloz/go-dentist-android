@@ -21,7 +21,7 @@
         android:layout_height="match_parent"
         android:padding="@dimen/layout_default_padding">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/title"
             style="@style/Headline1"
             android:text="@string/addWorkDay_title"
@@ -79,12 +79,13 @@
             android:id="@+id/clinicContainer"
             style="@style/TextInputLayoutFilledBoxExposedDropdownMenu"
             android:hint="@string/addWorkDay_labelClinic"
+            android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@id/notesContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dateContainer">
 
-            <AutoCompleteTextView
+            <com.google.android.material.textview.MaterialAutoCompleteTextView
                 android:id="@+id/clinic"
                 style="@style/AutoCompleteTextView"
                 android:cursorVisible="false"
@@ -111,10 +112,11 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/labelTreatments"
             style="@style/Headline4"
             android:text="@string/addWorkDay_labelTreatments"
+            android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@id/treatmentsList"
             app:layout_constraintEnd_toStartOf="@id/btnAddTreatment"
             app:layout_constraintStart_toStartOf="parent"
@@ -124,6 +126,7 @@
             android:id="@+id/btnAddTreatment"
             style="@style/ButtonText"
             android:text="@string/addWorkDay_btnAddTreatment"
+            android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/labelTreatments"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/labelTreatments" />
@@ -132,7 +135,8 @@
             android:id="@+id/treatmentsList"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:items="@{vm.workDays}"
+            android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
+            app:items="@{vm.executedTreatments}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

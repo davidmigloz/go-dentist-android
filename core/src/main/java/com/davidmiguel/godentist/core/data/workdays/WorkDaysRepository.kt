@@ -39,13 +39,13 @@ class WorkDaysRepository {
      * Updates (or creates if it doesn't exist) a work day.
      * To create a work day the id must be empty.
      */
-    public suspend fun put(uid: String, workDay: WorkDay): Result<Unit> {
+    public suspend fun put(uid: String, workDay: WorkDay): Result<WorkDay> {
         if (workDay.id.isEmpty()) { // Create document if it doesn't exists
             workDay.id = getWorkDaysCollectionRef(uid).document().id
         }
         return try {
             getWorkDayDocumentRef(uid, workDay.id).set(workDay).await()
-            Result.forSuccess(Unit)
+            Result.forSuccess(workDay)
         } catch (e: Exception) {
             Result.forFailure(e)
         }

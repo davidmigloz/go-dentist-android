@@ -8,8 +8,8 @@ import com.davidmiguel.godentist.core.R
 import com.davidmiguel.godentist.core.data.clinics.ClinicsRepository
 import com.davidmiguel.godentist.core.data.workdays.WorkDaysRepository
 import com.davidmiguel.godentist.core.model.Clinic
-import com.davidmiguel.godentist.core.model.Treatment
 import com.davidmiguel.godentist.core.model.WorkDay
+import com.davidmiguel.godentist.core.model.WorkDay.ExecutedTreatment
 import com.davidmiguel.godentist.core.utils.*
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -34,6 +34,10 @@ class AddWorkDayViewModel(
     private val _snackbarEvent = MutableLiveData<Event<Int>>()
     val snackbarEvent: LiveData<Event<Int>>
         get() = _snackbarEvent
+
+    private val _addWorkDayExecTreatmentEvent = MutableLiveData<Event<Pair<String, String>>>()
+    val addWorkDayExecTreatmentEvent: LiveData<Event<Pair<String, String>>>
+        get() = _addWorkDayExecTreatmentEvent
 
     private val _workDayUpdatedEvent = MutableLiveData<Event<Unit>>()
     val workDayUpdatedEvent: LiveData<Event<Unit>>
@@ -64,11 +68,11 @@ class AddWorkDayViewModel(
     private val _notesError = MutableLiveData(false)
     val notesError: LiveData<Boolean>
         get() = _notesError
-    // Treatments
-    private val _treatments: MutableLiveData<List<Treatment>> = MutableLiveData(listOf())
-    val treatments: LiveData<List<Treatment>>
-        get() = _treatments
-
+    // Executed treatments
+    private val _executedTreatments: MutableLiveData<List<ExecutedTreatment>> =
+        MutableLiveData(listOf())
+    val executedTreatments: LiveData<List<ExecutedTreatment>>
+        get() = _executedTreatments
 
     fun start(workDayId: String?) {
         if (_screenState.value != ScreenState.INITIAL) return
@@ -91,7 +95,12 @@ class AddWorkDayViewModel(
                 when (res) {
                     is Success -> {
                         val workDay = res.value
+                        this@AddWorkDayViewModel.workDayId = workDay.id
+                        date.value = workDay.date?.toDate()?.time
                         duration.value = (workDay.duration?.run { this / 60F } ?: 0).toString()
+                        clinic.value = workDay.clinic
+                        notes.value = workDay.notes
+                        _executedTreatments.value = workDay.executedTreatments
                     }
                     is Failure -> onErrorLoadingData()
                 }
@@ -128,7 +137,19 @@ class AddWorkDayViewModel(
         _screenState.value = ScreenState.ERROR
     }
 
-    fun saveWorkDay() {
+    fun addNewWorkExecTreatmentDay() {
+        saveWorkDay(
+            onSuccess = { workDay ->
+                loadWorkDay(workDay.id)
+                _addWorkDayExecTreatmentEvent.value = Event(Pair(workDay.id, ""))
+            }
+        )
+    }
+
+    fun saveWorkDay(
+        onSuccess: (WorkDay) -> Unit = ::onWorkDaySaved,
+        onFailure: () -> Unit = ::onErrorSavingWorkDay
+    ) {
         _durationError.value = false
 
         val currentId = workDayId ?: ""
@@ -152,6 +173,8 @@ class AddWorkDayViewModel(
         }
         // Notes
         val currentNotes = notes.value
+        // Executed treatments
+        val currentExecutedTreatments = _executedTreatments.value?.toMutableList()
 
         viewModelScope.launch {
             workDaysRepository.put(
@@ -161,18 +184,19 @@ class AddWorkDayViewModel(
                     date = currentDate,
                     duration = currentDuration,
                     clinic = currentClinic,
-                    notes = currentNotes
+                    notes = currentNotes,
+                    executedTreatments = currentExecutedTreatments
                 )
             ).let { res ->
                 when (res) {
-                    is Success -> onWorkDaySaved()
-                    is Failure -> onErrorSavingWorkDay()
+                    is Success -> onSuccess(res.value)
+                    is Failure -> onFailure()
                 }
             }
         }
     }
 
-    private fun onWorkDaySaved() {
+    private fun onWorkDaySaved(workDay: WorkDay) {
         _workDayUpdatedEvent.value = Event(Unit)
         _snackbarEvent.value = Event(R.string.all_dataSaved)
     }

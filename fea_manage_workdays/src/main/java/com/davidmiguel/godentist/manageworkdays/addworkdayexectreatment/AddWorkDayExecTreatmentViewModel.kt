@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.davidmiguel.godentist.core.R
-import com.davidmiguel.godentist.core.data.clinics.ClinicsRepository
 import com.davidmiguel.godentist.core.data.treatments.TreatmentsRepository
 import com.davidmiguel.godentist.core.data.workdays.WorkDaysRepository
 import com.davidmiguel.godentist.core.model.Treatment
@@ -24,7 +23,6 @@ import kotlinx.coroutines.launch
 class AddWorkDayExecTreatmentViewModel(
     private val firebaseAuth: FirebaseAuth,
     private val workDaysRepository: WorkDaysRepository,
-    private val clinicsRepository: ClinicsRepository,
     private val treatmentsRepository: TreatmentsRepository
 ) : ViewModel() {
 

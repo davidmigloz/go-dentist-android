@@ -103,7 +103,14 @@ class AddWorkDayFragment : AuthenticatedFragment() {
         })
         // Treatments
         binding.btnAddTreatment.setOnClickListener {
-
+            addWorkDayViewModel.addNewWorkExecTreatmentDay()
+        }
+        addWorkDayViewModel.addWorkDayExecTreatmentEvent.observeEvent(viewLifecycleOwner) { (workDayId, executedTreatmentId) ->
+            findNavController().navigate(
+                AddWorkDayFragmentDirections.actionAddWorkDayFragmentToAddWorkDayExecTreatmentFragment(
+                    workDayId, executedTreatmentId
+                )
+            )
         }
         // Updated event
         addWorkDayViewModel.workDayUpdatedEvent.observeEvent(viewLifecycleOwner) {

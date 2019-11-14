@@ -4,15 +4,18 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.davidmiguel.godentist.core.data.clinics.ClinicsRepository
+import com.davidmiguel.godentist.core.data.treatments.TreatmentsRepository
 import com.davidmiguel.godentist.core.data.workdays.WorkDaysRepository
 import com.davidmiguel.godentist.manageworkdays.addworkday.AddWorkDayViewModel
+import com.davidmiguel.godentist.manageworkdays.addworkdayexectreatment.AddWorkDayExecTreatmentViewModel
 import com.davidmiguel.godentist.manageworkdays.workdays.WorkDaysViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class ViewModelFactory private constructor(
     private val firebaseAuth: FirebaseAuth,
     private val workDaysRepository: WorkDaysRepository,
-    private val clinicsRepository: ClinicsRepository
+    private val clinicsRepository: ClinicsRepository,
+    private val treatmentsRepository: TreatmentsRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -23,6 +26,8 @@ class ViewModelFactory private constructor(
                     WorkDaysViewModel(firebaseAuth, workDaysRepository)
                 isAssignableFrom(AddWorkDayViewModel::class.java) ->
                     AddWorkDayViewModel(firebaseAuth, workDaysRepository, clinicsRepository)
+                isAssignableFrom(AddWorkDayExecTreatmentViewModel::class.java) ->
+                    AddWorkDayExecTreatmentViewModel(firebaseAuth, workDaysRepository, treatmentsRepository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }
@@ -38,7 +43,8 @@ class ViewModelFactory private constructor(
                 INSTANCE ?: ViewModelFactory(
                     FirebaseAuth.getInstance(),
                     WorkDaysRepository(),
-                    ClinicsRepository()
+                    ClinicsRepository(),
+                    TreatmentsRepository()
                 )
                     .also { INSTANCE = it }
             }

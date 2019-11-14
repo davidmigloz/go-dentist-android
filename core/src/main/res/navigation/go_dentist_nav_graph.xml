@@ -40,7 +40,11 @@ Ref:
     <fragment
         android:id="@+id/add_work_day_fragment"
         android:name="com.davidmiguel.godentist.manageworkdays.addworkday.AddWorkDayFragment"
-        android:label="Add Work Day" />
+        android:label="Add Work Day" >
+        <action
+            android:id="@+id/action_add_work_day_fragment_to_add_work_day_exec_treatment_fragment"
+            app:destination="@+id/add_work_day_exec_treatment_fragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/add_work_day_exec_treatment_fragment"

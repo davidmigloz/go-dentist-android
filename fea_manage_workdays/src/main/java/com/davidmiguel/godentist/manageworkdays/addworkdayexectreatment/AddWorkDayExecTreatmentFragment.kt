@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.observeEvent
 import com.davidmiguel.godentist.manageworkdays.ViewModelFactory
@@ -18,6 +19,7 @@ import com.davidmiguel.godentist.core.R as RC
 
 class AddWorkDayExecTreatmentFragment : AuthenticatedFragment() {
 
+    private val args: AddWorkDayExecTreatmentFragmentArgs by navArgs()
     private lateinit var binding: FragmentAddWorkDayExecTreatmentBinding
     private val addWorkDayExecTreatmentViewModel: AddWorkDayExecTreatmentViewModel
             by viewModels { ViewModelFactory.getInstance() }
@@ -32,6 +34,8 @@ class AddWorkDayExecTreatmentFragment : AuthenticatedFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        workDayId = args.workDayId
+        executedTreatmentId = args.workDayId
         FragmentAddWorkDayExecTreatmentBinding.inflate(inflater, container, false).apply {
             binding = this
             lifecycleOwner = viewLifecycleOwner
