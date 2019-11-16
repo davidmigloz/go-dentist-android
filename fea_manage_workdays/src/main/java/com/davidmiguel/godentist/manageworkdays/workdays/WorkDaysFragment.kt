@@ -50,7 +50,7 @@ class WorkDaysFragment : AuthenticatedFragment() {
             workDaysViewModel.addNewWorkDay()
         }
         workDaysViewModel.addWorkDayEvent.observeEvent(viewLifecycleOwner) {
-            findNavController().navigate(WorkDaysFragmentDirections.actionWorkDaysFragmentToAddWorkDayFragment())
+            findNavController().navigate(WorkDaysFragmentDirections.actionWorkDaysFragmentToAddWorkDayNavGraph())
         }
     }
 

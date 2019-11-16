@@ -7,7 +7,6 @@ import com.davidmiguel.godentist.core.data.clinics.ClinicsRepository
 import com.davidmiguel.godentist.core.data.treatments.TreatmentsRepository
 import com.davidmiguel.godentist.core.data.workdays.WorkDaysRepository
 import com.davidmiguel.godentist.manageworkdays.addworkday.AddWorkDayViewModel
-import com.davidmiguel.godentist.manageworkdays.addworkdayexectreatment.AddWorkDayExecTreatmentViewModel
 import com.davidmiguel.godentist.manageworkdays.workdays.WorkDaysViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -25,9 +24,12 @@ class ViewModelFactory private constructor(
                 isAssignableFrom(WorkDaysViewModel::class.java) ->
                     WorkDaysViewModel(firebaseAuth, workDaysRepository)
                 isAssignableFrom(AddWorkDayViewModel::class.java) ->
-                    AddWorkDayViewModel(firebaseAuth, workDaysRepository, clinicsRepository)
-                isAssignableFrom(AddWorkDayExecTreatmentViewModel::class.java) ->
-                    AddWorkDayExecTreatmentViewModel(firebaseAuth, workDaysRepository, treatmentsRepository)
+                    AddWorkDayViewModel(
+                        firebaseAuth,
+                        workDaysRepository,
+                        clinicsRepository,
+                        treatmentsRepository
+                    )
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }
@@ -38,16 +40,14 @@ class ViewModelFactory private constructor(
         @Volatile
         private var INSTANCE: ViewModelFactory? = null
 
-        fun getInstance() =
-            INSTANCE ?: synchronized(ViewModelFactory::class.java) {
-                INSTANCE ?: ViewModelFactory(
-                    FirebaseAuth.getInstance(),
-                    WorkDaysRepository(),
-                    ClinicsRepository(),
-                    TreatmentsRepository()
-                )
-                    .also { INSTANCE = it }
-            }
+        fun getInstance() = INSTANCE ?: synchronized(ViewModelFactory::class.java) {
+            INSTANCE ?: ViewModelFactory(
+                FirebaseAuth.getInstance(),
+                WorkDaysRepository(),
+                ClinicsRepository(),
+                TreatmentsRepository()
+            ).also { INSTANCE = it }
+        }
 
         @VisibleForTesting
         fun destroyInstance() {

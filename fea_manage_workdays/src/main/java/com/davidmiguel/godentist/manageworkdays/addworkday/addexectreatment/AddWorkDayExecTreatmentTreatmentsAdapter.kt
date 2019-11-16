@@ -1,4 +1,4 @@
-package com.davidmiguel.godentist.manageworkdays.addworkdayexectreatment
+package com.davidmiguel.godentist.manageworkdays.addworkday.addexectreatment
 
 import android.content.Context
 import android.view.LayoutInflater

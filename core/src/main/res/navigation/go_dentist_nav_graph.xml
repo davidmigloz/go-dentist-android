@@ -33,29 +33,8 @@ Ref:
         android:name="com.davidmiguel.godentist.manageworkdays.workdays.WorkDaysFragment"
         android:label="Work Days">
         <action
-            android:id="@+id/action_work_days_fragment_to_add_work_day_fragment"
-            app:destination="@+id/add_work_day_fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/add_work_day_fragment"
-        android:name="com.davidmiguel.godentist.manageworkdays.addworkday.AddWorkDayFragment"
-        android:label="Add Work Day" >
-        <action
-            android:id="@+id/action_add_work_day_fragment_to_add_work_day_exec_treatment_fragment"
-            app:destination="@+id/add_work_day_exec_treatment_fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/add_work_day_exec_treatment_fragment"
-        android:name="com.davidmiguel.godentist.manageworkdays.addworkdayexectreatment.AddWorkDayExecTreatmentFragment"
-        android:label="Add Work Day Executed Treatment">
-        <argument
-            android:name="workDayId"
-            app:argType="string" />
-        <argument
-            android:name="executedTreatmentId"
-            app:argType="string" />
+            android:id="@+id/action_work_days_fragment_to_add_work_day_nav_graph"
+            app:destination="@id/add_work_day_nav_graph" />
     </fragment>
 
     <fragment
@@ -86,4 +65,28 @@ Ref:
         android:name="com.davidmiguel.godentist.managetreatments.add.AddTreatmentFragment"
         android:label="Add Treatment" />
 
+    <navigation
+        android:id="@+id/add_work_day_nav_graph"
+        android:label="Add Work Day Graph"
+        app:startDestination="@id/add_work_day_fragment">
+
+        <fragment
+            android:id="@+id/add_work_day_fragment"
+            android:name="com.davidmiguel.godentist.manageworkdays.addworkday.AddWorkDayFragment"
+            android:label="Add Work Day">
+            <action
+                android:id="@+id/action_add_work_day_fragment_to_add_work_day_exec_treatment_fragment"
+                app:destination="@+id/add_work_day_exec_treatment_fragment" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/add_work_day_exec_treatment_fragment"
+            android:name="com.davidmiguel.godentist.manageworkdays.addworkday.addexectreatment.AddWorkDayExecTreatmentFragment"
+            android:label="Add Work Day Executed Treatment">
+            <argument
+                android:name="executedTreatmentId"
+                app:argType="string"
+                app:nullable="true" />
+        </fragment>
+    </navigation>
 </navigation>

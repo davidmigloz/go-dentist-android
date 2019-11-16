@@ -2,7 +2,6 @@ package com.davidmiguel.godentist.manageworkdays.addworkday
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -40,18 +39,6 @@ class AddWorkDayTreatmentsAdapter : ListAdapter<ExecutedTreatment,
 
         override fun areContentsTheSame(oldItem: ExecutedTreatment, newItem: ExecutedTreatment): Boolean {
             return oldItem == newItem
-        }
-    }
-
-    @Suppress("unused")
-    companion object {
-        @JvmStatic
-        @BindingAdapter("items")
-        fun RecyclerView.bindItems(treatments: List<ExecutedTreatment>?) {
-            treatments?.run {
-                val adapter = adapter as AddWorkDayTreatmentsAdapter
-                adapter.submitList(this)
-            }
         }
     }
 }

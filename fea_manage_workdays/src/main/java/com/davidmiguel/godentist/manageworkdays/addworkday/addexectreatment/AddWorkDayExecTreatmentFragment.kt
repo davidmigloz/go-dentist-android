@@ -1,17 +1,18 @@
-package com.davidmiguel.godentist.manageworkdays.addworkdayexectreatment
+package com.davidmiguel.godentist.manageworkdays.addworkday.addexectreatment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.observeEvent
 import com.davidmiguel.godentist.manageworkdays.ViewModelFactory
+import com.davidmiguel.godentist.manageworkdays.addworkday.AddWorkDayViewModel
 import com.davidmiguel.godentist.manageworkdays.databinding.FragmentAddWorkDayExecTreatmentBinding
 import com.davidmiguel.godentist.requireMainActivity
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -21,12 +22,11 @@ class AddWorkDayExecTreatmentFragment : AuthenticatedFragment() {
 
     private val args: AddWorkDayExecTreatmentFragmentArgs by navArgs()
     private lateinit var binding: FragmentAddWorkDayExecTreatmentBinding
-    private val addWorkDayExecTreatmentViewModel: AddWorkDayExecTreatmentViewModel
-            by viewModels { ViewModelFactory.getInstance() }
+    private val addWorkDayViewModel: AddWorkDayViewModel
+            by navGraphViewModels(RC.id.add_work_day_nav_graph) { ViewModelFactory.getInstance() }
     private val treatmentsAdapter
             by lazy { AddWorkDayExecTreatmentTreatmentsAdapter(requireContext()) }
 
-    private var workDayId: String? = null
     private var executedTreatmentId: String? = null
 
     override fun onCreateView(
@@ -34,12 +34,11 @@ class AddWorkDayExecTreatmentFragment : AuthenticatedFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        workDayId = args.workDayId
-        executedTreatmentId = args.workDayId
+        executedTreatmentId = args.executedTreatmentId
         FragmentAddWorkDayExecTreatmentBinding.inflate(inflater, container, false).apply {
             binding = this
             lifecycleOwner = viewLifecycleOwner
-            vm = addWorkDayExecTreatmentViewModel
+            vm = addWorkDayViewModel
             initContent()
             return root
         }
@@ -60,39 +59,39 @@ class AddWorkDayExecTreatmentFragment : AuthenticatedFragment() {
             RC.drawable.ic_done_black_24dp,
             BottomAppBar.FAB_ALIGNMENT_MODE_END
         ) {
-            addWorkDayExecTreatmentViewModel.saveTreatment()
+            addWorkDayViewModel.saveExecTreatment()
         }
         // Treatment
-        addWorkDayExecTreatmentViewModel.treatments.observe(viewLifecycleOwner, Observer { clinics ->
+        addWorkDayViewModel.treatments.observe(viewLifecycleOwner, Observer { clinics ->
             treatmentsAdapter.setTreatments(clinics)
         })
         binding.treatment.setOnItemClickListener { _, _, position, _ ->
-            addWorkDayExecTreatmentViewModel.treatment.value = treatmentsAdapter.getItem(position)
+            addWorkDayViewModel.treatment.value = treatmentsAdapter.getItem(position)
         }
-        addWorkDayExecTreatmentViewModel.treatmentsError.observe(viewLifecycleOwner, Observer { error ->
+        addWorkDayViewModel.treatmentError.observe(viewLifecycleOwner, Observer { error ->
             binding.treatmentsContainer?.error = if (error) "Invalid treatment!" else null
         })
         // Price
         binding.price.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                addWorkDayExecTreatmentViewModel.saveTreatment()
+                addWorkDayViewModel.saveExecTreatment()
             }
             false
         }
-        addWorkDayExecTreatmentViewModel.priceError.observe(viewLifecycleOwner, Observer { error ->
+        addWorkDayViewModel.priceError.observe(viewLifecycleOwner, Observer { error ->
             binding.priceContainer.error = if (error) "Invalid price!" else null
         })
         // Updated event
-        addWorkDayExecTreatmentViewModel.workDayExecTreatmentUpdatedEvent.observeEvent(viewLifecycleOwner) {
+        addWorkDayViewModel.workDayExecTreatmentUpdatedEvent.observeEvent(viewLifecycleOwner) {
             findNavController().popBackStack()
         }
         // Snackbar
-        addWorkDayExecTreatmentViewModel.snackbarEvent.observeEvent(viewLifecycleOwner) { msg ->
+        addWorkDayViewModel.snackbarEvent.observeEvent(viewLifecycleOwner) { msg ->
             requireMainActivity().showSnackbar(msg)
         }
     }
 
     override fun onResumeAuthenticated() {
-        addWorkDayExecTreatmentViewModel.start(workDayId, executedTreatmentId)
+        addWorkDayViewModel.startAddWorkDayExecTreatment(executedTreatmentId)
     }
 }

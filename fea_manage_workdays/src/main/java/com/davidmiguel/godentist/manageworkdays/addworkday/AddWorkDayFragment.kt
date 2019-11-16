@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.observeEvent
@@ -22,7 +21,7 @@ class AddWorkDayFragment : AuthenticatedFragment() {
 
     private lateinit var binding: FragmentAddWorkDayBinding
     private val addWorkDayViewModel: AddWorkDayViewModel
-            by viewModels { ViewModelFactory.getInstance() }
+            by navGraphViewModels(RC.id.add_work_day_nav_graph) { ViewModelFactory.getInstance() }
     private val clinicsAdapter
             by lazy { AddWorkDayClinicsAdapter(requireContext()) }
     private lateinit var datePicker: MaterialDatePicker<Long>
@@ -81,6 +80,10 @@ class AddWorkDayFragment : AuthenticatedFragment() {
         addWorkDayViewModel.dateError.observe(viewLifecycleOwner, Observer { error ->
             binding.dateContainer.error = if (error) "Invalid date!" else null
         })
+        // Duration
+        addWorkDayViewModel.durationError.observe(viewLifecycleOwner, Observer { error ->
+            binding.durationContainer.error = if (error) "Invalid duration!" else null
+        })
         // Clinic
         addWorkDayViewModel.clinics.observe(viewLifecycleOwner, Observer { clinics ->
             clinicsAdapter.setClinics(clinics)
@@ -91,24 +94,19 @@ class AddWorkDayFragment : AuthenticatedFragment() {
         addWorkDayViewModel.clinicError.observe(viewLifecycleOwner, Observer { error ->
             binding.clinicContainer?.error = if (error) "Invalid clinic!" else null
         })
-        // Duration
-        binding.duration.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                addWorkDayViewModel.saveWorkDay()
-            }
-            false
-        }
-        addWorkDayViewModel.durationError.observe(viewLifecycleOwner, Observer { error ->
-            binding.durationContainer.error = if (error) "Invalid duration!" else null
+        // Notes
+        addWorkDayViewModel.notesError.observe(viewLifecycleOwner, Observer { error ->
+            binding.notesContainer.error = if (error) "Invalid notes!" else null
         })
         // Treatments
         binding.btnAddTreatment.setOnClickListener {
             addWorkDayViewModel.addNewWorkExecTreatmentDay()
         }
-        addWorkDayViewModel.addWorkDayExecTreatmentEvent.observeEvent(viewLifecycleOwner) { (workDayId, executedTreatmentId) ->
+        // Add exec treatment event
+        addWorkDayViewModel.addWorkDayExecTreatmentEvent.observeEvent(viewLifecycleOwner) { executedTreatmentId ->
             findNavController().navigate(
                 AddWorkDayFragmentDirections.actionAddWorkDayFragmentToAddWorkDayExecTreatmentFragment(
-                    workDayId, executedTreatmentId
+                    if (executedTreatmentId.isBlank()) null else executedTreatmentId
                 )
             )
         }
@@ -123,6 +121,6 @@ class AddWorkDayFragment : AuthenticatedFragment() {
     }
 
     override fun onResumeAuthenticated() {
-        addWorkDayViewModel.start(workDayId)
+        addWorkDayViewModel.startAddWorkDay(workDayId)
     }
 }
