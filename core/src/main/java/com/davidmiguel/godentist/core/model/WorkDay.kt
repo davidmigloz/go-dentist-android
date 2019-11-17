@@ -18,6 +18,7 @@ data class WorkDay(
     data class ExecutedTreatment(
         val id: String = "",
         val treatment: Treatment? = null,
-        val price: Double? = null
+        val price: Double? = null,
+        val earnings: Double? = null
     )
 }

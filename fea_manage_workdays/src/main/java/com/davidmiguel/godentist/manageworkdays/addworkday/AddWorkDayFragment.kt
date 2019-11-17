@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.observeEvent
 import com.davidmiguel.godentist.manageworkdays.ViewModelFactory
@@ -45,7 +44,6 @@ class AddWorkDayFragment : AuthenticatedFragment() {
     private fun initContent() {
         binding.clinic.setAdapter(clinicsAdapter)
         binding.treatmentsList.apply {
-            layoutManager = LinearLayoutManager(context)
             adapter = AddWorkDayTreatmentsAdapter()
         }
     }
@@ -66,7 +64,6 @@ class AddWorkDayFragment : AuthenticatedFragment() {
     }
 
     private fun setupViewModelListeners() {
-        // Footer btn
         requireMainActivity().showFAB(
             RC.drawable.ic_done_black_24dp,
             BottomAppBar.FAB_ALIGNMENT_MODE_END
@@ -78,11 +75,13 @@ class AddWorkDayFragment : AuthenticatedFragment() {
             datePicker.show(childFragmentManager, datePicker.toString())
         }
         addWorkDayViewModel.dateError.observe(viewLifecycleOwner, Observer { error ->
-            binding.dateContainer.error = if (error) "Invalid date!" else null
+            binding.dateContainer.error =
+                if (error) getString(RC.string.addWorkDay_errorDate) else null
         })
         // Duration
         addWorkDayViewModel.durationError.observe(viewLifecycleOwner, Observer { error ->
-            binding.durationContainer.error = if (error) "Invalid duration!" else null
+            binding.durationContainer.error =
+                if (error) getString(RC.string.addWorkDay_errorDuration) else null
         })
         // Clinic
         addWorkDayViewModel.clinics.observe(viewLifecycleOwner, Observer { clinics ->
@@ -92,16 +91,14 @@ class AddWorkDayFragment : AuthenticatedFragment() {
             addWorkDayViewModel.clinic.value = clinicsAdapter.getItem(position)
         }
         addWorkDayViewModel.clinicError.observe(viewLifecycleOwner, Observer { error ->
-            binding.clinicContainer?.error = if (error) "Invalid clinic!" else null
+            binding.clinicContainer?.error =
+                if (error) getString(RC.string.addWorkDay_errorClinic) else null
         })
         // Notes
         addWorkDayViewModel.notesError.observe(viewLifecycleOwner, Observer { error ->
-            binding.notesContainer.error = if (error) "Invalid notes!" else null
+            binding.notesContainer.error =
+                if (error) getString(RC.string.addWorkDay_errorNotes) else null
         })
-        // Treatments
-        binding.btnAddTreatment.setOnClickListener {
-            addWorkDayViewModel.addNewWorkExecTreatmentDay()
-        }
         // Add exec treatment event
         addWorkDayViewModel.addWorkDayExecTreatmentEvent.observeEvent(viewLifecycleOwner) { executedTreatmentId ->
             findNavController().navigate(

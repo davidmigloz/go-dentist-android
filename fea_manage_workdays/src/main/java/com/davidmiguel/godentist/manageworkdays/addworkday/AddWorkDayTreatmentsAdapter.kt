@@ -21,9 +21,10 @@ class AddWorkDayTreatmentsAdapter : ListAdapter<ExecutedTreatment,
 
     class TreatmentViewHolder(
         private val parent: ViewGroup,
-        private val binding: FragmentAddWorkDayItemTreatmentBinding = FragmentAddWorkDayItemTreatmentBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
-        )
+        private val binding: FragmentAddWorkDayItemTreatmentBinding =
+            FragmentAddWorkDayItemTreatmentBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(treatment: ExecutedTreatment) {
@@ -33,11 +34,17 @@ class AddWorkDayTreatmentsAdapter : ListAdapter<ExecutedTreatment,
 
     class TreatmentsDiffCallback : DiffUtil.ItemCallback<ExecutedTreatment>() {
 
-        override fun areItemsTheSame(oldItem: ExecutedTreatment, newItem: ExecutedTreatment): Boolean {
+        override fun areItemsTheSame(
+            oldItem: ExecutedTreatment,
+            newItem: ExecutedTreatment
+        ): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: ExecutedTreatment, newItem: ExecutedTreatment): Boolean {
+        override fun areContentsTheSame(
+            oldItem: ExecutedTreatment,
+            newItem: ExecutedTreatment
+        ): Boolean {
             return oldItem == newItem
         }
     }

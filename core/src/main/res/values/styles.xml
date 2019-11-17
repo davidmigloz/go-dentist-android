@@ -8,7 +8,7 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
-    <!-- Headlines -->
+    <!-- Text -->
 
     <style name="Headline1">
         <item name="android:layout_width">0dp</item>
@@ -29,6 +29,16 @@
 
     <style name="Headline4" parent="Headline1">
         <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline5
+        </item>
+    </style>
+
+    <style name="Body1">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1
+        </item>
+    </style>
+
+    <style name="Body2">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body2
         </item>
     </style>
 

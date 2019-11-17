@@ -21,7 +21,7 @@
         <TextView
             android:id="@+id/title"
             style="@style/Headline1"
-            android:text="Add treatment"
+            android:text="@string/addWorkDayExecTreatment_title"
             app:layout_constraintBottom_toTopOf="@id/treatmentsContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/treatmentsContainer"
             style="@style/TextInputLayoutFilledBoxExposedDropdownMenu"
-            android:hint="Treatment"
+            android:hint="@string/addWorkDayExecTreatment_labelTreatment"
             android:visibility="@{vm.screenStateAddWorkDayExecTreatment != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@+id/priceContainer"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +49,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/priceContainer"
             style="@style/TextInputLayoutFilledBox"
-            android:hint="Price"
+            android:hint="@string/addWorkDayExecTreatment_labelPrice"
             android:visibility="@{vm.screenStateAddWorkDayExecTreatment != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +61,24 @@
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:text="@={vm.price}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/earningsContainer"
+            style="@style/TextInputLayoutFilledBox"
+            android:hint="@string/addWorkDayExecTreatment_labelEarnings"
+            android:visibility="@{vm.screenStateAddWorkDayExecTreatment != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/priceContainer">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/earnings"
+                style="@style/TextInputEditTextFilledBox"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:text="@={vm.earnings}" />
 
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

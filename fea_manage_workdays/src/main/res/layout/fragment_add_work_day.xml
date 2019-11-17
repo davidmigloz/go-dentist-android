@@ -18,130 +18,159 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/layout_default_padding">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/title"
-            style="@style/Headline1"
-            android:text="@string/addWorkDay_title"
-            app:layout_constraintBottom_toTopOf="@id/dateContainer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/dateContainer"
-            style="@style/TextInputLayoutFilledBox"
-            android:hint="@string/addWorkDay_labelDate"
-            android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toTopOf="@id/clinicContainer"
-            app:layout_constraintEnd_toStartOf="@id/durationContainer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/date"
-                style="@style/TextInputEditTextFilledBox"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:inputType="date"
-                android:maxLines="1"
-                android:text="@{DateTimeUtilsKt.formatDMY(vm.date)}" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/durationContainer"
-            style="@style/TextInputLayoutFilledBox"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="0dp"
-            android:hint="@string/addWorkDay_labelDuration"
-            android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
-            app:helperText="@string/addWorkDay_helperDuration"
-            app:layout_constraintBottom_toTopOf="@id/clinicContainer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/dateContainer"
-            app:layout_constraintTop_toBottomOf="@id/title">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/duration"
-                style="@style/TextInputEditTextFilledBox"
-                android:imeOptions="actionDone"
-                android:inputType="numberDecimal"
-                android:maxLength="4"
-                android:maxLines="1"
-                android:text="@={vm.duration}" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/clinicContainer"
-            style="@style/TextInputLayoutFilledBoxExposedDropdownMenu"
-            android:hint="@string/addWorkDay_labelClinic"
-            android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toTopOf="@id/notesContainer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateContainer">
-
-            <com.google.android.material.textview.MaterialAutoCompleteTextView
-                android:id="@+id/clinic"
-                style="@style/AutoCompleteTextView"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:text="@{vm.clinic.name}" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/notesContainer"
-            style="@style/TextInputLayoutFilledBox"
-            android:hint="@string/addWorkDay_labelNotes"
-            android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/clinicContainer">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/notes"
-                style="@style/TextInputEditTextFilledBox"
-                android:inputType="textMultiLine"
-                android:lines="2"
-                android:text="@{vm.notes}" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/labelTreatments"
-            style="@style/Headline4"
-            android:text="@string/addWorkDay_labelTreatments"
-            android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toTopOf="@id/treatmentsList"
-            app:layout_constraintEnd_toStartOf="@id/btnAddTreatment"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/notesContainer" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAddTreatment"
-            style="@style/ButtonText"
-            android:text="@string/addWorkDay_btnAddTreatment"
-            android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/labelTreatments"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/labelTreatments" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/treatmentsList"
+        <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
-            app:items="@{vm.executedTreatments}"
+            android:layout_marginHorizontal="@dimen/layout_default_padding"
+            android:layout_marginTop="@dimen/layout_default_padding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/labelTreatments"
-            tools:listitem="@layout/fragment_add_work_day_item_treatment" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/title"
+                    style="@style/Headline1"
+                    android:text="@string/addWorkDay_title"
+                    app:layout_constraintBottom_toTopOf="@id/dateContainer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/dateContainer"
+                    style="@style/TextInputLayoutFilledBox"
+                    android:hint="@string/addWorkDay_labelDate"
+                    android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toTopOf="@id/clinicContainer"
+                    app:layout_constraintEnd_toStartOf="@id/durationContainer"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/date"
+                        style="@style/TextInputEditTextFilledBox"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:inputType="date"
+                        android:maxLines="1"
+                        android:text="@{DateTimeUtilsKt.formatDMY(vm.date)}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/durationContainer"
+                    style="@style/TextInputLayoutFilledBox"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:hint="@string/addWorkDay_labelDuration"
+                    android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
+                    app:helperText="@string/addWorkDay_helperDuration"
+                    app:layout_constraintBottom_toTopOf="@id/clinicContainer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/dateContainer"
+                    app:layout_constraintTop_toBottomOf="@id/title">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/duration"
+                        style="@style/TextInputEditTextFilledBox"
+                        android:imeOptions="actionDone"
+                        android:inputType="numberDecimal"
+                        android:maxLength="4"
+                        android:maxLines="1"
+                        android:text="@={vm.duration}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/clinicContainer"
+                    style="@style/TextInputLayoutFilledBoxExposedDropdownMenu"
+                    android:hint="@string/addWorkDay_labelClinic"
+                    android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toTopOf="@id/notesContainer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/dateContainer">
+
+                    <com.google.android.material.textview.MaterialAutoCompleteTextView
+                        android:id="@+id/clinic"
+                        style="@style/AutoCompleteTextView"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:text="@{vm.clinic.name}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/notesContainer"
+                    style="@style/TextInputLayoutFilledBox"
+                    android:hint="@string/addWorkDay_labelNotes"
+                    android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/clinicContainer">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/notes"
+                        style="@style/TextInputEditTextFilledBox"
+                        android:inputType="textMultiLine"
+                        android:lines="2"
+                        android:text="@{vm.notes}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/labelTreatments"
+                    style="@style/Headline4"
+                    android:text="@string/addWorkDay_labelTreatments"
+                    android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toTopOf="@id/treatmentsList"
+                    app:layout_constraintEnd_toStartOf="@id/btnAddTreatment"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/notesContainer" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddTreatment"
+                    style="@style/ButtonText"
+                    android:onClick="@{() -> vm.addNewDayWorkExecTreatment()}"
+                    android:text="@string/addWorkDay_btnAddTreatment"
+                    android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="@id/labelTreatments"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/labelTreatments" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/treatmentsList"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
+                    app:items="@{vm.executedTreatments}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/labelTreatments"
+                    tools:listitem="@layout/fragment_add_work_day_item_treatment" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/Body2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/addWorkDay_labelNoTreatments"
+                    android:visibility="@{(vm.screenStateAddWorkDay == ScreenState.DATA_LOADED &amp;&amp; vm.executedTreatments.size() == 0)  ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@id/treatmentsList"
+                    app:layout_constraintStart_toStartOf="@id/treatmentsList"
+                    app:layout_constraintTop_toTopOf="@id/treatmentsList" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

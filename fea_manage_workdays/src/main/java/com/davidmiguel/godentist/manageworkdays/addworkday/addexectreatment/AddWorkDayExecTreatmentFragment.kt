@@ -69,17 +69,29 @@ class AddWorkDayExecTreatmentFragment : AuthenticatedFragment() {
             addWorkDayViewModel.treatment.value = treatmentsAdapter.getItem(position)
         }
         addWorkDayViewModel.treatmentError.observe(viewLifecycleOwner, Observer { error ->
-            binding.treatmentsContainer?.error = if (error) "Invalid treatment!" else null
+            binding.treatmentsContainer?.error =
+                if (error) getString(RC.string.addWorkDayExecTreatment_errorTreatment) else null
         })
         // Price
-        binding.price.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                addWorkDayViewModel.saveExecTreatment()
-            }
+        addWorkDayViewModel.price.observe(viewLifecycleOwner, Observer {
+            addWorkDayViewModel.calculateEarnings()
+            binding.earningsContainer.helperText = getString(
+                RC.string.addWorkDayExecTreatment_helperEarnings,
+                addWorkDayViewModel.clinic.value?.percentage ?: 0
+            )
+        })
+        addWorkDayViewModel.priceError.observe(viewLifecycleOwner, Observer { error ->
+            binding.priceContainer.error =
+                if (error) getString(RC.string.addWorkDayExecTreatment_errorPrice) else null
+        })
+        // Earnings
+        binding.earnings.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) addWorkDayViewModel.saveExecTreatment()
             false
         }
-        addWorkDayViewModel.priceError.observe(viewLifecycleOwner, Observer { error ->
-            binding.priceContainer.error = if (error) "Invalid price!" else null
+        addWorkDayViewModel.earningsError.observe(viewLifecycleOwner, Observer { error ->
+            binding.priceContainer.error =
+                if (error) getString(RC.string.addWorkDayExecTreatment_errorEarnings) else null
         })
         // Updated event
         addWorkDayViewModel.workDayExecTreatmentUpdatedEvent.observeEvent(viewLifecycleOwner) {

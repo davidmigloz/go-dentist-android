@@ -1,3 +1,5 @@
+@file:Suppress("EXPERIMENTAL_API_USAGE")
+
 package com.davidmiguel.godentist.manageworkdays.addworkday
 
 import androidx.lifecycle.LiveData
@@ -108,6 +110,10 @@ class AddWorkDayViewModel(
     private val _priceError = MutableLiveData(false)
     val priceError: LiveData<Boolean>
         get() = _priceError
+    val earnings = MutableLiveData<String>()
+    private val _earningsError = MutableLiveData(false)
+    val earningsError: LiveData<Boolean>
+        get() = _earningsError
 
     //----------------------------------------------------------------------------------------------
     // Start screens
@@ -213,7 +219,7 @@ class AddWorkDayViewModel(
     // Actions
     //----------------------------------------------------------------------------------------------
 
-    fun addNewWorkExecTreatmentDay() {
+    fun addNewDayWorkExecTreatment() {
         _addWorkDayExecTreatmentEvent.value = Event("")
     }
 
@@ -277,6 +283,14 @@ class AddWorkDayViewModel(
         _snackbarEvent.value = Event(R.string.all_errSavingData)
     }
 
+    fun calculateEarnings() {
+        viewModelScope.launch {
+            val currentPrice = price.value?.toDouble() ?: return@launch
+            val currentPercentage = clinic.value?.percentage ?: 0
+            earnings.value = (currentPrice * currentPercentage / 100).toString()
+        }
+    }
+
     fun saveExecTreatment() {
         _treatmentError.value = false
         _priceError.value = false
@@ -295,6 +309,12 @@ class AddWorkDayViewModel(
             _priceError.value = true
             return
         }
+        // Earnings
+        val currentEarnings = earnings.value?.toDoubleOrNull()
+        if (currentEarnings == null) {
+            _earningsError.value = true
+            return
+        }
 
         val executedTreatments = executedTreatments.value?.toMutableList() ?: mutableListOf()
         executedTreatments.removeIf { it.id == currentId }
@@ -302,7 +322,8 @@ class AddWorkDayViewModel(
             ExecutedTreatment(
                 id = currentId,
                 treatment = currentTreatment,
-                price = currentPrice
+                price = currentPrice,
+                earnings = currentEarnings
             )
         )
         _executedTreatments.value = executedTreatments

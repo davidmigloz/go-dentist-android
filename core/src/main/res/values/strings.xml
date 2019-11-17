@@ -48,12 +48,26 @@
     <string name="addWorkDay_labelDate">Date</string>
     <string name="addWorkDay_labelNotes">Notes</string>
     <string name="addWorkDay_labelTreatments">Treatments</string>
+    <string name="addWorkDay_labelNoTreatments">No treatments added yet</string>
     <string name="addWorkDay_btnAddTreatment">Add</string>
+    <string name="addWorkDay_errorDate">Invalid date!</string>
+    <string name="addWorkDay_errorDuration">Invalid duration!</string>
+    <string name="addWorkDay_errorClinic">Invalid clinic!</string>
+    <string name="addWorkDay_errorNotes">Invalid notes!</string>
+
+    <string name="addWorkDayExecTreatment_title">Add treatment</string>
+    <string name="addWorkDayExecTreatment_labelTreatment">Treatment</string>
+    <string name="addWorkDayExecTreatment_labelPrice">Price</string>
+    <string name="addWorkDayExecTreatment_labelEarnings">Earnings</string>
+    <string name="addWorkDayExecTreatment_helperEarnings">Based on clinic percentage: %d%%</string>
 
     <!-- =========================================================================================================== -->
     <!-- Manage treatments                                                                                           -->
     <!-- =========================================================================================================== -->
 
     <string name="title_fea_manage_treatments">Manage Treatments</string>
+    <string name="addWorkDayExecTreatment_errorTreatment">Invalid treatment!</string>
+    <string name="addWorkDayExecTreatment_errorPrice">Invalid price!</string>
+    <string name="addWorkDayExecTreatment_errorEarnings">Invalid earnings!</string>
 
 </resources>
