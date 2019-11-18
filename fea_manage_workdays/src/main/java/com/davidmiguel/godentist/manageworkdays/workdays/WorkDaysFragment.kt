@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
+import com.davidmiguel.godentist.core.model.WorkDay
 import com.davidmiguel.godentist.core.utils.observeEvent
 import com.davidmiguel.godentist.manageworkdays.ViewModelFactory
 import com.davidmiguel.godentist.manageworkdays.databinding.FragmentWorkDaysBinding
@@ -36,7 +37,11 @@ class WorkDaysFragment : AuthenticatedFragment() {
     private fun initContent() {
         binding.workDaysList.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = WorkDaysAdapter()
+            adapter = WorkDaysAdapter(listener = object : WorkDaysAdapter.Listener {
+                override fun onWorkDayClicked(workDay: WorkDay) {
+                    workDaysViewModel.editWorkDay(workDay)
+                }
+            })
         }
     }
 
@@ -49,8 +54,12 @@ class WorkDaysFragment : AuthenticatedFragment() {
         requireMainActivity().showExtendedFAB(RC.drawable.ic_add_black_24dp, "Add workday") {
             workDaysViewModel.addNewWorkDay()
         }
-        workDaysViewModel.addWorkDayEvent.observeEvent(viewLifecycleOwner) {
-            findNavController().navigate(WorkDaysFragmentDirections.actionWorkDaysFragmentToAddWorkDayNavGraph())
+        workDaysViewModel.addEditWorkDayEvent.observeEvent(viewLifecycleOwner) { workDayId ->
+            findNavController().navigate(
+                WorkDaysFragmentDirections.actionWorkDaysFragmentToAddWorkDayNavGraph(
+                    if (workDayId.isBlank()) null else workDayId
+                )
+            )
         }
     }
 

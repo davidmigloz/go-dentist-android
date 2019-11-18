@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.observeEvent
@@ -18,6 +19,7 @@ import com.davidmiguel.godentist.core.R as RC
 
 class AddWorkDayFragment : AuthenticatedFragment() {
 
+    private val args: AddWorkDayFragmentArgs by navArgs()
     private lateinit var binding: FragmentAddWorkDayBinding
     private val addWorkDayViewModel: AddWorkDayViewModel
             by navGraphViewModels(RC.id.add_work_day_nav_graph) { ViewModelFactory.getInstance() }
@@ -32,6 +34,7 @@ class AddWorkDayFragment : AuthenticatedFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        workDayId = args.workDayId
         FragmentAddWorkDayBinding.inflate(inflater, container, false).apply {
             binding = this
             lifecycleOwner = viewLifecycleOwner

@@ -24,9 +24,9 @@ class WorkDaysViewModel(
     val screenState: LiveData<ScreenState>
         get() = _screenState
 
-    private val _addWorkDayEvent = MutableLiveData<Event<Unit>>()
-    val addWorkDayEvent: LiveData<Event<Unit>>
-        get() = _addWorkDayEvent
+    private val _addEditWorkDayEvent = MutableLiveData<Event<String>>()
+    val addEditWorkDayEvent: LiveData<Event<String>>
+        get() = _addEditWorkDayEvent
 
     private val _workDays: MutableLiveData<List<WorkDay>> = MutableLiveData(listOf())
     val workDays: LiveData<List<WorkDay>>
@@ -58,6 +58,10 @@ class WorkDaysViewModel(
     }
 
     fun addNewWorkDay() {
-        _addWorkDayEvent.value = Event(Unit)
+        _addEditWorkDayEvent.value = Event("")
+    }
+
+    fun editWorkDay(workDay: WorkDay) {
+        _addEditWorkDayEvent.value = Event(workDay.id)
     }
 }
