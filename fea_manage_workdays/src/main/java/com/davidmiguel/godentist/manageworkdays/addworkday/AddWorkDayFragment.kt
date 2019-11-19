@@ -8,7 +8,10 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
+import com.davidmiguel.godentist.core.utils.SwipeToDeleteCallback
 import com.davidmiguel.godentist.core.utils.observeEvent
 import com.davidmiguel.godentist.manageworkdays.ViewModelFactory
 import com.davidmiguel.godentist.manageworkdays.databinding.FragmentAddWorkDayBinding
@@ -45,9 +48,18 @@ class AddWorkDayFragment : AuthenticatedFragment() {
     }
 
     private fun initContent() {
-        binding.clinic.setAdapter(clinicsAdapter)
+        binding.clinic.apply {
+            setAdapter(clinicsAdapter)
+        }
         binding.treatmentsList.apply {
             adapter = AddWorkDayTreatmentsAdapter()
+            val itemTouchHelper = ItemTouchHelper(object : SwipeToDeleteCallback(context) {
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val adapter = adapter as AddWorkDayTreatmentsAdapter
+                    adapter.removeAt(viewHolder.adapterPosition)
+                }
+            })
+            itemTouchHelper.attachToRecyclerView(this)
         }
     }
 

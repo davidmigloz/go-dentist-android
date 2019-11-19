@@ -19,6 +19,11 @@ class AddWorkDayTreatmentsAdapter : ListAdapter<ExecutedTreatment,
         holder.bind(getItem(position))
     }
 
+    fun removeAt(position: Int) {
+        val updatedList = currentList.toMutableList().apply { removeAt(position) }
+        submitList(updatedList)
+    }
+
     class TreatmentViewHolder(
         private val parent: ViewGroup,
         private val binding: FragmentAddWorkDayItemTreatmentBinding =
