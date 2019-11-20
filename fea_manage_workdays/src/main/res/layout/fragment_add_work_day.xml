@@ -130,7 +130,6 @@
                     style="@style/Headline4"
                     android:text="@string/addWorkDay_labelTreatments"
                     android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintBottom_toTopOf="@id/treatmentsList"
                     app:layout_constraintEnd_toStartOf="@id/btnAddTreatment"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/notesContainer" />
@@ -138,7 +137,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnAddTreatment"
                     style="@style/ButtonText"
-                    android:onClick="@{() -> vm.addNewDayWorkExecTreatment()}"
+                    android:onClick="@{() -> vm.addNewWorkDayExecTreatment()}"
                     android:text="@string/addWorkDay_btnAddTreatment"
                     android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="@id/labelTreatments"
@@ -171,6 +170,5 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

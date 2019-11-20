@@ -219,8 +219,16 @@ class AddWorkDayViewModel(
     // Actions
     //----------------------------------------------------------------------------------------------
 
-    fun addNewDayWorkExecTreatment() {
+    fun addNewWorkDayExecTreatment() {
         _addWorkDayExecTreatmentEvent.value = Event("")
+    }
+
+    fun removeWorkDayExecTreatment(executedTreatmentId: String) {
+        viewModelScope.launch {
+            val list = _executedTreatments.value?.toMutableList() ?: return@launch
+            list.removeIf { it.id == executedTreatmentId }
+            _executedTreatments.postValue(list)
+        }
     }
 
     fun saveWorkDay() {
@@ -285,7 +293,7 @@ class AddWorkDayViewModel(
 
     fun calculateEarnings() {
         viewModelScope.launch {
-            val currentPrice = price.value?.toDouble() ?: return@launch
+            val currentPrice = price.value?.toDoubleOrNull() ?: return@launch
             val currentPercentage = clinic.value?.percentage ?: 0
             earnings.value = (currentPrice * currentPercentage / 100).toString()
         }
@@ -294,6 +302,7 @@ class AddWorkDayViewModel(
     fun saveExecTreatment() {
         _treatmentError.value = false
         _priceError.value = false
+        _earningsError.value = false
 
         // Id
         val currentId = executedTreatmentId ?: UUID.randomUUID().toString()
@@ -327,6 +336,10 @@ class AddWorkDayViewModel(
             )
         )
         _executedTreatments.value = executedTreatments
+        executedTreatmentId = null
+        treatment.value = null
+        price.value = null
+        earnings.value = null
         onWorkDayExecTreatmentSaved()
     }
 

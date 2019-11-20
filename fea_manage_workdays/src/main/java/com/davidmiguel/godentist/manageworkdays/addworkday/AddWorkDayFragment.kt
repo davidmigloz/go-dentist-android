@@ -8,10 +8,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
-import com.davidmiguel.godentist.core.utils.SwipeToDeleteCallback
+import com.davidmiguel.godentist.core.utils.enableSwipeToDeleteItem
 import com.davidmiguel.godentist.core.utils.observeEvent
 import com.davidmiguel.godentist.manageworkdays.ViewModelFactory
 import com.davidmiguel.godentist.manageworkdays.databinding.FragmentAddWorkDayBinding
@@ -26,8 +24,8 @@ class AddWorkDayFragment : AuthenticatedFragment() {
     private lateinit var binding: FragmentAddWorkDayBinding
     private val addWorkDayViewModel: AddWorkDayViewModel
             by navGraphViewModels(RC.id.add_work_day_nav_graph) { ViewModelFactory.getInstance() }
-    private val clinicsAdapter
-            by lazy { AddWorkDayClinicsAdapter(requireContext()) }
+    private val clinicsAdapter by lazy { AddWorkDayClinicsAdapter(requireContext()) }
+    private val execTreatmentsAdapter by lazy { AddWorkDayExecTreatmentsAdapter() }
     private lateinit var datePicker: MaterialDatePicker<Long>
 
     private var workDayId: String? = null
@@ -52,14 +50,11 @@ class AddWorkDayFragment : AuthenticatedFragment() {
             setAdapter(clinicsAdapter)
         }
         binding.treatmentsList.apply {
-            adapter = AddWorkDayTreatmentsAdapter()
-            val itemTouchHelper = ItemTouchHelper(object : SwipeToDeleteCallback(context) {
-                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    val adapter = adapter as AddWorkDayTreatmentsAdapter
-                    adapter.removeAt(viewHolder.adapterPosition)
-                }
-            })
-            itemTouchHelper.attachToRecyclerView(this)
+            adapter = execTreatmentsAdapter
+            enableSwipeToDeleteItem { position ->
+                val execTreatment = execTreatmentsAdapter.getExecTreatment(position)
+                addWorkDayViewModel.removeWorkDayExecTreatment(execTreatment.id)
+            }
         }
     }
 

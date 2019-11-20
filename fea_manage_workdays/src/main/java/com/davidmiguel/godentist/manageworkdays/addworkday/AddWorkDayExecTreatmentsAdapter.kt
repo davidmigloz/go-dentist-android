@@ -2,14 +2,17 @@ package com.davidmiguel.godentist.manageworkdays.addworkday
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.davidmiguel.godentist.core.model.WorkDay.ExecutedTreatment
 import com.davidmiguel.godentist.manageworkdays.databinding.FragmentAddWorkDayItemTreatmentBinding
 
-class AddWorkDayTreatmentsAdapter : ListAdapter<ExecutedTreatment,
-        AddWorkDayTreatmentsAdapter.TreatmentViewHolder>(TreatmentsDiffCallback()) {
+class AddWorkDayExecTreatmentsAdapter
+    : ListAdapter<ExecutedTreatment, AddWorkDayExecTreatmentsAdapter.TreatmentViewHolder>(
+    TreatmentsDiffCallback()
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TreatmentViewHolder {
         return TreatmentViewHolder(parent)
@@ -19,9 +22,8 @@ class AddWorkDayTreatmentsAdapter : ListAdapter<ExecutedTreatment,
         holder.bind(getItem(position))
     }
 
-    fun removeAt(position: Int) {
-        val updatedList = currentList.toMutableList().apply { removeAt(position) }
-        submitList(updatedList)
+    fun getExecTreatment(position: Int): ExecutedTreatment {
+        return getItem(position) ?: error("Invalid position!")
     }
 
     class TreatmentViewHolder(
@@ -51,6 +53,18 @@ class AddWorkDayTreatmentsAdapter : ListAdapter<ExecutedTreatment,
             newItem: ExecutedTreatment
         ): Boolean {
             return oldItem == newItem
+        }
+    }
+
+    @Suppress("unused")
+    companion object {
+        @JvmStatic
+        @BindingAdapter("items")
+        fun RecyclerView.bindItems(treatments: List<ExecutedTreatment>?) {
+            treatments?.run {
+                val adapter = adapter as AddWorkDayExecTreatmentsAdapter
+                adapter.submitList(this)
+            }
         }
     }
 }

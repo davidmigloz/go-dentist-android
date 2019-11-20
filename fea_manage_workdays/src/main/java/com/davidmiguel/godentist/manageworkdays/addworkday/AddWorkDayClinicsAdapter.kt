@@ -7,10 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.davidmiguel.godentist.core.model.Clinic
-import com.davidmiguel.godentist.core.model.WorkDay
 import com.davidmiguel.godentist.manageworkdays.databinding.FragmentAddWorkDayItemClinicBinding
 
 class AddWorkDayClinicsAdapter(
@@ -71,18 +68,6 @@ class AddWorkDayClinicsAdapter(
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
             notifyDataSetChanged()
-        }
-    }
-
-    @Suppress("unused")
-    companion object {
-        @JvmStatic
-        @BindingAdapter("items")
-        fun RecyclerView.bindItems(treatments: List<WorkDay.ExecutedTreatment>?) {
-            treatments?.run {
-                val adapter = adapter as AddWorkDayTreatmentsAdapter
-                adapter.submitList(this)
-            }
         }
     }
 }
