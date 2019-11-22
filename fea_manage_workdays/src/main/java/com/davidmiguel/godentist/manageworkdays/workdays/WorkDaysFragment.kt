@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
-import com.davidmiguel.godentist.core.model.WorkDay
 import com.davidmiguel.godentist.core.utils.observeEvent
 import com.davidmiguel.godentist.manageworkdays.ViewModelFactory
 import com.davidmiguel.godentist.manageworkdays.databinding.FragmentWorkDaysBinding
@@ -37,11 +36,7 @@ class WorkDaysFragment : AuthenticatedFragment() {
     private fun initContent() {
         binding.workDaysList.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = WorkDaysAdapter(listener = object : WorkDaysAdapter.Listener {
-                override fun onWorkDayClicked(workDay: WorkDay) {
-                    workDaysViewModel.editWorkDay(workDay)
-                }
-            })
+            adapter = WorkDaysAdapter(workDaysViewModel)
         }
     }
 

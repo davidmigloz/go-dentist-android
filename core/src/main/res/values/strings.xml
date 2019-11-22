@@ -9,6 +9,8 @@
     <string name="all_dataSaved">Data saved!</string>
     <string name="all_errSavingData">Error saving data!</string>
 
+    <string name="all_dateToday">Today</string>
+
     <!-- =========================================================================================================== -->
     <!-- Login                                                                                                       -->
     <!-- =========================================================================================================== -->
@@ -60,14 +62,14 @@
     <string name="addWorkDayExecTreatment_labelPrice">Price</string>
     <string name="addWorkDayExecTreatment_labelEarnings">Earnings</string>
     <string name="addWorkDayExecTreatment_helperEarnings">Based on clinic percentage: %d%%</string>
+    <string name="addWorkDayExecTreatment_errorTreatment">Invalid treatment!</string>
+    <string name="addWorkDayExecTreatment_errorPrice">Invalid price!</string>
+    <string name="addWorkDayExecTreatment_errorEarnings">Invalid earnings!</string>
 
     <!-- =========================================================================================================== -->
     <!-- Manage treatments                                                                                           -->
     <!-- =========================================================================================================== -->
 
     <string name="title_fea_manage_treatments">Manage Treatments</string>
-    <string name="addWorkDayExecTreatment_errorTreatment">Invalid treatment!</string>
-    <string name="addWorkDayExecTreatment_errorPrice">Invalid price!</string>
-    <string name="addWorkDayExecTreatment_errorEarnings">Invalid earnings!</string>
 
 </resources>

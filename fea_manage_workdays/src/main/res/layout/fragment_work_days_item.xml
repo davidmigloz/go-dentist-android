@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="vm"
+            type="com.davidmiguel.godentist.manageworkdays.workdays.WorkDaysViewModel" />
+
+        <variable
             name="workDay"
             type="com.davidmiguel.godentist.core.model.WorkDay" />
     </data>
@@ -14,27 +18,25 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/nameTV"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/date"
                 style="@style/ListItem"
+                android:onClick="@{() -> vm.editWorkDay(workDay)}"
+                app:layout_constraintEnd_toStartOf="@id/clinicName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/clinicName"
-                android:text="@{workDay.id}"
-                tools:text="Item 1" />
+                tools:text="Today" />
 
             <com.google.android.material.chip.Chip
-                style="@style/CardChipEntry"
                 android:id="@+id/clinicName"
+                style="@style/CardChipEntry"
+                android:text="@{workDay.clinic.name}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="@{workDay.clinic.name}"/>
-
+                tools:text="Today" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </com.google.android.material.card.MaterialCardView>
-
 </layout>

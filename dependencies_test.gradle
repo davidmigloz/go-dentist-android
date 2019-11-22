@@ -1,6 +1,69 @@
 dependencies {
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'androidx.arch.core:core-testing:2.1.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    // ---------------------------------
+    // Dependencies for local unit tests
+    // ---------------------------------
+
+    // AndroidX Test core
+    testImplementation "androidx.test:core:1.2.0"
+    testImplementation "androidx.test:core-ktx:1.2.0"
+    // AndroidX Test runner and rules
+    testImplementation "androidx.test:runner:1.2.0"
+    testImplementation "androidx.test:rules:1.2.0"
+    // AndroidX Architecture Components Core Testing
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    // Kotlin Coroutines
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.2.1"
+    // JUnit
+    testImplementation "junit:junit:4.12"
+    testImplementation "androidx.test.ext:junit:1.1.1"
+    testImplementation "androidx.test.ext:junit-ktx:1.1.1"
+    // Truth
+    testImplementation "com.google.truth:truth:1.0"
+    testImplementation "androidx.test.ext:truth:1.2.0"
+    // Mockk : https://mockk.io/
+    testImplementation "io.mockk:mockk:1.9.3"
+    // Robolectric
+    testImplementation "org.robolectric:robolectric:4.3.1"
+    // Mockito Kotlin (to be removed)
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+
+    // -----------------------------------
+    // Dependencies for instrumented tests
+    // -----------------------------------
+
+    // AndroidX Test core
+    androidTestImplementation "androidx.test:core:1.2.0"
+    androidTestImplementation "androidx.test:core-ktx:1.2.0"
+    // AndroidX Test runner and rules
+    androidTestImplementation "androidx.test:runner:1.2.0"
+    androidTestImplementation "androidx.test:rules:1.2.0"
+    // AndroidX Architecture Components Core Testing
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    // AndroidX Fragment Testing
+    implementation("androidx.fragment:fragment-testing:1.2.0-rc02") {
+        exclude group: 'androidx.test', module: 'core' // https://issuetracker.google.com/128612536
+    }
+    // Kotlin Coroutines
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.2.1"
+    // JUnit
+    androidTestImplementation "junit:junit:4.12"
+    androidTestImplementation "androidx.test.ext:junit:1.1.1"
+    androidTestImplementation "androidx.test.ext:junit-ktx:1.1.1"
+    // Truth
+    androidTestImplementation ("com.google.truth:truth:1.0") {
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    }
+    androidTestImplementation "androidx.test.ext:truth:1.2.0"
+    androidTestImplementation ("com.google.code.findbugs:jsr305:2.0.1") { force = true} // https://stackoverflow.com/q/37347326/6305235
+    // Mockk : https://mockk.io/
+    androidTestImplementation('io.mockk:mockk-android:1.9.3') { exclude module: 'objenesis' }
+    androidTestImplementation 'org.objenesis:objenesis:2.6' // Until this bug is solved https://github.com/mockk/mockk/issues/281
+    // Espresso
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:3.2.0"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:3.2.0"
+    androidTestImplementation "androidx.test.espresso:espresso-accessibility:3.2.0"
+    androidTestImplementation "androidx.test.espresso:espresso-web:3.2.0"
+    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:3.2.0"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:3.2.0"
 }

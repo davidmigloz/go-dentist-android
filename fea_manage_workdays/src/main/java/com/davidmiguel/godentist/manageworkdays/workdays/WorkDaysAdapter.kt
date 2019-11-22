@@ -7,14 +7,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.davidmiguel.godentist.core.model.WorkDay
+import com.davidmiguel.godentist.core.utils.formatDMY
+import com.davidmiguel.godentist.core.utils.isToday
 import com.davidmiguel.godentist.manageworkdays.databinding.FragmentWorkDaysItemBinding
+import com.davidmiguel.godentist.core.R as RC
 
-class WorkDaysAdapter(private val listener : Listener) : ListAdapter<WorkDay, WorkDaysAdapter.WorkDayViewHolder>(
-    WorkDaysDiffCallback()
-) {
+class WorkDaysAdapter(private val workDaysViewModel: WorkDaysViewModel) :
+    ListAdapter<WorkDay, WorkDaysAdapter.WorkDayViewHolder>(
+        WorkDaysDiffCallback()
+    ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkDayViewHolder {
-        return WorkDayViewHolder(parent, listener)
+        return WorkDayViewHolder(parent, workDaysViewModel)
     }
 
     override fun onBindViewHolder(holder: WorkDayViewHolder, position: Int) {
@@ -23,15 +27,20 @@ class WorkDaysAdapter(private val listener : Listener) : ListAdapter<WorkDay, Wo
 
     class WorkDayViewHolder(
         private val parent: ViewGroup,
-        private val listener : Listener,
+        private val workDaysViewModel: WorkDaysViewModel,
         private val binding: FragmentWorkDaysItemBinding = FragmentWorkDaysItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(workDay: WorkDay) {
+            binding.vm = workDaysViewModel
             binding.workDay = workDay
-            binding.root.setOnClickListener { listener.onWorkDayClicked(workDay) }
+            binding.date.text = if (workDay.date?.isToday() == true) {
+                parent.context.getString(RC.string.all_dateToday)
+            } else {
+                workDay.date?.formatDMY() ?: ""
+            }
         }
     }
 

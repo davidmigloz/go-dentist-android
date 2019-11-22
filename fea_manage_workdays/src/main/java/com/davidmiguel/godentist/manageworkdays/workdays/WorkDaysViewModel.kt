@@ -11,9 +11,9 @@ import com.davidmiguel.godentist.core.utils.Failure
 import com.davidmiguel.godentist.core.utils.ScreenState
 import com.davidmiguel.godentist.core.utils.Success
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class WorkDaysViewModel(
     private val firebaseAuth: FirebaseAuth,
@@ -42,19 +42,22 @@ class WorkDaysViewModel(
         workDaysRepository.getAll(firebaseAuth.uid!!)
             .onEach { res ->
                 when (res) {
-                    is Success -> {
-                        _screenState.value = ScreenState.DATA_LOADED
-                        _workDays.value = res.value
-                    }
-                    is Failure -> {
-                        _screenState.value = ScreenState.ERROR
-                    }
+                    is Success -> onWorkDaysLoaded(res.value)
+                    is Failure -> onErrorLoadingWorkDays()
                 }
             }
-            .catch {
-                _screenState.value = ScreenState.ERROR
-            }
             .launchIn(viewModelScope)
+    }
+
+    private fun onWorkDaysLoaded(workDays: List<WorkDay>) {
+        viewModelScope.launch {
+            _workDays.postValue(workDays.sortedDescending())
+            _screenState.postValue(ScreenState.DATA_LOADED)
+        }
+    }
+
+    private fun onErrorLoadingWorkDays() {
+        _screenState.value = ScreenState.ERROR
     }
 
     fun addNewWorkDay() {

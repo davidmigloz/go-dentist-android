@@ -13,7 +13,7 @@ data class WorkDay(
     var executedTreatments: MutableList<ExecutedTreatment>? = null,
     /** Mood from 1 (awful) to 5 (rad) */
     var mood: Int? = null
-) {
+) : Comparable<WorkDay> {
 
     data class ExecutedTreatment(
         val id: String = "",
@@ -21,4 +21,10 @@ data class WorkDay(
         val price: Double? = null,
         val earnings: Double? = null
     )
+
+    override fun compareTo(other: WorkDay): Int {
+        val thisDate = this.date ?: return 0
+        val otherDate = other.date ?: return 0
+        return thisDate.compareTo(otherDate)
+    }
 }
