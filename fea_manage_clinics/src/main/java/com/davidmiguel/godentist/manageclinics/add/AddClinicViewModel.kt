@@ -78,7 +78,7 @@ class AddClinicViewModel(
 
         val currentId = clinicId ?: ""
 
-        val currentName = name.value
+        val currentName = name.value?.trim()
         if (currentName.isNullOrBlank()) {
             _nameError.value = true
             return

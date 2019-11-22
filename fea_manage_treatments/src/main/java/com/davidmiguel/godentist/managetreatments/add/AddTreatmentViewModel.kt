@@ -74,7 +74,7 @@ class AddTreatmentViewModel(
 
         val currentId = treatmentId ?: ""
 
-        val currentName = name.value
+        val currentName = name.value?.trim()
         if (currentName == null) {
             _nameError.value = true
             return
