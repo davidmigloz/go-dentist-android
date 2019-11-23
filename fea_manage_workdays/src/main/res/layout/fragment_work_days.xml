@@ -16,12 +16,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/layout_default_padding">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/title"
             style="@style/Headline1"
+            android:padding="@dimen/layout_default_padding"
             android:text="@string/workDays_title"
             app:layout_constraintBottom_toTopOf="@+id/workDaysList"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,6 +41,8 @@
             android:id="@+id/workDaysList"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:paddingBottom="70dp"
             app:items="@{vm.workDays}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
