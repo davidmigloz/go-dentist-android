@@ -11,6 +11,12 @@
 
     <string name="all_dateToday">Today</string>
 
+    <string name="all_mood5">😄</string>
+    <string name="all_mood4">🙂</string>
+    <string name="all_mood3">😐</string>
+    <string name="all_mood2">🙁</string>
+    <string name="all_mood1">😩</string>
+
     <!-- =========================================================================================================== -->
     <!-- Login                                                                                                       -->
     <!-- =========================================================================================================== -->

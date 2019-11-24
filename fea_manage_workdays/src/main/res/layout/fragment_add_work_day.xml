@@ -93,7 +93,7 @@
                     style="@style/TextInputLayoutFilledBoxExposedDropdownMenu"
                     android:hint="@string/addWorkDay_labelClinic"
                     android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintBottom_toTopOf="@id/notesContainer"
+                    app:layout_constraintBottom_toTopOf="@id/labelTreatments"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dateContainer">
@@ -107,24 +107,6 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/notesContainer"
-                    style="@style/TextInputLayoutFilledBox"
-                    android:hint="@string/addWorkDay_labelNotes"
-                    android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/clinicContainer">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/notes"
-                        style="@style/TextInputEditTextFilledBox"
-                        android:inputType="textMultiLine"
-                        android:lines="2"
-                        android:text="@{vm.notes}" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/labelTreatments"
                     style="@style/Headline4"
@@ -132,7 +114,7 @@
                     android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toStartOf="@id/btnAddTreatment"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/notesContainer" />
+                    app:layout_constraintTop_toBottomOf="@id/clinicContainer" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnAddTreatment"
@@ -150,17 +132,17 @@
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
                     android:nestedScrollingEnabled="false"
-                    android:paddingBottom="70dp"
                     android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
                     app:items="@{vm.executedTreatments}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/labelMood"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/labelTreatments"
                     tools:listitem="@layout/fragment_add_work_day_item_treatment" />
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/labelNoTreatments"
                     style="@style/Body2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -171,6 +153,94 @@
                     app:layout_constraintStart_toStartOf="@id/treatmentsList"
                     app:layout_constraintTop_toTopOf="@id/treatmentsList" />
 
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrierTreatments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="treatmentsList,labelNoTreatments" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/labelMood"
+                    style="@style/Headline4"
+                    android:paddingTop="8dp"
+                    android:text="Mood"
+                    android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toTopOf="@id/mood5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/barrierTreatments" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mood5"
+                    style="@style/ButtonEmoji"
+                    android:alpha="@{vm.mood != 5 ? 0.50f : 1.0f}"
+                    android:onClick="@{() -> vm.onMoodSelected(5)}"
+                    android:text="@string/all_mood5"
+                    app:layout_constraintEnd_toStartOf="@id/mood4"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/labelMood" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mood4"
+                    style="@style/ButtonEmoji"
+                    android:alpha="@{vm.mood != 4 ? 0.50f : 1.0f}"
+                    android:onClick="@{() -> vm.onMoodSelected(4)}"
+                    android:text="@string/all_mood4"
+                    app:layout_constraintEnd_toStartOf="@id/mood3"
+                    app:layout_constraintStart_toEndOf="@id/mood5"
+                    app:layout_constraintTop_toTopOf="@id/mood5" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mood3"
+                    style="@style/ButtonEmoji"
+                    android:alpha="@{vm.mood != 3 ? 0.50f : 1.0f}"
+                    android:onClick="@{() -> vm.onMoodSelected(3)}"
+                    android:text="@string/all_mood3"
+                    app:layout_constraintEnd_toStartOf="@id/mood2"
+                    app:layout_constraintStart_toEndOf="@id/mood4"
+                    app:layout_constraintTop_toTopOf="@id/mood5" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mood2"
+                    style="@style/ButtonEmoji"
+                    android:alpha="@{vm.mood != 2 ? 0.50f : 1.0f}"
+                    android:onClick="@{() -> vm.onMoodSelected(2)}"
+                    android:text="@string/all_mood2"
+                    app:layout_constraintEnd_toStartOf="@id/mood1"
+                    app:layout_constraintStart_toEndOf="@id/mood3"
+                    app:layout_constraintTop_toTopOf="@id/mood5" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mood1"
+                    style="@style/ButtonEmoji"
+                    android:alpha="@{vm.mood != 1 ? 0.50f : 1.0f}"
+                    android:onClick="@{() -> vm.onMoodSelected(1)}"
+                    android:text="@string/all_mood1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/mood2"
+                    app:layout_constraintTop_toTopOf="@id/mood5" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/notesContainer"
+                    style="@style/TextInputLayoutFilledBox"
+                    android:layout_marginBottom="70dp"
+                    android:hint="@string/addWorkDay_labelNotes"
+                    android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/mood5">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/notes"
+                        style="@style/TextInputEditTextFilledBox"
+                        android:inputType="textMultiLine"
+                        android:lines="2"
+                        android:text="@{vm.notes}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -83,16 +83,21 @@ class AddWorkDayViewModel(
     private val _clinicError = MutableLiveData(false)
     val clinicError: LiveData<Boolean>
         get() = _clinicError
-    // Notes
-    val notes = MutableLiveData<String>()
-    private val _notesError = MutableLiveData(false)
-    val notesError: LiveData<Boolean>
-        get() = _notesError
     // Executed treatments
     private val _executedTreatments: MutableLiveData<List<ExecutedTreatment>> =
         MutableLiveData(listOf())
     val executedTreatments: LiveData<List<ExecutedTreatment>>
         get() = _executedTreatments
+    // Mood
+    val mood = MutableLiveData(-1)
+    private val _moodError = MutableLiveData(false)
+    val moodError: LiveData<Boolean>
+        get() = _moodError
+    // Notes
+    val notes = MutableLiveData<String>()
+    private val _notesError = MutableLiveData(false)
+    val notesError: LiveData<Boolean>
+        get() = _notesError
 
     //----------------------------------------------------------------------------------------------
     // Add work day executed treatment form fields
@@ -229,6 +234,10 @@ class AddWorkDayViewModel(
             list.removeIf { it.id == executedTreatmentId }
             _executedTreatments.postValue(list)
         }
+    }
+
+    fun onMoodSelected(mood: Int) {
+        this.mood.value = mood
     }
 
     fun saveWorkDay() {
