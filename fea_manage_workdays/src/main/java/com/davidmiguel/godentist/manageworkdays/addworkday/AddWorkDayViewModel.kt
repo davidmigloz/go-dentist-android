@@ -1,4 +1,4 @@
-@file:Suppress("EXPERIMENTAL_API_USAGE")
+@file:Suppress("EXPERIMENTAL_API_USAGE", "unused")
 
 package com.davidmiguel.godentist.manageworkdays.addworkday
 
@@ -144,8 +144,9 @@ class AddWorkDayViewModel(
             date.value = workDay.date?.toDate()?.time
             duration.value = (workDay.duration?.run { this / 60F } ?: 0).toString()
             clinic.value = workDay.clinic
-            notes.value = workDay.notes
             _executedTreatments.value = workDay.executedTreatments
+            mood.value = workDay.mood
+            notes.value = workDay.notes
             _screenStateAddWorkDay.value = ScreenState.DATA_LOADED
         }
     }
@@ -244,6 +245,7 @@ class AddWorkDayViewModel(
         _dateError.value = false
         _durationError.value = false
         _clinicError.value = false
+        _moodError.value = false
         _notesError.value = false
 
         // Id
@@ -266,6 +268,12 @@ class AddWorkDayViewModel(
             _clinicError.value = true
             return
         }
+        // Mood
+        val currentMood = mood.value
+        if (currentMood == null) {
+            _moodError.value = true
+            return
+        }
         // Notes
         val currentNotes = notes.value
         // Executed treatments
@@ -279,8 +287,9 @@ class AddWorkDayViewModel(
                     date = currentDate,
                     duration = currentDuration,
                     clinic = currentClinic,
-                    notes = currentNotes,
-                    executedTreatments = currentExecutedTreatments
+                    executedTreatments = currentExecutedTreatments,
+                    mood = currentMood,
+                    notes = currentNotes
                 )
             ).let { res ->
                 when (res) {

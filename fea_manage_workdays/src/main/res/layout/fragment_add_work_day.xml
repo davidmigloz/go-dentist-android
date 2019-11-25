@@ -131,11 +131,12 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
+                    tools:itemCount="0"
                     android:nestedScrollingEnabled="false"
                     android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
                     app:items="@{vm.executedTreatments}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toTopOf="@id/labelMood"
+                    app:layout_constraintBottom_toTopOf="@id/barrierTreatments"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/labelTreatments"
@@ -149,9 +150,10 @@
                     android:layout_margin="8dp"
                     android:text="@string/addWorkDay_labelNoTreatments"
                     android:visibility="@{(vm.screenStateAddWorkDay == ScreenState.DATA_LOADED &amp;&amp; vm.executedTreatments.size() == 0)  ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintEnd_toEndOf="@id/treatmentsList"
-                    app:layout_constraintStart_toStartOf="@id/treatmentsList"
-                    app:layout_constraintTop_toTopOf="@id/treatmentsList" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/barrierTreatments"
+                    app:layout_constraintTop_toBottomOf="@id/labelTreatments" />
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/barrierTreatments"
@@ -163,8 +165,8 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/labelMood"
                     style="@style/Headline4"
-                    android:paddingTop="8dp"
-                    android:text="Mood"
+                    android:paddingTop="16dp"
+                    android:text="@string/addWorkDay_labelMood"
                     android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toTopOf="@id/mood5"
                     app:layout_constraintEnd_toEndOf="parent"
