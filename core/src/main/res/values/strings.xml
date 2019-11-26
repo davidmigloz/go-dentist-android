@@ -48,6 +48,7 @@
     <string name="title_fea_manage_workdays">Manage workdays</string>
 
     <string name="workDays_title">Work Days</string>
+    <string name="workDays_labelNumTreatments">Number of treatments:</string>
 
     <string name="addWorkDay_title">Add work day</string>
     <string name="addWorkDay_labelDuration">Duration</string>

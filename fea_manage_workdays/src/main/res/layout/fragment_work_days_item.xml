@@ -22,7 +22,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/date"
-                style="@style/ListItem"
+                style="@style/CardTitle"
                 android:onClick="@{() -> vm.editWorkDay(workDay)}"
                 app:layout_constraintEnd_toStartOf="@id/clinicName"
                 app:layout_constraintStart_toStartOf="parent"
@@ -33,9 +33,28 @@
                 android:id="@+id/clinicName"
                 style="@style/CardChipEntry"
                 android:text="@{workDay.clinic.name}"
+                app:layout_constraintBottom_toBottomOf="@id/date"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@id/date"
                 tools:text="Today" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/labelNumTreatments"
+                style="@style/CardBody"
+                android:layout_width="wrap_content"
+                android:text="@string/workDays_labelNumTreatments"
+                app:layout_constraintEnd_toStartOf="@id/numTreatments"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/date" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/numTreatments"
+                style="@style/CardBody"
+                android:text="@{Integer.toString(workDay.executedTreatments.size())}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/labelNumTreatments"
+                app:layout_constraintTop_toBottomOf="@id/date"
+                tools:text="8" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

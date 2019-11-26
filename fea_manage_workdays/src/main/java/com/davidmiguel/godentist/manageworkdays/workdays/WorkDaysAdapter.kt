@@ -66,9 +66,4 @@ class WorkDaysAdapter(private val workDaysViewModel: WorkDaysViewModel) :
             }
         }
     }
-
-    interface Listener {
-
-        fun onWorkDayClicked(workDay: WorkDay)
-    }
 }
