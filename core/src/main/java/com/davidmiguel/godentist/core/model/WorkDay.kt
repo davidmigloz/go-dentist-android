@@ -10,6 +10,7 @@ data class WorkDay(
     var clinic: Clinic? = null,
     /** List of executed treatments **/
     var executedTreatments: MutableList<ExecutedTreatment>? = null,
+    val totalEarnings: Double? = null,
     /** Mood from 1 (awful) to 5 (rad); -1 = no mood */
     var mood: Int? = null,
     var notes: String? = null

@@ -242,44 +242,46 @@ class AddWorkDayViewModel(
     }
 
     fun saveWorkDay() {
-        _dateError.value = false
-        _durationError.value = false
-        _clinicError.value = false
-        _moodError.value = false
-        _notesError.value = false
-
-        // Id
-        val currentId = workDayId ?: ""
-        // Date
-        val currentDate = date.value?.run { Timestamp(Date(this)) }
-        if (currentDate == null) {
-            _dateError.value = true
-            return
-        }
-        // Duration
-        val currentDuration = duration.value?.toFloatOrNull()?.run { (this * 60).toInt() }
-        if (currentDuration == null) {
-            _durationError.value = true
-            return
-        }
-        // Clinic
-        val currentClinic = clinic.value
-        if (currentClinic == null) {
-            _clinicError.value = true
-            return
-        }
-        // Mood
-        val currentMood = mood.value
-        if (currentMood == null) {
-            _moodError.value = true
-            return
-        }
-        // Notes
-        val currentNotes = notes.value
-        // Executed treatments
-        val currentExecutedTreatments = _executedTreatments.value?.toMutableList()
-
         viewModelScope.launch {
+            _dateError.value = false
+            _durationError.value = false
+            _clinicError.value = false
+            _moodError.value = false
+            _notesError.value = false
+
+            // Id
+            val currentId = workDayId ?: ""
+            // Date
+            val currentDate = date.value?.run { Timestamp(Date(this)) }
+            if (currentDate == null) {
+                _dateError.value = true
+                return@launch
+            }
+            // Duration
+            val currentDuration = duration.value?.toFloatOrNull()?.run { (this * 60).toInt() }
+            if (currentDuration == null) {
+                _durationError.value = true
+                return@launch
+            }
+            // Clinic
+            val currentClinic = clinic.value
+            if (currentClinic == null) {
+                _clinicError.value = true
+                return@launch
+            }
+            // Executed treatments
+            val currentExecutedTreatments = _executedTreatments.value?.toMutableList()
+                ?: mutableListOf()
+            // Total earnings
+            val currentTotalEarnings = currentExecutedTreatments.sumByDouble { it.earnings ?: 0.0 }
+            // Mood
+            val currentMood = mood.value
+            if (currentMood == null) {
+                _moodError.value = true
+                return@launch
+            }
+            // Notes
+            val currentNotes = notes.value
             workDaysRepository.put(
                 firebaseAuth.uid!!,
                 WorkDay(
@@ -288,6 +290,7 @@ class AddWorkDayViewModel(
                     duration = currentDuration,
                     clinic = currentClinic,
                     executedTreatments = currentExecutedTreatments,
+                    totalEarnings = currentTotalEarnings,
                     mood = currentMood,
                     notes = currentNotes
                 )
