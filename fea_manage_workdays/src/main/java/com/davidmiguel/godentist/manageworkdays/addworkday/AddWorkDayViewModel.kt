@@ -2,10 +2,7 @@
 
 package com.davidmiguel.godentist.manageworkdays.addworkday
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.davidmiguel.godentist.core.R
 import com.davidmiguel.godentist.core.data.clinics.ClinicsRepository
 import com.davidmiguel.godentist.core.data.treatments.TreatmentsRepository
@@ -88,6 +85,9 @@ class AddWorkDayViewModel(
         MutableLiveData(listOf())
     val executedTreatments: LiveData<List<ExecutedTreatment>>
         get() = _executedTreatments
+    // Total earnings
+    val totalEarnings = Transformations.map(_executedTreatments, ::calculateTotalEarnings)
+
     // Mood
     val mood = MutableLiveData(-1)
     private val _moodError = MutableLiveData(false)
@@ -318,6 +318,10 @@ class AddWorkDayViewModel(
             val currentPercentage = clinic.value?.percentage ?: 0
             earnings.value = (currentPrice * currentPercentage / 100).toString()
         }
+    }
+
+    private fun calculateTotalEarnings(executedTreatments: List<ExecutedTreatment>): Double {
+        return executedTreatments.sumByDouble { it.earnings ?: 0.0 }
     }
 
     fun saveExecTreatment() {

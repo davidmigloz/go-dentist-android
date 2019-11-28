@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.davidmiguel.godentist.core.utils.MoneyUtilsKt" />
+
         <variable
             name="vm"
             type="com.davidmiguel.godentist.manageworkdays.workdays.WorkDaysViewModel" />
@@ -43,6 +45,7 @@
                 style="@style/CardBody"
                 android:layout_width="wrap_content"
                 android:text="@string/workDays_labelNumTreatments"
+                app:layout_constraintBottom_toTopOf="@id/labelTotalEarnings"
                 app:layout_constraintEnd_toStartOf="@id/numTreatments"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/date" />
@@ -51,9 +54,31 @@
                 android:id="@+id/numTreatments"
                 style="@style/CardBody"
                 android:text="@{Integer.toString(workDay.executedTreatments.size())}"
+                app:layout_constraintBottom_toTopOf="@id/labelTotalEarnings"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/labelNumTreatments"
                 app:layout_constraintTop_toBottomOf="@id/date"
+                tools:text="8" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/labelTotalEarnings"
+                style="@style/CardBody"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/workDays_labelTotalEarnings"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/totalEarnings"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/labelNumTreatments" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/totalEarnings"
+                style="@style/CardBody"
+                android:text="@{MoneyUtilsKt.formatMoney(workDay.totalEarnings)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/labelTotalEarnings"
+                app:layout_constraintTop_toTopOf="@id/labelTotalEarnings"
                 tools:text="8" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
