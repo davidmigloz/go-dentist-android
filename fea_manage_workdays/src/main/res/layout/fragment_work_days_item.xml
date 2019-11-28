@@ -35,14 +35,14 @@
                 android:id="@+id/clinicName"
                 style="@style/CardChipEntry"
                 android:text="@{workDay.clinic.name}"
-                app:layout_constraintBottom_toBottomOf="@id/date"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/date"
+                app:layout_constraintBottom_toBottomOf="@id/date"
                 tools:text="Today" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/labelNumTreatments"
-                style="@style/CardBody"
+                style="@style/CardBodyItem"
                 android:layout_width="wrap_content"
                 android:text="@string/workDays_labelNumTreatments"
                 app:layout_constraintBottom_toTopOf="@id/labelTotalEarnings"
@@ -52,17 +52,16 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/numTreatments"
-                style="@style/CardBody"
+                style="@style/CardBodyItemValue"
                 android:text="@{Integer.toString(workDay.executedTreatments.size())}"
-                app:layout_constraintBottom_toTopOf="@id/labelTotalEarnings"
+                app:layout_constraintBaseline_toBaselineOf="@id/labelNumTreatments"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/labelNumTreatments"
-                app:layout_constraintTop_toBottomOf="@id/date"
                 tools:text="8" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/labelTotalEarnings"
-                style="@style/CardBody"
+                style="@style/CardBodyItem"
                 android:layout_width="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="@string/workDays_labelTotalEarnings"
@@ -73,12 +72,11 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/totalEarnings"
-                style="@style/CardBody"
+                style="@style/CardBodyItemValue"
                 android:text="@{MoneyUtilsKt.formatMoney(workDay.totalEarnings)}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBaseline_toBaselineOf="@id/labelTotalEarnings"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/labelTotalEarnings"
-                app:layout_constraintTop_toTopOf="@id/labelTotalEarnings"
                 tools:text="8" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

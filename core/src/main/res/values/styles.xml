@@ -74,10 +74,29 @@
         </item>
     </style>
 
+    <style name="CardBodyItem">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1
+        </item>
+    </style>
+
+    <style name="CardBodyItemValue">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1
+        </item>
+    </style>
+
     <style name="CardChipEntry" parent="Widget.MaterialComponents.Chip.Entry">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginHorizontal">8dp</item>
+        <item name="android:layout_marginHorizontal">16dp</item>
         <item name="android:checkable">false</item>
         <item name="closeIconVisible">false</item>
     </style>

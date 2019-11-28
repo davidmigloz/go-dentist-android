@@ -14,41 +14,52 @@
             type="com.davidmiguel.godentist.manageworkdays.workdays.WorkDaysViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/title"
-            style="@style/Headline1"
-            android:padding="@dimen/layout_default_padding"
-            android:text="@string/workDays_title"
-            app:layout_constraintBottom_toTopOf="@+id/workDaysList"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/loading"
-            style="@style/LoadingProgressBar"
-            android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="@+id/workDaysList"
-            app:layout_constraintEnd_toEndOf="@+id/workDaysList"
-            app:layout_constraintStart_toStartOf="@+id/workDaysList"
-            app:layout_constraintTop_toTopOf="@+id/workDaysList" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/layout_default_padding">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/workDaysList"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:clipToPadding="false"
-            android:paddingBottom="70dp"
-            app:items="@{vm.workDays}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            tools:listitem="@layout/fragment_work_days_item" />
+                <TextView
+                    android:id="@+id/title"
+                    style="@style/Headline1"
+                    android:paddingHorizontal="@dimen/layout_default_padding"
+                    android:text="@string/workDays_title"
+                    app:layout_constraintBottom_toTopOf="@+id/workDaysList"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <ProgressBar
+                    android:id="@+id/loading"
+                    style="@style/LoadingProgressBar"
+                    android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/workDaysList"
+                    app:layout_constraintEnd_toEndOf="@+id/workDaysList"
+                    app:layout_constraintStart_toStartOf="@+id/workDaysList"
+                    app:layout_constraintTop_toTopOf="@+id/workDaysList" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/workDaysList"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:paddingBottom="70dp"
+                    app:items="@{vm.workDays}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title"
+                    tools:listitem="@layout/fragment_work_days_item" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </FrameLayout>
 </layout>
