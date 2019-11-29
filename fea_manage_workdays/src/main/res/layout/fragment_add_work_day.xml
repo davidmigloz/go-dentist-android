@@ -9,6 +9,8 @@
 
         <import type="com.davidmiguel.godentist.core.utils.DateTimeUtilsKt" />
 
+        <import type="com.davidmiguel.godentist.core.utils.MoneyUtilsKt" />
+
         <import type="com.davidmiguel.godentist.core.utils.ScreenState" />
 
         <variable
@@ -131,16 +133,45 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
-                    tools:itemCount="0"
                     android:nestedScrollingEnabled="false"
                     android:visibility="@{vm.screenStateAddWorkDay != ScreenState.DATA_LOADED ? View.GONE : View.VISIBLE}"
                     app:items="@{vm.executedTreatments}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toTopOf="@id/barrierTreatments"
+                    app:layout_constraintBottom_toTopOf="@id/labelTotalEarnings"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/labelTreatments"
+                    tools:itemCount="0"
                     tools:listitem="@layout/fragment_add_work_day_item_treatment" />
+
+                <TextView
+                    android:id="@+id/labelTotalEarnings"
+                    style="@style/Body2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/addWorkDay_labelTotalEarnings"
+                    android:visibility="@{(vm.totalEarnings > 0)  ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toTopOf="@id/barrierTreatments"
+                    app:layout_constraintEnd_toStartOf="@id/totalEarnings"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/treatmentsList" />
+
+                <TextView
+                    android:id="@+id/totalEarnings"
+                    style="@style/Body2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="@{MoneyUtilsKt.formatMoney(vm.totalEarnings)}"
+                    android:visibility="@{(vm.totalEarnings > 0)  ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toTopOf="@id/barrierTreatments"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/labelTotalEarnings"
+                    app:layout_constraintTop_toBottomOf="@id/treatmentsList"
+                    tools:text="100€" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/labelNoTreatments"
@@ -150,9 +181,9 @@
                     android:layout_margin="8dp"
                     android:text="@string/addWorkDay_labelNoTreatments"
                     android:visibility="@{(vm.screenStateAddWorkDay == ScreenState.DATA_LOADED &amp;&amp; vm.executedTreatments.size() == 0)  ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toTopOf="@id/barrierTreatments"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/barrierTreatments"
                     app:layout_constraintTop_toBottomOf="@id/labelTreatments" />
 
                 <androidx.constraintlayout.widget.Barrier
@@ -160,7 +191,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:barrierDirection="bottom"
-                    app:constraint_referenced_ids="treatmentsList,labelNoTreatments" />
+                    app:constraint_referenced_ids="labelTotalEarnings,labelNoTreatments" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/labelMood"
