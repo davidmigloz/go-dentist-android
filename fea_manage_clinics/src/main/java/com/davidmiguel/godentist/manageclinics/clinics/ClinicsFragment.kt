@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.observeEvent
@@ -36,10 +35,8 @@ class ClinicsFragment : AuthenticatedFragment() {
     }
 
     private fun initContent() {
-        val layoutManager = LinearLayoutManager(context)
-        binding.clinicsList.layoutManager = layoutManager
+        binding.clinicsList.layoutManager = LinearLayoutManager(context)
         binding.clinicsList.adapter = ClinicsAdapter()
-        binding.clinicsList.addItemDecoration(DividerItemDecoration(context, layoutManager.orientation))
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

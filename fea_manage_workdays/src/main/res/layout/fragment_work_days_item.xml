@@ -20,7 +20,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> vm.editWorkDay(workDay)}">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/date"
@@ -35,9 +36,9 @@
                 android:id="@+id/clinicName"
                 style="@style/CardChipEntry"
                 android:text="@{workDay.clinic.name}"
+                app:layout_constraintBottom_toBottomOf="@id/date"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/date"
-                app:layout_constraintBottom_toBottomOf="@id/date"
                 tools:text="Today" />
 
             <com.google.android.material.textview.MaterialTextView

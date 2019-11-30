@@ -32,8 +32,7 @@ class ClinicsAdapter : ListAdapter<Clinic, ClinicsAdapter.ClinicViewHolder>(Clin
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(clinic: Clinic) {
-            binding.name = clinic.name
-            binding.percentage = "${clinic.percentage}%"
+            binding.clinic = clinic
         }
     }
 

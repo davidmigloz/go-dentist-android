@@ -6,35 +6,34 @@
     <data>
 
         <variable
-            name="name"
-            type="String" />
-
-        <variable
-            name="percentage"
-            type="String" />
+            name="clinic"
+            type="com.davidmiguel.godentist.core.model.Clinic" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <com.google.android.material.card.MaterialCardView style="@style/Card">
 
-        <TextView
-            android:id="@+id/nameTV"
-            style="@style/ListItem"
-            android:text="@{name}"
-            app:layout_constraintEnd_toStartOf="@id/percentageTV"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Item 1" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/percentageTV"
-            style="@style/ListItem"
-            android:layout_width="wrap_content"
-            android:text="@{percentage}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="30%" />
+            <TextView
+                android:id="@+id/name"
+                style="@style/ListItem"
+                android:text="@{clinic.name}"
+                app:layout_constraintEnd_toStartOf="@id/percentage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Clinic" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/percentage"
+                style="@style/ListItem"
+                android:layout_width="wrap_content"
+                android:text="@{Integer.toString(clinic.percentage) + '%'}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="30%" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>
