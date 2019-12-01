@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.davidmiguel.godentist.core.model.Treatment
 import com.davidmiguel.godentist.managetreatments.R
-import com.davidmiguel.godentist.managetreatments.databinding.ItemTreatmentBinding
+import com.davidmiguel.godentist.managetreatments.databinding.FragmentTreatmentsItemBinding
 
 class TreatmentsAdapter :
     ListAdapter<Treatment, TreatmentsAdapter.TreatmentViewHolder>(TreatmentsDiffCallback()) {
@@ -24,16 +24,16 @@ class TreatmentsAdapter :
 
     class TreatmentViewHolder(
         private val parent: ViewGroup,
-        private val binding: ItemTreatmentBinding = DataBindingUtil.inflate(
+        private val binding: FragmentTreatmentsItemBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.item_treatment,
+            R.layout.fragment_treatments_item,
             parent,
             false
         )
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(treatment: Treatment) {
-            binding.name = treatment.name
+            binding.tr = treatment
         }
     }
 

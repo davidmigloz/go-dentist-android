@@ -14,39 +14,54 @@
             type="com.davidmiguel.godentist.managetreatments.treatments.TreatmentsViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/layout_default_padding">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/title"
-            style="@style/Headline1"
-            android:text="Treatments"
-            app:layout_constraintBottom_toTopOf="@+id/treatmentsList"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="always">
 
-        <ProgressBar
-            android:id="@+id/loading"
-            style="@style/LoadingProgressBar"
-            android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="@+id/treatmentsList"
-            app:layout_constraintEnd_toEndOf="@+id/treatmentsList"
-            app:layout_constraintStart_toStartOf="@+id/treatmentsList"
-            app:layout_constraintTop_toTopOf="@+id/treatmentsList" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/layout_default_padding">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/treatmentsList"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:items="@{vm.treatments}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            tools:listitem="@layout/item_treatment" />
+                <TextView
+                    android:id="@+id/title"
+                    style="@style/Headline1"
+                    android:paddingHorizontal="@dimen/layout_default_padding"
+                    android:text="@string/treatments_title"
+                    app:layout_constraintBottom_toTopOf="@+id/treatmentsList"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <ProgressBar
+                    android:id="@+id/loading"
+                    style="@style/LoadingProgressBar"
+                    android:visibility="@{vm.screenState != ScreenState.DATA_LOADED ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/treatmentsList"
+                    app:layout_constraintEnd_toEndOf="@+id/treatmentsList"
+                    app:layout_constraintStart_toStartOf="@+id/treatmentsList"
+                    app:layout_constraintTop_toTopOf="@+id/treatmentsList" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/treatmentsList"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:paddingBottom="70dp"
+                    app:items="@{vm.treatments}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title"
+                    tools:listitem="@layout/fragment_treatments_item" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </FrameLayout>
 </layout>

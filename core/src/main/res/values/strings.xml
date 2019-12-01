@@ -84,4 +84,6 @@
 
     <string name="title_fea_manage_treatments">Manage Treatments</string>
 
+    <string name="treatments_title">Treatments</string>
+
 </resources>

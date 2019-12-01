@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.observeEvent
@@ -43,9 +42,6 @@ class TreatmentsFragment : AuthenticatedFragment() {
         binding.treatmentsList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = TreatmentsAdapter()
-            addItemDecoration(
-                DividerItemDecoration(context, (layoutManager as LinearLayoutManager).orientation)
-            )
         }
     }
 
