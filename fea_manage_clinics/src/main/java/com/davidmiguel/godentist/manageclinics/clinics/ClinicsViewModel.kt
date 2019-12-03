@@ -11,9 +11,9 @@ import com.davidmiguel.godentist.core.utils.Failure
 import com.davidmiguel.godentist.core.utils.ScreenState
 import com.davidmiguel.godentist.core.utils.Success
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class ClinicsViewModel(
     private val firebaseAuth: FirebaseAuth,
@@ -42,19 +42,22 @@ class ClinicsViewModel(
         clinicsRepository.getAll(firebaseAuth.uid!!)
             .onEach { res ->
                 when (res) {
-                    is Success -> {
-                        _screenState.value = ScreenState.DATA_LOADED
-                        _clinics.value = res.value
-                    }
-                    is Failure -> {
-                        _screenState.value = ScreenState.ERROR
-                    }
+                    is Success -> onClinicsLoaded(res.value)
+                    is Failure -> onErrorLoadingClinics()
                 }
             }
-            .catch {
-                _screenState.value = ScreenState.ERROR
-            }
             .launchIn(viewModelScope)
+    }
+
+    private fun onClinicsLoaded(clinics: List<Clinic>) {
+        viewModelScope.launch {
+            _clinics.postValue(clinics.sorted())
+            _screenState.postValue(ScreenState.DATA_LOADED)
+        }
+    }
+
+    private fun onErrorLoadingClinics() {
+        _screenState.value = ScreenState.ERROR
     }
 
     fun addNewClinic() {
