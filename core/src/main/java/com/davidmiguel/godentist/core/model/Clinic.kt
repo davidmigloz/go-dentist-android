@@ -5,6 +5,7 @@ data class Clinic(
     var name: String? = null,
     var percentage: Int? = null
 ) : Comparable<Clinic> {
+
     override fun toString(): String {
         return name ?: ""
     }

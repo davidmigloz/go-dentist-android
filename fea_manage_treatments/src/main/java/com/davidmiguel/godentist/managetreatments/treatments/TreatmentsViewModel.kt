@@ -11,9 +11,9 @@ import com.davidmiguel.godentist.core.utils.Failure
 import com.davidmiguel.godentist.core.utils.ScreenState
 import com.davidmiguel.godentist.core.utils.Success
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class TreatmentsViewModel(
     private val firebaseAuth: FirebaseAuth,
@@ -39,23 +39,24 @@ class TreatmentsViewModel(
 
     private fun loadTreatments() {
         _screenState.value = ScreenState.LOADING_DATA
-        _treatments.value = listOf()
         treatmentsRepository.getAll(firebaseAuth.uid!!)
             .onEach { res ->
                 when (res) {
-                    is Success -> {
-                        _screenState.value = ScreenState.DATA_LOADED
-                        _treatments.value = res.value
-                    }
-                    is Failure -> {
-                        _screenState.value = ScreenState.ERROR
-                    }
+                    is Success -> onTreatmentsLoaded(res.value)
+                    is Failure -> onErrorLoadingTreatments()
                 }
-            }
-            .catch {
-                _screenState.value = ScreenState.ERROR
-            }
-            .launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
+    }
+
+    private fun onTreatmentsLoaded(treatments: List<Treatment>) {
+        viewModelScope.launch {
+            _treatments.postValue(treatments.sorted())
+            _screenState.value = ScreenState.DATA_LOADED
+        }
+    }
+
+    private fun onErrorLoadingTreatments() {
+        _screenState.value = ScreenState.ERROR
     }
 
     fun addNewTreatment() {
