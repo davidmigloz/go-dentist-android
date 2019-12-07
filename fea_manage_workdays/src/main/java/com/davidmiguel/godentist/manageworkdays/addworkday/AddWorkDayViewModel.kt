@@ -237,79 +237,55 @@ class AddWorkDayViewModel(
         }
     }
 
-    fun onMoodSelected(mood: Int) {
-        this.mood.value = mood
-    }
-
-    fun saveWorkDay() {
+    fun saveExecTreatment() {
         viewModelScope.launch {
-            _dateError.value = false
-            _durationError.value = false
-            _clinicError.value = false
-            _moodError.value = false
-            _notesError.value = false
+            _treatmentError.postValue(false)
+            _priceError.postValue(false)
+            _earningsError.postValue(false)
 
             // Id
-            val currentId = workDayId ?: ""
-            // Date
-            val currentDate = date.value?.run { Timestamp(Date(this)) }
-            if (currentDate == null) {
-                _dateError.value = true
+            val currentId = executedTreatmentId ?: UUID.randomUUID().toString()
+            // Treatment
+            val currentTreatment = treatment.value
+            if (currentTreatment == null) {
+                _treatmentError.postValue(true)
                 return@launch
             }
-            // Duration
-            val currentDuration = duration.value?.toFloatOrNull()?.run { (this * 60).toInt() }
-            if (currentDuration == null) {
-                _durationError.value = true
+            // Price
+            val currentPrice = price.value?.toDoubleOrNull()
+            if (currentPrice == null) {
+                _priceError.postValue(true)
                 return@launch
             }
-            // Clinic
-            val currentClinic = clinic.value
-            if (currentClinic == null) {
-                _clinicError.value = true
+            // Earnings
+            val currentEarnings = earnings.value?.toDoubleOrNull()
+            if (currentEarnings == null) {
+                _earningsError.postValue(true)
                 return@launch
             }
-            // Executed treatments
-            val currentExecutedTreatments = _executedTreatments.value?.toMutableList()
-                ?: mutableListOf()
-            // Total earnings
-            val currentTotalEarnings = currentExecutedTreatments.sumByDouble { it.earnings ?: 0.0 }
-            // Mood
-            val currentMood = mood.value
-            if (currentMood == null) {
-                _moodError.value = true
-                return@launch
-            }
-            // Notes
-            val currentNotes = notes.value
-            workDaysRepository.put(
-                firebaseAuth.uid!!,
-                WorkDay(
-                    currentId,
-                    date = currentDate,
-                    duration = currentDuration,
-                    clinic = currentClinic,
-                    executedTreatments = currentExecutedTreatments,
-                    totalEarnings = currentTotalEarnings,
-                    mood = currentMood,
-                    notes = currentNotes
+
+            val executedTreatments = executedTreatments.value?.toMutableList() ?: mutableListOf()
+            executedTreatments.removeIf { it.id == currentId }
+            executedTreatments.add(
+                ExecutedTreatment(
+                    id = currentId,
+                    treatment = currentTreatment,
+                    price = currentPrice,
+                    earnings = currentEarnings
                 )
-            ).let { res ->
-                when (res) {
-                    is Success -> onWorkDaySaved()
-                    is Failure -> onErrorSavingWorkDay()
-                }
-            }
+            )
+            _executedTreatments.value = executedTreatments
+            executedTreatmentId = null
+            treatment.postValue(null)
+            price.postValue(null)
+            earnings.postValue(null)
+            onWorkDayExecTreatmentSaved()
         }
     }
 
-    private fun onWorkDaySaved() {
-        _workDayUpdatedEvent.value = Event(Unit)
-        _snackbarEvent.value = Event(R.string.all_dataSaved)
-    }
-
-    private fun onErrorSavingWorkDay() {
-        _snackbarEvent.value = Event(R.string.all_errSavingData)
+    private fun onWorkDayExecTreatmentSaved() {
+        _workDayExecTreatmentUpdatedEvent.postValue(Event(Unit))
+        _screenStateAddWorkDayExecTreatment.postValue(ScreenState.INITIAL)
     }
 
     fun calculateEarnings() {
@@ -324,52 +300,71 @@ class AddWorkDayViewModel(
         return executedTreatments.sumByDouble { it.earnings ?: 0.0 }
     }
 
-    fun saveExecTreatment() {
-        _treatmentError.value = false
-        _priceError.value = false
-        _earningsError.value = false
-
-        // Id
-        val currentId = executedTreatmentId ?: UUID.randomUUID().toString()
-        // Treatment
-        val currentTreatment = treatment.value
-        if (currentTreatment == null) {
-            _treatmentError.value = true
-            return
-        }
-        // Price
-        val currentPrice = price.value?.toDoubleOrNull()
-        if (currentPrice == null) {
-            _priceError.value = true
-            return
-        }
-        // Earnings
-        val currentEarnings = earnings.value?.toDoubleOrNull()
-        if (currentEarnings == null) {
-            _earningsError.value = true
-            return
-        }
-
-        val executedTreatments = executedTreatments.value?.toMutableList() ?: mutableListOf()
-        executedTreatments.removeIf { it.id == currentId }
-        executedTreatments.add(
-            ExecutedTreatment(
-                id = currentId,
-                treatment = currentTreatment,
-                price = currentPrice,
-                earnings = currentEarnings
-            )
-        )
-        _executedTreatments.value = executedTreatments
-        executedTreatmentId = null
-        treatment.value = null
-        price.value = null
-        earnings.value = null
-        onWorkDayExecTreatmentSaved()
+    fun onMoodSelected(mood: Int) {
+        this.mood.value = mood
     }
 
-    private fun onWorkDayExecTreatmentSaved() {
-        _workDayExecTreatmentUpdatedEvent.value = Event(Unit)
-        _screenStateAddWorkDayExecTreatment.value = ScreenState.INITIAL
+    fun saveWorkDay() {
+        viewModelScope.launch {
+            _dateError.postValue(false)
+            _durationError.postValue(false)
+            _clinicError.postValue(false)
+            _moodError.postValue(false)
+            _notesError.postValue(false)
+
+            // Id
+            val currentId = workDayId ?: ""
+            // Date
+            val currentDate = date.value?.run { Timestamp(Date(this)) }
+            if (currentDate == null) {
+                _dateError.postValue(true)
+                return@launch
+            }
+            // Duration
+            val currentDuration = duration.value?.toFloatOrNull()?.run { (this * 60).toInt() }
+            if (currentDuration == null) {
+                _durationError.postValue(true)
+                return@launch
+            }
+            // Clinic
+            val currentClinic = clinic.value
+            if (currentClinic == null) {
+                _clinicError.postValue(true)
+                return@launch
+            }
+            // Executed treatments
+            val currentExecutedTreatments = _executedTreatments.value?.toMutableList()
+                ?: mutableListOf()
+            // Total earnings
+            val currentTotalEarnings = currentExecutedTreatments.sumByDouble { it.earnings ?: 0.0 }
+            // Mood
+            val currentMood = mood.value
+            if (currentMood == null) {
+                _moodError.postValue(true)
+                return@launch
+            }
+            // Notes
+            val currentNotes = notes.value
+            // Save workday (optimistic/offline first)
+            onWorkDaySaved()
+            workDaysRepository.put(
+                firebaseAuth.uid!!,
+                WorkDay(
+                    currentId,
+                    date = currentDate,
+                    duration = currentDuration,
+                    clinic = currentClinic,
+                    executedTreatments = currentExecutedTreatments,
+                    totalEarnings = currentTotalEarnings,
+                    mood = currentMood,
+                    notes = currentNotes
+                )
+            )
+        }
+    }
+
+    private fun onWorkDaySaved() {
+        _workDayUpdatedEvent.postValue(Event(Unit))
+        _snackbarEvent.postValue(Event(R.string.all_dataSaved))
     }
 }
