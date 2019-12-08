@@ -70,38 +70,32 @@ class AddTreatmentViewModel(
     }
 
     fun saveTreatment() {
-        _nameError.value = false
-
-        val currentId = treatmentId ?: ""
-
-        val currentName = name.value?.trim()
-        if (currentName == null) {
-            _nameError.value = true
-            return
-        }
-
         viewModelScope.launch {
-            treatmentsRepository.put(
-                firebaseAuth.uid!!,
-                Treatment(
-                    id = currentId,
-                    name = currentName
+            _nameError.postValue(false)
+
+            val currentId = treatmentId ?: ""
+
+            val currentName = name.value?.trim()
+            if (currentName == null) {
+                _nameError.postValue(true)
+                return@launch
+            }
+            // Save treatment (optimistic/offline first)
+            onTreatmentSaved()
+            viewModelScope.launch {
+                treatmentsRepository.put(
+                    firebaseAuth.uid!!,
+                    Treatment(
+                        id = currentId,
+                        name = currentName
+                    )
                 )
-            ).let { res ->
-                when (res) {
-                    is Success -> onTreatmentSaved()
-                    is Failure -> onErrorSavingTreatment()
-                }
             }
         }
     }
 
     private fun onTreatmentSaved() {
-        _treatmentUpdatedEvent.value = Event(Unit)
-        _snackbarEvent.value = Event(R.string.all_dataSaved)
-    }
-
-    private fun onErrorSavingTreatment() {
-        _snackbarEvent.value = Event(R.string.all_errSavingData)
+        _treatmentUpdatedEvent.postValue(Event(Unit))
+        _snackbarEvent.postValue(Event(R.string.all_dataSaved))
     }
 }
