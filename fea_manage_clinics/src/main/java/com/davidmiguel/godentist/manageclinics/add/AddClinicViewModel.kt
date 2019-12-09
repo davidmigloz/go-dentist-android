@@ -4,13 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.davidmiguel.godentist.core.R
 import com.davidmiguel.godentist.core.data.clinics.ClinicsRepository
 import com.davidmiguel.godentist.core.model.Clinic
 import com.davidmiguel.godentist.core.utils.Event
+import com.davidmiguel.godentist.core.utils.Failure
 import com.davidmiguel.godentist.core.utils.ScreenState
+import com.davidmiguel.godentist.core.utils.Success
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
-import com.davidmiguel.godentist.core.R as RC
 
 class AddClinicViewModel(
     private val firebaseAuth: FirebaseAuth,
@@ -53,14 +55,14 @@ class AddClinicViewModel(
 
     private fun loadClinic(clinicId: String) {
         _screenState.value = ScreenState.LOADING_DATA
-        clinicsRepository.get(firebaseAuth.uid!!, clinicId)
         viewModelScope.launch {
-
-        }
-        clinicsRepository.get(firebaseAuth.uid!!, clinicId)
-            .addOnCompleteListener { task ->
-                task.result?.run { onClinicLoaded(this) } ?: onErrorLoadingClinic()
+            clinicsRepository.get(firebaseAuth.uid!!, clinicId).let { res ->
+                when (res) {
+                    is Success -> onClinicLoaded(res.value)
+                    is Failure -> onErrorLoadingClinic()
+                }
             }
+        }
     }
 
     private fun onClinicLoaded(clinic: Clinic) {
@@ -73,30 +75,33 @@ class AddClinicViewModel(
     }
 
     fun saveClinic() {
-        _nameError.value = false
-        _percentageError.value = false
+        viewModelScope.launch {
+            _nameError.postValue(false)
+            _percentageError.postValue(false)
 
-        val currentId = clinicId ?: ""
+            val currentId = clinicId ?: ""
 
-        val currentName = name.value?.trim()
-        if (currentName.isNullOrBlank()) {
-            _nameError.value = true
-            return
+            val currentName = name.value?.trim()
+            if (currentName.isNullOrBlank()) {
+                _nameError.postValue(true)
+                return@launch
+            }
+
+            val currentPercentage = percentage.value?.toIntOrNull()
+            if (currentPercentage == null) {
+                _percentageError.postValue(true)
+                return@launch
+            }
+            // Save clinic (optimistic/offline first)
+            onClinicSaved()
+            clinicsRepository.put(
+                firebaseAuth.uid!!, Clinic(currentId, currentName, currentPercentage)
+            )
         }
+    }
 
-        val currentPercentage = percentage.value?.toIntOrNull()
-        if (currentPercentage == null) {
-            _percentageError.value = true
-            return
-        }
-
-        clinicsRepository.update(
-            firebaseAuth.uid!!, Clinic(currentId, currentName, currentPercentage)
-        ).addOnSuccessListener {
-            _clinicUpdatedEvent.value = Event(Unit)
-            _snackbarEvent.value = Event(RC.string.all_dataSaved)
-        }.addOnFailureListener {
-            _snackbarEvent.value = Event(RC.string.all_errSavingData)
-        }
+    private fun onClinicSaved() {
+        _clinicUpdatedEvent.postValue(Event(Unit))
+        _snackbarEvent.postValue(Event(R.string.all_dataSaved))
     }
 }
