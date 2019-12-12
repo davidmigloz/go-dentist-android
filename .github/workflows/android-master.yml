@@ -25,6 +25,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+      - name: Decrypt secrets folder
+          run: ./.github/scripts/decrypt_secrets.sh
+          env:
+            SECRETS_GPG_PASSPHRASE: $
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:

@@ -40,6 +40,7 @@ captures/
 
 # IntelliJ
 *.iml
+\.idea/
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/gradle.xml
@@ -62,18 +63,6 @@ captures/
 # Google Services (e.g. APIs or Firebase)
 # google-services.json
 
-# Freeline
-freeline.py
-freeline/
-freeline_project_description.json
-
-# fastlane
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots
-fastlane/test_output
-fastlane/readme.md
-
 # Version control
 vcs.xml
 
@@ -88,8 +77,8 @@ lint/tmp/
 gen-external-apklibs
 output.json
 
-# End of https://www.gitignore.io/api/android
-
-\.idea/
-
+# Mac 
 .DS_Store
+
+# Repo
+secrets/
