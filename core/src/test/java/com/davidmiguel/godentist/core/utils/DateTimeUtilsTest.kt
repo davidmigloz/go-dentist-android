@@ -10,6 +10,7 @@ class DateTimeUtilsTest {
     @Test
     fun formatDMYLocalDateTime() {
         assertThat(LocalDateTime.of(2019, 11, 22, 0, 0, 0).formatDMY()).isEqualTo("22/11/2019")
+        assertThat(LocalDateTime.of(2020, 1, 1, 10, 30, 0).formatDMY()).isEqualTo("01/01/2020")
     }
 
     @Test
