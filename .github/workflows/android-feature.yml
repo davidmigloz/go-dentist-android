@@ -40,4 +40,4 @@ jobs:
           restore-keys: ${{ runner.os }}-android-gradle-cache-
 
       - name: Run unit tests
-        run: bash ./gradlew testDebug --stacktrace
+        run: ./gradlew testDebug --stacktrace
