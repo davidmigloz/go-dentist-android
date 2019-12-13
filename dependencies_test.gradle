@@ -18,7 +18,15 @@ dependencies {
     testImplementation "androidx.test.ext:junit:1.1.1"
     testImplementation "androidx.test.ext:junit-ktx:1.1.1"
     // Truth
-    testImplementation "com.google.truth:truth:1.0"
+    testImplementation("com.google.truth:truth:1.0") {
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'org.checkerframework', module: 'checker-compat-qual'
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    }
+    // Resolve Truth dependencies conflicts https://github.com/google/truth/issues/525
+    testImplementation("com.google.guava:guava:26.0-android") { force = true }
+    testImplementation("org.checkerframework:checker-compat-qual:2.5.2") { force = true }
+    testImplementation("com.google.code.findbugs:jsr305:3.0.2") { force = true }
     testImplementation "androidx.test.ext:truth:1.2.0"
     // Mockk : https://mockk.io/
     testImplementation "io.mockk:mockk:1.9.3"
@@ -40,7 +48,7 @@ dependencies {
     // AndroidX Architecture Components Core Testing
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
     // AndroidX Fragment Testing
-    implementation("androidx.fragment:fragment-testing:1.2.0-rc02") {
+    implementation("androidx.fragment:fragment-testing:1.2.0-rc03") {
         exclude group: 'androidx.test', module: 'core' // https://issuetracker.google.com/128612536
     }
     // Kotlin Coroutines
@@ -50,14 +58,21 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:1.1.1"
     androidTestImplementation "androidx.test.ext:junit-ktx:1.1.1"
     // Truth
-    androidTestImplementation ("com.google.truth:truth:1.0") {
+    androidTestImplementation("com.google.truth:truth:1.0") {
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'org.checkerframework', module: 'checker-compat-qual'
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
     }
+    // Resolve Truth dependencies conflicts https://github.com/google/truth/issues/525
+    androidTestImplementation("com.google.guava:guava:26.0-android") { force = true }
+    androidTestImplementation("org.checkerframework:checker-compat-qual:2.5.2") { force = true }
+    androidTestImplementation("com.google.code.findbugs:jsr305:3.0.2") { force = true }
     androidTestImplementation "androidx.test.ext:truth:1.2.0"
-    androidTestImplementation ("com.google.code.findbugs:jsr305:2.0.1") { force = true} // https://stackoverflow.com/q/37347326/6305235
+    // https://stackoverflow.com/q/37347326/6305235
     // Mockk : https://mockk.io/
     androidTestImplementation('io.mockk:mockk-android:1.9.3') { exclude module: 'objenesis' }
-    androidTestImplementation 'org.objenesis:objenesis:2.6' // Until this bug is solved https://github.com/mockk/mockk/issues/281
+    androidTestImplementation 'org.objenesis:objenesis:2.6'
+    // Until this bug is solved https://github.com/mockk/mockk/issues/281
     // Espresso
     androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:3.2.0"
