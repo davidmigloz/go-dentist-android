@@ -52,6 +52,9 @@ jobs:
         run: ./.github/scripts/decrypt_secrets.sh
         env:
           SECRETS_GPG_PASSPHRASE: ${{ secrets.SECRETS_GPG_PASSPHRASE }}
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          RELEASE_KEY_PASS: ${{ secrets.RELEASE_KEY_PASS }}
+          RELEASE_KEY_STORE_PASS: ${{ secrets.RELEASE_KEY_STORE_PASS }}
 
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
@@ -78,7 +81,7 @@ jobs:
           restore-keys: ${{ runner.os }}-android-gradle-cache-
 
       - name: Build Release Bundle
-        run: ./gradlew bundleRelease --stacktrace
+        run: ./gradlew bundleRelease --info --stacktrace
 
       - name: Upload Bundle
         uses: actions/upload-artifact@v1
