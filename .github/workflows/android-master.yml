@@ -41,7 +41,7 @@ jobs:
         run: ./gradlew testDebug --stacktrace
 
   apk:
-    name: Generate APK
+    name: Generate Bundle
     needs: test
     runs-on: ubuntu-18.04
 
@@ -77,11 +77,11 @@ jobs:
           key: ${{ runner.os }}-android-gradle-cache-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-android-gradle-cache-
 
-      - name: Build debug APK
-        run: ./gradlew assembleDebug --stacktrace
+      - name: Build Release Bundle
+        run: ./gradlew bundleRelease --stacktrace
 
-      - name: Upload APK
+      - name: Upload Bundle
         uses: actions/upload-artifact@v1
         with:
-          name: app
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: go-dentist
+          path: app/build/outputs/bundle/release/app-release.aab
