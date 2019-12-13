@@ -41,7 +41,7 @@ jobs:
         run: ./gradlew testDebug --stacktrace
 
   apk:
-    name: Generate Bundle
+    name: Generate Bundle Artefact
     needs: test
     runs-on: ubuntu-18.04
 
@@ -78,7 +78,7 @@ jobs:
           restore-keys: ${{ runner.os }}-android-gradle-cache-
 
       - name: Build Release Bundle
-        run: ./gradlew bundleRelease --info --stacktrace
+        run: ./gradlew bundleRelease --stacktrace
         env:
           RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASS: ${{ secrets.RELEASE_KEY_PASS }}
@@ -89,3 +89,47 @@ jobs:
         with:
           name: go-dentist
           path: app/build/outputs/bundle/release/app-release.aab
+
+  apk:
+    name: Publish App Google Play
+    needs: test
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Decrypt secrets folder
+        run: ./.github/scripts/decrypt_secrets.sh
+        env:
+          SECRETS_GPG_PASSPHRASE: ${{ secrets.SECRETS_GPG_PASSPHRASE }}
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Cache Gradle
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-cache-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle-cache-
+      - name: Cache Wrapper
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle-wrapper-
+      - name: Cache Android Gradle Plugin
+        uses: actions/cache@v1
+        with:
+          path: ~/.android/build-cache
+          key: ${{ runner.os }}-android-gradle-cache-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-android-gradle-cache-
+
+      - name: Publish Release Bundle
+        run: ./gradlew publishReleaseBundle --stacktrace
+        env:
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          RELEASE_KEY_PASS: ${{ secrets.RELEASE_KEY_PASS }}
+          RELEASE_KEY_STORE_PASS: ${{ secrets.RELEASE_KEY_STORE_PASS }}

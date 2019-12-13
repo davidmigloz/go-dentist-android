@@ -1,14 +1,17 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'androidx.navigation.safeargs.kotlin'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+    id "com.github.triplet.play" version "2.6.1"
+}
 
 apply from: '../dependencies_core.gradle'
 apply from: '../dependencies_test.gradle'
 
 ext.versionMajor = 0         // API Changes, adding big new feature, redesign the App
-ext.versionMinor = 1         // New features in a backwards-compatible manner
+ext.versionMinor = 2         // New features in a backwards-compatible manner
 ext.versionPatch = 0         // Backwards-compatible bug fixes
 ext.versionClassifier = null // Pre-releases (alpha, beta, rc, SNAPSHOT...)
 
@@ -83,6 +86,12 @@ android {
             ":fea_manage_workdays",
             ":fea_manage_treatments"
     ]
+}
+
+play {
+    serviceAccountCredentials = getGradlePlayPublisherServiceAccCredentials()
+    defaultToAppBundles = true
+    track = 'internal'
 }
 
 dependencies {

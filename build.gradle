@@ -84,6 +84,10 @@ ext {
     getReleaseKeyPass = { ->
         return System.getenv()["RELEASE_KEY_PASS"]
     }
+
+    getGradlePlayPublisherServiceAccCredentials = { ->
+        return file('secrets/gradle-play-publisher-service-acc-credentials.json')
+    }
 }
 
 task clean(type: Delete) {
