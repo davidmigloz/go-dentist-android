@@ -40,7 +40,7 @@ jobs:
       - name: Run unit tests
         run: ./gradlew testDebug --stacktrace
 
-  apk:
+  bundle:
     name: Generate Bundle Artefact
     needs: test
     runs-on: ubuntu-18.04
@@ -90,7 +90,7 @@ jobs:
           name: go-dentist
           path: app/build/outputs/bundle/release/app-release.aab
 
-  apk:
+  play:
     name: Publish App Google Play
     needs: test
     runs-on: ubuntu-18.04
