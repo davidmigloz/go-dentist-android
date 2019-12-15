@@ -3,18 +3,18 @@ dependencies {
 
     // JetPack : https://developer.android.com/jetpack/androidx/releases/
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-rc02'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0-rc02'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-rc03'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0-rc03'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     // Android KTX : https://developer.android.com/kotlin/ktx
     implementation 'androidx.core:core-ktx:1.1.0'
-    implementation 'androidx.fragment:fragment-ktx:1.2.0-rc02'
+    implementation 'androidx.fragment:fragment-ktx:1.2.0-rc03'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
     implementation 'androidx.collection:collection-ktx:1.1.0'
     // Navigation : https://developer.android.com/jetpack/androidx/releases/navigation
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.0-rc02'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.2.0-rc02'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.0-rc03'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.2.0-rc03'
 
 
     implementation 'com.google.android.material:material:1.2.0-alpha02'
@@ -24,7 +24,7 @@ dependencies {
     // https://firebaseopensource.com/projects/firebase/firebase-android-sdk/docs/ktx/firestore.md
     // https://mvnrepository.com/artifact/com.google.firebase/firebase-firestore-ktx
     // This library transitively includes the firebase-firestore library
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.3.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.3.1'
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.2'
