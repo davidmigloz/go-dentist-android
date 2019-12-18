@@ -86,7 +86,7 @@ ext {
     }
 
     getGradlePlayPublisherServiceAccCredentials = { ->
-        return file('secrets/gradle-play-publisher-service-acc-credentials.json')
+        return file('secrets/googleplay-service-acc-credentials.json')
     }
 }
 
