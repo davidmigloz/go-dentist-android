@@ -40,58 +40,8 @@ jobs:
       - name: Run unit tests
         run: ./gradlew testDebug --stacktrace
 
-#  bundle:
-#    name: Generate Bundle Artefact
-#    needs: test
-#    runs-on: ubuntu-18.04
-#
-#    steps:
-#      - uses: actions/checkout@v1
-#
-#      - name: Decrypt secrets folder
-#        run: ./.github/scripts/decrypt_secrets.sh
-#        env:
-#          SECRETS_GPG_PASSPHRASE: ${{ secrets.SECRETS_GPG_PASSPHRASE }}
-#
-#      - name: Set up JDK 1.8
-#        uses: actions/setup-java@v1
-#        with:
-#          java-version: 1.8
-#
-#      - name: Cache Gradle
-#        uses: actions/cache@v1
-#        with:
-#          path: ~/.gradle/caches
-#          key: ${{ runner.os }}-gradle-cache-${{ hashFiles('**/*.gradle') }}
-#          restore-keys: ${{ runner.os }}-gradle-cache-
-#      - name: Cache Wrapper
-#        uses: actions/cache@v1
-#        with:
-#          path: ~/.gradle/wrapper
-#          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/*.gradle') }}
-#          restore-keys: ${{ runner.os }}-gradle-wrapper-
-#      - name: Cache Android Gradle Plugin
-#        uses: actions/cache@v1
-#        with:
-#          path: ~/.android/build-cache
-#          key: ${{ runner.os }}-android-gradle-cache-${{ hashFiles('**/*.gradle') }}
-#          restore-keys: ${{ runner.os }}-android-gradle-cache-
-#
-#      - name: Build Release Bundle
-#        run: ./gradlew bundleRelease --stacktrace
-#        env:
-#          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
-#          RELEASE_KEY_PASS: ${{ secrets.RELEASE_KEY_PASS }}
-#          RELEASE_KEY_STORE_PASS: ${{ secrets.RELEASE_KEY_STORE_PASS }}
-#
-#      - name: Upload Bundle
-#        uses: actions/upload-artifact@v1
-#        with:
-#          name: go-dentist
-#          path: app/build/outputs/bundle/release/app-release.aab
-
   play:
-    name: Publish App Google Play
+    name: Publish App on Google Play
     needs: test
     runs-on: ubuntu-18.04
 
@@ -127,12 +77,15 @@ jobs:
           key: ${{ runner.os }}-android-gradle-cache-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-android-gradle-cache-
 
-      - name: Publish Release Bundle
+      - name: Publish app on Google Play
         run: ./gradlew publishReleaseBundle --stacktrace
         env:
           RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASS: ${{ secrets.RELEASE_KEY_PASS }}
           RELEASE_KEY_STORE_PASS: ${{ secrets.RELEASE_KEY_STORE_PASS }}
 
-      - name: List files
-        run: ls -Rla app/build/outputs/
+      - name: Upload Bundle to GitHub
+        uses: actions/upload-artifact@v1
+        with:
+          name: go-dentist
+          path: app/build/outputs/bundle/release/app-release.aab
