@@ -92,6 +92,7 @@ play {
     serviceAccountCredentials = getGradlePlayPublisherServiceAccCredentials()
     defaultToAppBundles = true
     track = 'internal'
+    retain.artifacts = [ generateVersionCode(versionMajor, versionMinor, versionPatch) ]
 }
 
 dependencies {
