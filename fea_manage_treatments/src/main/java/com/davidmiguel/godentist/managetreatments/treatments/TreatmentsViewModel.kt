@@ -24,9 +24,9 @@ class TreatmentsViewModel(
     val screenState: LiveData<ScreenState>
         get() = _screenState
 
-    private val _addTreatmentEvent = MutableLiveData<Event<Unit>>()
-    val addTreatmentEvent: LiveData<Event<Unit>>
-        get() = _addTreatmentEvent
+    private val _addEditTreatmentEvent = MutableLiveData<Event<String>>()
+    val addEditTreatmentEvent: LiveData<Event<String>>
+        get() = _addEditTreatmentEvent
 
     private val _treatments: MutableLiveData<List<Treatment>> = MutableLiveData(listOf())
     val treatments: LiveData<List<Treatment>>
@@ -60,6 +60,10 @@ class TreatmentsViewModel(
     }
 
     fun addNewTreatment() {
-        _addTreatmentEvent.value = Event(Unit)
+        _addEditTreatmentEvent.value = Event("")
+    }
+
+    fun editTreatment(treatment : Treatment) {
+        _addEditTreatmentEvent.value = Event(treatment.id)
     }
 }

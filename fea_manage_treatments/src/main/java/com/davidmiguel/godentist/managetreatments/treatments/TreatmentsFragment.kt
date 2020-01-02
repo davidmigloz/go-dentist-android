@@ -42,7 +42,7 @@ class TreatmentsFragment : AuthenticatedFragment() {
     private fun initContent() {
         binding.treatmentsList.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = TreatmentsAdapter()
+            adapter = TreatmentsAdapter(treatmentsViewModel)
         }
     }
 
@@ -58,8 +58,12 @@ class TreatmentsFragment : AuthenticatedFragment() {
         ) {
             treatmentsViewModel.addNewTreatment()
         }
-        treatmentsViewModel.addTreatmentEvent.observeEvent(viewLifecycleOwner) {
-            findNavController().navigate(RC.id.add_treatment_fragment)
+        treatmentsViewModel.addEditTreatmentEvent.observeEvent(viewLifecycleOwner) { treatmentId ->
+            findNavController().navigate(
+                TreatmentsFragmentDirections.actionTreatmentsFragmentToAddTreatmentFragment(
+                    if (treatmentId.isBlank()) null else treatmentId
+                )
+            )
         }
     }
 

@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.davidmiguel.godentist.core.R
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.observeEvent
@@ -18,9 +19,11 @@ import com.google.android.material.bottomappbar.BottomAppBar
 
 class AddTreatmentFragment : AuthenticatedFragment() {
 
+    private val args: AddTreatmentFragmentArgs by navArgs()
     private lateinit var binding: FragmentAddTreatmentBinding
     private val addTreatmentViewModel: AddTreatmentViewModel
             by viewModels { ViewModelFactory.getInstance() }
+
     private var treatmentId: String? = null
 
     override fun onCreateView(
@@ -29,6 +32,7 @@ class AddTreatmentFragment : AuthenticatedFragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+        treatmentId = args.treatmentId
         FragmentAddTreatmentBinding.inflate(inflater, container, false).apply {
             binding = this
             lifecycleOwner = viewLifecycleOwner

@@ -11,11 +11,11 @@ import com.davidmiguel.godentist.core.model.Treatment
 import com.davidmiguel.godentist.managetreatments.R
 import com.davidmiguel.godentist.managetreatments.databinding.FragmentTreatmentsItemBinding
 
-class TreatmentsAdapter :
+class TreatmentsAdapter(private val treatmentsViewModel: TreatmentsViewModel) :
     ListAdapter<Treatment, TreatmentsAdapter.TreatmentViewHolder>(TreatmentsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TreatmentViewHolder {
-        return TreatmentViewHolder(parent)
+        return TreatmentViewHolder(parent, treatmentsViewModel)
     }
 
     override fun onBindViewHolder(holder: TreatmentViewHolder, position: Int) {
@@ -24,6 +24,7 @@ class TreatmentsAdapter :
 
     class TreatmentViewHolder(
         private val parent: ViewGroup,
+        private val treatmentsViewModel: TreatmentsViewModel,
         private val binding: FragmentTreatmentsItemBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.fragment_treatments_item,
@@ -33,6 +34,7 @@ class TreatmentsAdapter :
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(treatment: Treatment) {
+            binding.vm = treatmentsViewModel
             binding.tr = treatment
         }
     }
