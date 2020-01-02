@@ -24,6 +24,7 @@ class WorkDaysFragment : AuthenticatedFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
         FragmentWorkDaysBinding.inflate(inflater, container, false).apply {
             binding = this
             lifecycleOwner = viewLifecycleOwner

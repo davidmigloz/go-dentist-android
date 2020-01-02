@@ -35,6 +35,7 @@ class AddWorkDayFragment : AuthenticatedFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
         workDayId = args.workDayId
         FragmentAddWorkDayBinding.inflate(inflater, container, false).apply {
             binding = this

@@ -22,7 +22,12 @@ class ClinicsFragment : AuthenticatedFragment() {
     private lateinit var binding: FragmentClinicsBinding
     private val clinicsViewModel: ClinicsViewModel by viewModels { ViewModelFactory.getInstance() }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
         DataBindingUtil.inflate<FragmentClinicsBinding>(
             inflater, R.layout.fragment_clinics, container, false
         ).apply {
@@ -45,7 +50,10 @@ class ClinicsFragment : AuthenticatedFragment() {
     }
 
     private fun setupViewModelListeners() {
-        requireMainActivity().showFAB(RC.drawable.ic_add_black_24dp, BottomAppBar.FAB_ALIGNMENT_MODE_END) {
+        requireMainActivity().showFAB(
+            RC.drawable.ic_add_black_24dp,
+            BottomAppBar.FAB_ALIGNMENT_MODE_END
+        ) {
             clinicsViewModel.addNewClinic()
         }
         clinicsViewModel.addClinicEvent.observeEvent(viewLifecycleOwner) {

@@ -7,15 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.davidmiguel.godentist.core.auth.AuthViewModel
 import com.davidmiguel.godentist.core.base.BaseFragment
 import com.davidmiguel.godentist.core.data.user.UserRepository
 import com.davidmiguel.godentist.core.utils.showSnackbar
-import com.davidmiguel.godentist.login.R
 import com.davidmiguel.godentist.login.databinding.FragmentAuthBinding
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
@@ -35,39 +32,36 @@ class AuthFragment : BaseFragment() {
         listOf(AuthUI.IdpConfig.EmailBuilder().setRequireName(false).build())
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_auth, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        binding = FragmentAuthBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            authViewModel.refuseAuthentication()
-            // TODO in the future move to intro screen
-            findNavController().popBackStack(RC.id.work_days_fragment, false)
+            onAuthenticationCancelled()
         }
-
-        authViewModel.authState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            when (authenticationState) {
-                AuthViewModel.AuthState.AUTHENTICATED -> {
-                    val user = FirebaseAuth.getInstance().currentUser
-                    user?.let {
-                        checkUserState(it)
-                    } ?: showSnackbar("No account found")
-                }
-            }
-        })
-
-        if (authViewModel.authState.value != AuthViewModel.AuthState.AUTHENTICATED) {
-            startSignIn()
-        }
+        decideFlow()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         onRedirectAfterSignIn(requestCode, resultCode, data)
+    }
+
+    private fun decideFlow() {
+        if (authViewModel.authState.value == AuthViewModel.AuthState.AUTHENTICATED) {
+            FirebaseAuth.getInstance().currentUser?.let { user -> checkUserState(user) }
+                ?: showSnackbar("No account found")
+        } else {
+            startSignIn()
+        }
     }
 
     /**
@@ -90,11 +84,14 @@ class AuthFragment : BaseFragment() {
      * If result is CANCELED, we show an error message to the user according to its error type.
      */
     private fun onRedirectAfterSignIn(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == RC_SIGN_IN && resultCode != Activity.RESULT_OK) {
+        if (requestCode != RC_SIGN_IN) return
+        if (resultCode == Activity.RESULT_OK) {
+            decideFlow()
+        } else {
             val response = IdpResponse.fromResultIntent(data)
             when {
                 // If response is null the user canceled the sign-in flow using the back button
-                response == null -> showSnackbar("Sign-in cancelled")
+                response == null -> onAuthenticationCancelled()
                 response.error?.errorCode == ErrorCodes.NO_NETWORK -> showSnackbar("No network")
                 else -> showSnackbar("Unknown error")
             }
@@ -104,14 +101,15 @@ class AuthFragment : BaseFragment() {
     private fun checkUserState(user: FirebaseUser) {
         UserRepository().exists(user.uid)
             .addOnSuccessListener(requireActivity()) { userExists ->
-                if (userExists) {
-                    findNavController().popBackStack()
-                } else {
-                    // TODO go to onboarding
-                }
+                findNavController().popBackStack()
             }
             .addOnFailureListener(requireActivity()) {
                 showSnackbar("Unknown error")
             }
+    }
+
+    private fun onAuthenticationCancelled() {
+        authViewModel.refuseAuthentication()
+        findNavController().popBackStack(RC.id.work_days_fragment, false)
     }
 }

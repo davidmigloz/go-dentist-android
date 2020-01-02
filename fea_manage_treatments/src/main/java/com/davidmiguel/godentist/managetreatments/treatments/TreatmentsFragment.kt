@@ -27,6 +27,7 @@ class TreatmentsFragment : AuthenticatedFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
         DataBindingUtil.inflate<FragmentTreatmentsBinding>(
             inflater, R.layout.fragment_treatments, container, false
         ).apply {

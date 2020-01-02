@@ -17,7 +17,12 @@ class DashboardFragment : AuthenticatedFragment() {
     private lateinit var binding: DashboardFragmentBinding
     private val dashboardViewModel: DashboardViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
         binding = DataBindingUtil.inflate(inflater, R.layout.dashboard_fragment, container, false)
         return binding.root
     }

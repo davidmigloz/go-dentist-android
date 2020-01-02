@@ -28,6 +28,7 @@ class AddTreatmentFragment : AuthenticatedFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
         FragmentAddTreatmentBinding.inflate(inflater, container, false).apply {
             binding = this
             lifecycleOwner = viewLifecycleOwner

@@ -34,6 +34,7 @@ class AddWorkDayExecTreatmentFragment : AuthenticatedFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
         executedTreatmentId = args.executedTreatmentId
         FragmentAddWorkDayExecTreatmentBinding.inflate(inflater, container, false).apply {
             binding = this

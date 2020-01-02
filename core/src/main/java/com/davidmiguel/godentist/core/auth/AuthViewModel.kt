@@ -14,10 +14,13 @@ class AuthViewModel : ViewModel() {
     }
 
     val authState = MutableLiveData<AuthState>()
+    private val authStateListener = FirebaseAuth.AuthStateListener {
+        updateAuthState()
+    }
 
     init {
         updateAuthState()
-        FirebaseAuth.AuthStateListener { updateAuthState() }
+        FirebaseAuth.getInstance().addAuthStateListener(authStateListener)
     }
 
     private fun updateAuthState() {
@@ -26,6 +29,11 @@ class AuthViewModel : ViewModel() {
         } else {
             AuthState.UNAUTHENTICATED
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        FirebaseAuth.getInstance().removeAuthStateListener(authStateListener)
     }
 
     fun refuseAuthentication() {

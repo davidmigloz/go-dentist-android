@@ -28,6 +28,7 @@ class AddClinicFragment : AuthenticatedFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
         FragmentAddClinicBinding.inflate(inflater, container, false).apply {
             binding = this
             lifecycleOwner = viewLifecycleOwner
