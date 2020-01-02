@@ -26,9 +26,9 @@ class ClinicsViewModel(
     val screenState: LiveData<ScreenState>
         get() = _screenState
 
-    private val _addClinicEvent = MutableLiveData<Event<Unit>>()
-    val addClinicEvent: LiveData<Event<Unit>>
-        get() = _addClinicEvent
+    private val _addEditClinicEvent = MutableLiveData<Event<String>>()
+    val addEditClinicEvent: LiveData<Event<String>>
+        get() = _addEditClinicEvent
 
     private val _clinics: MutableLiveData<List<Clinic>> = MutableLiveData(listOf())
     val clinics: LiveData<List<Clinic>>
@@ -63,6 +63,10 @@ class ClinicsViewModel(
     }
 
     fun addNewClinic() {
-        _addClinicEvent.value = Event(Unit)
+        _addEditClinicEvent.value = Event("")
+    }
+
+    fun editClinic(clinic: Clinic) {
+        _addEditClinicEvent.value = Event(clinic.id)
     }
 }

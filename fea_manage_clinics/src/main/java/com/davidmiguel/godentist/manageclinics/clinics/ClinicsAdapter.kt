@@ -11,10 +11,11 @@ import com.davidmiguel.godentist.core.model.Clinic
 import com.davidmiguel.godentist.manageclinics.R
 import com.davidmiguel.godentist.manageclinics.databinding.FragmentClinicsItemBinding
 
-class ClinicsAdapter : ListAdapter<Clinic, ClinicsAdapter.ClinicViewHolder>(ClinicsDiffCallback()) {
+class ClinicsAdapter(private val clinicsViewModel: ClinicsViewModel) :
+    ListAdapter<Clinic, ClinicsAdapter.ClinicViewHolder>(ClinicsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClinicViewHolder {
-        return ClinicViewHolder(parent)
+        return ClinicViewHolder(parent, clinicsViewModel)
     }
 
     override fun onBindViewHolder(holder: ClinicViewHolder, position: Int) {
@@ -23,6 +24,7 @@ class ClinicsAdapter : ListAdapter<Clinic, ClinicsAdapter.ClinicViewHolder>(Clin
 
     class ClinicViewHolder(
         private val parent: ViewGroup,
+        private val clinicsViewModel: ClinicsViewModel,
         private val binding: FragmentClinicsItemBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.fragment_clinics_item,
@@ -32,6 +34,7 @@ class ClinicsAdapter : ListAdapter<Clinic, ClinicsAdapter.ClinicViewHolder>(Clin
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(clinic: Clinic) {
+            binding.vm = clinicsViewModel
             binding.clinic = clinic
         }
     }

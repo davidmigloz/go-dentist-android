@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.observeEvent
 import com.davidmiguel.godentist.manageclinics.ViewModelFactory
@@ -18,9 +19,11 @@ import com.davidmiguel.godentist.core.R as RC
 
 class AddClinicFragment : AuthenticatedFragment() {
 
+    private val args: AddClinicFragmentArgs by navArgs()
     private lateinit var binding: FragmentAddClinicBinding
     private val addClinicViewModel: AddClinicViewModel
             by viewModels { ViewModelFactory.getInstance() }
+
     private var clinicId: String? = null
 
     override fun onCreateView(
@@ -29,6 +32,7 @@ class AddClinicFragment : AuthenticatedFragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+        clinicId = args.clinicId
         FragmentAddClinicBinding.inflate(inflater, container, false).apply {
             binding = this
             lifecycleOwner = viewLifecycleOwner

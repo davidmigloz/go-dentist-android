@@ -34,7 +34,7 @@ Ref:
         android:label="Work Days">
         <action
             android:id="@+id/action_work_days_fragment_to_add_work_day_nav_graph"
-            app:destination="@id/add_work_day_nav_graph" >
+            app:destination="@id/add_work_day_nav_graph">
 
             <argument
                 android:name="workDayId"
@@ -79,13 +79,25 @@ Ref:
         android:label="Clinics">
         <action
             android:id="@+id/action_clinics_fragment_to_add_clinic_fragment"
-            app:destination="@+id/add_clinic_fragment" />
+            app:destination="@+id/add_clinic_fragment">
+
+            <argument
+                android:name="clinicId"
+                app:argType="string"
+                app:nullable="true" />
+        </action>
     </fragment>
 
     <fragment
         android:id="@+id/add_clinic_fragment"
         android:name="com.davidmiguel.godentist.manageclinics.add.AddClinicFragment"
-        android:label="Add Clinic" />
+        android:label="Add Clinic">
+
+        <argument
+            android:name="clinicId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/treatments_fragment"
@@ -93,7 +105,7 @@ Ref:
         android:label="Clinics">
         <action
             android:id="@+id/action_treatments_fragment_to_add_treatment_fragment"
-            app:destination="@+id/add_treatment_fragment" >
+            app:destination="@+id/add_treatment_fragment">
 
             <argument
                 android:name="treatmentId"
@@ -105,7 +117,7 @@ Ref:
     <fragment
         android:id="@+id/add_treatment_fragment"
         android:name="com.davidmiguel.godentist.managetreatments.add.AddTreatmentFragment"
-        android:label="Add Treatment" >
+        android:label="Add Treatment">
 
         <argument
             android:name="treatmentId"

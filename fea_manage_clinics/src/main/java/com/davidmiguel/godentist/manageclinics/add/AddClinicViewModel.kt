@@ -66,7 +66,8 @@ class AddClinicViewModel(
     }
 
     private fun onClinicLoaded(clinic: Clinic) {
-        name.value = clinic.name
+        name.value = clinic.name ?: ""
+        percentage.value = clinic.percentage?.toString() ?: ""
         _screenState.value = ScreenState.DATA_LOADED
     }
 

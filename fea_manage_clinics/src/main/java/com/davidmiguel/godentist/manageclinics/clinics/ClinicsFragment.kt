@@ -41,7 +41,7 @@ class ClinicsFragment : AuthenticatedFragment() {
 
     private fun initContent() {
         binding.clinicsList.layoutManager = LinearLayoutManager(context)
-        binding.clinicsList.adapter = ClinicsAdapter()
+        binding.clinicsList.adapter = ClinicsAdapter(clinicsViewModel)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -56,8 +56,13 @@ class ClinicsFragment : AuthenticatedFragment() {
         ) {
             clinicsViewModel.addNewClinic()
         }
-        clinicsViewModel.addClinicEvent.observeEvent(viewLifecycleOwner) {
-            findNavController().navigate(RC.id.add_clinic_fragment)
+
+        clinicsViewModel.addEditClinicEvent.observeEvent(viewLifecycleOwner) { clinicId ->
+            findNavController().navigate(
+                ClinicsFragmentDirections.actionClinicsFragmentToAddClinicFragment(
+                    if (clinicId.isBlank()) null else clinicId
+                )
+            )
         }
     }
 

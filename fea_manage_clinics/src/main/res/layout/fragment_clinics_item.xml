@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="vm"
+            type="com.davidmiguel.godentist.manageclinics.clinics.ClinicsViewModel" />
+
+        <variable
             name="clinic"
             type="com.davidmiguel.godentist.core.model.Clinic" />
     </data>
@@ -14,7 +18,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> vm.editClinic(clinic)}">
 
             <TextView
                 android:id="@+id/name"
