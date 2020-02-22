@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.observeEvent
+import com.davidmiguel.godentist.core.utils.setupFadeThroughTransition
 import com.davidmiguel.godentist.manageworkdays.ViewModelFactory
 import com.davidmiguel.godentist.manageworkdays.databinding.FragmentWorkDaysBinding
 import com.davidmiguel.godentist.requireMainActivity
@@ -18,6 +19,11 @@ class WorkDaysFragment : AuthenticatedFragment() {
 
     private lateinit var binding: FragmentWorkDaysBinding
     private val workDaysViewModel: WorkDaysViewModel by viewModels { ViewModelFactory.getInstance() }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupFadeThroughTransition()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

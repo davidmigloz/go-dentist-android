@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.observeEvent
+import com.davidmiguel.godentist.core.utils.setupFadeThroughTransition
 import com.davidmiguel.godentist.manageclinics.R
 import com.davidmiguel.godentist.manageclinics.ViewModelFactory
 import com.davidmiguel.godentist.manageclinics.databinding.FragmentClinicsBinding
@@ -21,6 +22,11 @@ class ClinicsFragment : AuthenticatedFragment() {
 
     private lateinit var binding: FragmentClinicsBinding
     private val clinicsViewModel: ClinicsViewModel by viewModels { ViewModelFactory.getInstance() }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupFadeThroughTransition()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

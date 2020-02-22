@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.davidmiguel.godentist.core.R
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.observeEvent
+import com.davidmiguel.godentist.core.utils.setupSharedAxisTransition
 import com.davidmiguel.godentist.managetreatments.ViewModelFactory
 import com.davidmiguel.godentist.managetreatments.databinding.FragmentAddTreatmentBinding
 import com.davidmiguel.godentist.requireMainActivity
@@ -25,6 +26,11 @@ class AddTreatmentFragment : AuthenticatedFragment() {
             by viewModels { ViewModelFactory.getInstance() }
 
     private var treatmentId: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupSharedAxisTransition()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

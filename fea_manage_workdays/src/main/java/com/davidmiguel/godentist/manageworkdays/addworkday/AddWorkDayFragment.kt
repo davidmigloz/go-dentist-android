@@ -11,6 +11,7 @@ import androidx.navigation.navGraphViewModels
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.enableSwipeToDeleteItem
 import com.davidmiguel.godentist.core.utils.observeEvent
+import com.davidmiguel.godentist.core.utils.setupSharedAxisTransition
 import com.davidmiguel.godentist.manageworkdays.ViewModelFactory
 import com.davidmiguel.godentist.manageworkdays.databinding.FragmentAddWorkDayBinding
 import com.davidmiguel.godentist.requireMainActivity
@@ -29,6 +30,11 @@ class AddWorkDayFragment : AuthenticatedFragment() {
     private lateinit var datePicker: MaterialDatePicker<Long>
 
     private var workDayId: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupSharedAxisTransition()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.davidmiguel.godentist.core.base.AuthenticatedFragment
 import com.davidmiguel.godentist.core.utils.observeEvent
+import com.davidmiguel.godentist.core.utils.setupSharedAxisTransition
 import com.davidmiguel.godentist.manageclinics.ViewModelFactory
 import com.davidmiguel.godentist.manageclinics.databinding.FragmentAddClinicBinding
 import com.davidmiguel.godentist.requireMainActivity
@@ -26,6 +27,11 @@ class AddClinicFragment : AuthenticatedFragment() {
 
     private var clinicId: String? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupSharedAxisTransition()
+    }
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
