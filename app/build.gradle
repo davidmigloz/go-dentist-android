@@ -10,20 +10,20 @@ plugins {
 apply from: '../dependencies_core.gradle'
 apply from: '../dependencies_test.gradle'
 
-ext.versionMajor = 0         // API Changes, adding big new feature, redesign the App
-ext.versionMinor = 2         // New features in a backwards-compatible manner
+ext.versionMajor = 1         // API Changes, adding big new feature, redesign the App
+ext.versionMinor = 0         // New features in a backwards-compatible manner
 ext.versionPatch = 0         // Backwards-compatible bug fixes
 ext.versionClassifier = null // Pre-releases (alpha, beta, rc, SNAPSHOT...)
 
 android {
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = kotlinJvmTarget
     }
 
     signingConfigs {
@@ -35,12 +35,13 @@ android {
         }
     }
 
-    compileSdkVersion versions.compileSdk
+    compileSdkVersion androidConfig.compileSdkVersion
+    buildToolsVersion androidConfig.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.davidmiguel.godentist"
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
+        applicationId androidConfig.applicationId
+        minSdkVersion androidConfig.minSdkVersion
+        targetSdkVersion androidConfig.targetSdkVersion
         versionCode generateVersionCode(versionMajor, versionMinor, versionPatch)
         versionName generateVersionName(versionMajor, versionMinor, versionPatch, versionClassifier)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -48,10 +49,15 @@ android {
     }
 
     buildTypes {
+        debug {
+            aaptOptions {
+                cruncherEnabled = false // No img optimization in debug
+            }
+        }
         release {
             minifyEnabled false
-            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 

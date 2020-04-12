@@ -1,0 +1,74 @@
+ext {
+
+    javaVersion = JavaVersion.VERSION_1_8
+    kotlinJvmTarget = "1.8"
+
+
+    androidConfig = [
+            applicationId    : "com.davidmiguel.godentist",
+            buildToolsVersion: "29.0.3",
+            minSdkVersion    : 26,
+            targetSdkVersion : 29,
+            compileSdkVersion: 29
+    ]
+
+    /**
+     * Returns build number (number of commits).
+     * It returns 0 if it is run locally.
+     */
+    getBuildNumber = { ->
+        if (isRunningInCI()) {
+            return System.getenv()["BUILD_NUMBER"] as Integer
+        } else {
+            return 0
+        }
+    }
+
+    /**
+     * Version code: MMMmmppbbb
+     */
+    generateVersionCode = { versionMajor, versionMinor, versionPatch ->
+        Integer versionCode = versionMajor * 10000000 +
+                versionMinor * 100000 +
+                versionPatch * 1000 +
+                (getBuildNumber() % 1000)
+        println "Version code: " + versionCode
+        return versionCode
+    }
+
+    /**
+     * Version name: <major>.<minor>.<patch>[-<verClass>]
+     */
+    generateVersionName = { versionMajor, versionMinor, versionPatch, versionClassifier ->
+        String versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
+        if (versionClassifier != null) {
+            versionName += "-" + versionClassifier
+        }
+        println "Version name: " + versionName
+        return versionName
+    }
+
+    getReleaseKeyStorePath = { ->
+        return file('secrets/release.jks')
+    }
+
+    getReleaseKeyStorePass = { ->
+        return System.getenv()["RELEASE_KEY_STORE_PASS"]
+    }
+
+    getReleaseKeyAlias = { ->
+        return System.getenv()["RELEASE_KEY_ALIAS"]
+    }
+
+    getReleaseKeyPass = { ->
+        return System.getenv()["RELEASE_KEY_PASS"]
+    }
+
+    getGradlePlayPublisherServiceAccCredentials = { ->
+        return file('secrets/googleplay-service-acc-credentials.json')
+    }
+
+    isRunningInCI = { ->
+        return System.getenv()["GITHUB_ACTIONS"] as Boolean ?: false
+    }
+}

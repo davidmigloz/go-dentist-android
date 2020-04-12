@@ -5,21 +5,24 @@ on:
     branches:
       - '*'
       - '!master'
-      - '!release*'
+      - '!wip/**'
 
 jobs:
   test:
     name: Run Unit Tests
     runs-on: ubuntu-18.04
+    timeout-minutes: 30
+    env:
+      BUILD_NUMBER: ${{ github.run_number }}
 
     steps:
-      - uses: actions/checkout@v1
-
+      - uses: actions/checkout@v2
+      # Set up Java
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-
+      # Restore Cache
       - name: Cache Gradle
         uses: actions/cache@v1
         with:
@@ -38,6 +41,6 @@ jobs:
           path: ~/.android/build-cache
           key: ${{ runner.os }}-android-gradle-cache-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-android-gradle-cache-
-
+      # Run unit tests
       - name: Run unit tests
         run: ./gradlew testDebug --stacktrace

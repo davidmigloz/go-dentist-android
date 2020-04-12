@@ -1,23 +1,26 @@
-name: Master
+name: Release
 
 on:
   push:
-    branches:
-      - 'master'
+    tags:
+      - 'v*'
 
 jobs:
   test:
     name: Run Unit Tests
     runs-on: ubuntu-18.04
+    timeout-minutes: 30
+    env:
+      BUILD_NUMBER: ${{ github.run_number }}
 
     steps:
-      - uses: actions/checkout@v1
-
+      - uses: actions/checkout@v2
+      # Set up Java
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-
+      # Restore Cache
       - name: Cache Gradle
         uses: actions/cache@v1
         with:
@@ -36,28 +39,31 @@ jobs:
           path: ~/.android/build-cache
           key: ${{ runner.os }}-android-gradle-cache-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-android-gradle-cache-
-
+      # Run unit tests
       - name: Run unit tests
         run: ./gradlew testDebug --stacktrace
 
-  play:
+  release:
     name: Publish App on Google Play
     needs: test
     runs-on: ubuntu-18.04
+    timeout-minutes: 30
+    env:
+      BUILD_NUMBER: ${{ github.run_number }}
 
     steps:
-      - uses: actions/checkout@v1
-
+      - uses: actions/checkout@v2
+      # Decrypt secrets
       - name: Decrypt secrets folder
         run: ./.github/scripts/decrypt_secrets.sh
         env:
           SECRETS_GPG_PASSPHRASE: ${{ secrets.SECRETS_GPG_PASSPHRASE }}
-
+      # Set up Java
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-
+      # Restore Cache
       - name: Cache Gradle
         uses: actions/cache@v1
         with:
@@ -76,14 +82,14 @@ jobs:
           path: ~/.android/build-cache
           key: ${{ runner.os }}-android-gradle-cache-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-android-gradle-cache-
-
+      # Build and deploy
       - name: Publish app on Google Play
         run: ./gradlew publishReleaseBundle --stacktrace
         env:
           RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASS: ${{ secrets.RELEASE_KEY_PASS }}
           RELEASE_KEY_STORE_PASS: ${{ secrets.RELEASE_KEY_STORE_PASS }}
-
+      # Upload Bundle to GitHub
       - name: Upload Bundle to GitHub
         uses: actions/upload-artifact@v1
         with:

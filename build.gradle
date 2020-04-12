@@ -1,11 +1,6 @@
+apply from: 'configurations.gradle'
+
 buildscript {
-
-    ext.versions = [
-            'compileSdk': 28,
-            'minSdk'    : 26,
-            'targetSdk' : 28
-    ]
-
     repositories {
         google()
         jcenter()
@@ -29,70 +24,6 @@ allprojects {
         kapt {
             useBuildCache = true
         }
-    }
-}
-
-ext {
-
-    /**
-     * Version name: <major>.<minor>.<patch>[-<verClass>]
-     * For mock, dev, tst and acc <build> is attached at the end.
-     */
-    generateVersionName = { versionMajor, versionMinor, versionPatch, versionClassifier ->
-        String versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
-        if (versionClassifier != null) {
-            versionName += "-" + versionClassifier
-        }
-        println "Version name: " + versionName
-        return versionName
-    }
-
-    /**
-     * Version code: MMMmmppbbb
-     */
-    generateVersionCode = { versionMajor, versionMinor, versionPatch ->
-        Integer versionCode = versionMajor * 10000000 +
-                versionMinor * 100000 +
-                versionPatch * 1000 +
-                (getBuildNumber() % 1000)
-        println "Version code: " + versionCode
-        return versionCode
-    }
-
-    /**
-     * Returns build number (number of commits).
-     * It returns 0 if it is run locally.
-     */
-    getBuildNumber = { ->
-        if (isRunningInCI()) {
-            return Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
-        } else {
-            return 0
-        }
-    }
-
-    isRunningInCI = { ->
-        return System.getenv()["GITHUB_ACTIONS"] as Boolean ?: false
-    }
-
-    getReleaseKeyStorePath = { ->
-        return file('secrets/release.jks')
-    }
-
-    getReleaseKeyStorePass = { ->
-        return System.getenv()["RELEASE_KEY_STORE_PASS"]
-    }
-
-    getReleaseKeyAlias = { ->
-        return System.getenv()["RELEASE_KEY_ALIAS"]
-    }
-
-    getReleaseKeyPass = { ->
-        return System.getenv()["RELEASE_KEY_PASS"]
-    }
-
-    getGradlePlayPublisherServiceAccCredentials = { ->
-        return file('secrets/googleplay-service-acc-credentials.json')
     }
 }
 
