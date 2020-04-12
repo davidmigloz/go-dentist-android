@@ -35,6 +35,7 @@ class WorkDaysAdapter(private val workDaysViewModel: WorkDaysViewModel) :
 
         fun bind(workDay: WorkDay) {
             binding.vm = workDaysViewModel
+            binding.lifecycleOwner
             binding.workDay = workDay
             binding.date.text = if (workDay.date?.isToday() == true) {
                 parent.context.getString(RC.string.all_dateToday)

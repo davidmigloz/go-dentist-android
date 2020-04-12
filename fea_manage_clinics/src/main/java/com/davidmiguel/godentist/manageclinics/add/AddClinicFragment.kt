@@ -31,7 +31,7 @@ class AddClinicFragment : AuthenticatedFragment() {
         super.onCreate(savedInstanceState)
         setupSharedAxisTransition()
     }
-    
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

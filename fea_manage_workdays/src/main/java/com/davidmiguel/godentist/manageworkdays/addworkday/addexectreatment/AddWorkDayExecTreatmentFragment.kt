@@ -70,7 +70,7 @@ class AddWorkDayExecTreatmentFragment : AuthenticatedFragment() {
             addWorkDayViewModel.treatment.value = treatmentsAdapter.getItem(position)
         }
         addWorkDayViewModel.treatmentError.observe(viewLifecycleOwner, Observer { error ->
-            binding.treatmentsContainer?.error =
+            binding.treatmentsContainer.error =
                 if (error) getString(RC.string.addWorkDayExecTreatment_errorTreatment) else null
         })
         // Price

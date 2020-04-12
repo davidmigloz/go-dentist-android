@@ -108,7 +108,7 @@ class AddWorkDayFragment : AuthenticatedFragment() {
             addWorkDayViewModel.clinic.value = clinicsAdapter.getItem(position)
         }
         addWorkDayViewModel.clinicError.observe(viewLifecycleOwner, Observer { error ->
-            binding.clinicContainer?.error =
+            binding.clinicContainer.error =
                 if (error) getString(RC.string.addWorkDay_errorClinic) else null
         })
         // Notes
