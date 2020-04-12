@@ -24,6 +24,12 @@ allprojects {
         google()
         jcenter()
     }
+
+    if (project.hasProperty( "kapt" )) {
+        kapt {
+            useBuildCache = true
+        }
+    }
 }
 
 ext {
