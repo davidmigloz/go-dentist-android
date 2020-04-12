@@ -1,5 +1,6 @@
 include ':app',
         ':core',
+        ':lib_testutils',
         ':fea_auth',
         ':fea_dashboard',
         ':fea_onboarding',

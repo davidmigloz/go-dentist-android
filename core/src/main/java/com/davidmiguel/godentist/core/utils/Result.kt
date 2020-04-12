@@ -16,7 +16,7 @@ sealed class Result<out T> {
         /**
          * Creates a failed result with an exception.
          */
-        fun forFailure(exception: Throwable) = Failure(exception)
+        fun forFailure(exception: Throwable = RuntimeException()) = Failure(exception)
 
         /**
          * Creates a failed result with an ResourceNotFoundException.

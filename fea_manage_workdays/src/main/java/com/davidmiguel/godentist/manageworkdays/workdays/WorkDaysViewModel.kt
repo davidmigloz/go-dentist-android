@@ -11,16 +11,18 @@ import com.davidmiguel.godentist.core.utils.Failure
 import com.davidmiguel.godentist.core.utils.ScreenState
 import com.davidmiguel.godentist.core.utils.Success
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
+@ExperimentalCoroutinesApi
 class WorkDaysViewModel(
     private val firebaseAuth: FirebaseAuth,
     private val workDaysRepository: WorkDaysRepository
 ) : ViewModel() {
 
-    private val _screenState = MutableLiveData<ScreenState>(ScreenState.INITIAL)
+    private val _screenState = MutableLiveData(ScreenState.INITIAL)
     val screenState: LiveData<ScreenState>
         get() = _screenState
 

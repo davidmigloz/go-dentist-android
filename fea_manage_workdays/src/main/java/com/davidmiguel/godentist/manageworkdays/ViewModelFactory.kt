@@ -6,10 +6,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.davidmiguel.godentist.core.data.clinics.ClinicsRepository
 import com.davidmiguel.godentist.core.data.treatments.TreatmentsRepository
 import com.davidmiguel.godentist.core.data.workdays.WorkDaysRepository
+import com.davidmiguel.godentist.core.data.workdays.WorkDaysRepositoryImp
 import com.davidmiguel.godentist.manageworkdays.addworkday.AddWorkDayViewModel
 import com.davidmiguel.godentist.manageworkdays.workdays.WorkDaysViewModel
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class ViewModelFactory private constructor(
     private val firebaseAuth: FirebaseAuth,
     private val workDaysRepository: WorkDaysRepository,
@@ -43,7 +46,7 @@ class ViewModelFactory private constructor(
         fun getInstance() = INSTANCE ?: synchronized(ViewModelFactory::class.java) {
             INSTANCE ?: ViewModelFactory(
                 FirebaseAuth.getInstance(),
-                WorkDaysRepository(),
+                WorkDaysRepositoryImp(),
                 ClinicsRepository(),
                 TreatmentsRepository()
             ).also { INSTANCE = it }
